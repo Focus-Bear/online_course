@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.rsw_2Y,
+.rsw_2f,
+.rsw_3G {
+  height: 100%;
+}
