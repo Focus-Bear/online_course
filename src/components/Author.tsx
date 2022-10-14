@@ -1,13 +1,14 @@
-import React from "react";
 import StepWizard from "react-step-wizard";
-import { demoData } from "../utils/constants";
+import { useAppSelector } from "../store/hooks";
 import AuthorContent from "./AuthorContent";
 
 const Author = () => {
+  const { content } = useAppSelector((state) => state);
+
   return (
     <div className="w-3/4 h-3/4 flex items-center">
-      <StepWizard className="w-full h-full">
-        {demoData.map((item, index) => (
+      <StepWizard className="w-full h-full rounded-md">
+        {content.map((_, index) => (
           <AuthorContent key={index} />
         ))}
       </StepWizard>
