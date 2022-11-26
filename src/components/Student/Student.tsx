@@ -1,6 +1,6 @@
 import React from "react";
 import StepWizard from "react-step-wizard";
-import { useAppSelector } from "../store/hooks";
+import { useAppSelector } from "../../store/hooks";
 import StudentContent from "./StudentContent";
 
 const Student = () => {

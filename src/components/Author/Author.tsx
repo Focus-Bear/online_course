@@ -1,5 +1,5 @@
 import StepWizard from "react-step-wizard";
-import { useAppSelector } from "../store/hooks";
+import { useAppSelector } from "../../store/hooks";
 import AuthorContent from "./AuthorContent";
 
 const Author = () => {
