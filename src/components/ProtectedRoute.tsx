@@ -1,12 +1,13 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { useAppSelector } from "../store/hooks";
 
-const ProtectedRoute = ({ redirectPath = "/", children }: any) => {
+const ProtectedRoute = () => {
   const { user } = useAppSelector((state) => state);
+
   if (!user.details) {
-    return <Navigate to={redirectPath} replace />;
+    return <Navigate to="/" replace />;
   }
-  return children;
+  return <Outlet />;
 };
 
 export default ProtectedRoute;

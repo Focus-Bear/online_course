@@ -3,7 +3,7 @@ import StepWizard from "react-step-wizard";
 import { useAppSelector } from "../../store/hooks";
 import StudentContent from "./StudentContent";
 
-const Student = () => {
+const Learn = () => {
   const { content } = useAppSelector((state) => state);
 
   return (
@@ -17,4 +17,4 @@ const Student = () => {
   );
 };
 
-export default Student;
+export default Learn;

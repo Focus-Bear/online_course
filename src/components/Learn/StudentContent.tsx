@@ -1,10 +1,10 @@
 import React from "react";
 import next from "../assets/images/next.svg";
 import previous from "../assets/images/previous.svg";
-import { useAppSelector } from "../store/hooks";
 import parser from "html-react-parser";
 import ReactPlayer from "react-player/lazy";
 import { OnProgressProps } from "react-player/base";
+import { useAppSelector } from "../../store/hooks";
 
 const StudentContent = ({
   currentStep,

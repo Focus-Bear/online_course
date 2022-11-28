@@ -1,27 +1,22 @@
-import { Routes, Route, useNavigate } from "react-router-dom";
-import Author from "./components/Author/Author";
+import { Routes, Route } from "react-router-dom";
+import Dashboard from "./components/Dashboard";
 import Login from "./components/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
-import Student from "./components/Student/Student";
 import Admin from "./components/Admin";
-import { useAppSelector } from "./store/hooks";
+import NotFound from "./components/404";
 
 function App() {
-  const { user } = useAppSelector((state) => state);
-
   return (
-    <div className="w-screen h-screen flex justify-center items-center overflow-hidden relative">
+    <div
+      className={`w-screen h-screen overflow-hidden bg-[url('./assets/images/background.svg')] bg-no-repeat bg-center bg-cover`}
+    >
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route
-          element={
-            <ProtectedRoute>
-              <Route path="/student" element={<Student />} />
-              <Route path="/author" element={<Author />} />
-              <Route path="/admin" element={<Admin />} />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="*" element={<NotFound />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="admin" element={<Admin />} />
+        </Route>
       </Routes>
     </div>
   );

@@ -1,14 +1,14 @@
 import React from "react";
-import add from "../assets/images/add.svg";
-import next from "../assets/images/next.svg";
-import previous from "../assets/images/previous.svg";
-import link from "../assets/images/link.png";
+import add from "../../assets/images/add.svg";
+import next from "../../assets/images/next.svg";
+import previous from "../../assets/images/previous.svg";
+import link from "../../assets/images/link.png";
 
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { toolbarModules } from "../utils/constants";
-import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { updateContent, addNewContent } from "../store/reducer/content";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { addNewContent, updateContent } from "../../store/reducer/content";
+import { toolbarModules } from "../../utils/constants";
 
 const AuthorContent = ({
   currentStep,

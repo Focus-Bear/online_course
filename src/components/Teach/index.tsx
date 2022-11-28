@@ -1,8 +1,8 @@
 import StepWizard from "react-step-wizard";
 import { useAppSelector } from "../../store/hooks";
-import AuthorContent from "./AuthorContent";
+import AuthorContent from "./Content";
 
-const Author = () => {
+const Teach = () => {
   const { content } = useAppSelector((state) => state);
 
   return (
@@ -16,4 +16,4 @@ const Author = () => {
   );
 };
 
-export default Author;
+export default Teach;

@@ -1,4 +1,3 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../store/hooks";
 import { updateUserDetails } from "../store/reducer/user";
@@ -8,32 +7,36 @@ const Login = () => {
   const dispatch = useAppDispatch();
 
   return (
-    <div className="w-full h-full">
-      <div className="absolute bottom-1 right-2 flex items-center gap-2">
+    <div className="w-full h-full flex flex-col items-center justify-center">
+      <div className="text-6xl font-semibold italic text-blue-200 py-20">
+        Online Course ABC
+      </div>
+      <div className="flex items-center gap-10">
         <button
           onClick={() => {
-            navigate("/student");
-            dispatch(updateUserDetails({ fullname: "aa", role: "student" }));
+            navigate("/dashboard");
+            dispatch(
+              updateUserDetails({
+                fullname: "John Wick",
+                email: "john234@gmail.com",
+              })
+            );
           }}
-          className="w-fit h-fit px-3 py-0.5 cursor-pointer bg-gray-500 hover:bg-gray-600 text-white rounded-md"
+          className="w-fit h-fit px-6 py-1 font-semibold cursor-pointer bg-blue-800 hover:bg-blue-700 text-white text-lg rounded-md"
         >
-          Student
-        </button>
-        <button
-          onClick={() => {
-            navigate("/author");
-            dispatch(updateUserDetails({ fullname: "bb", role: "author" }));
-          }}
-          className="w-fit h-fit px-3 py-0.5 cursor-pointer bg-gray-500 hover:bg-gray-600 text-white rounded-md"
-        >
-          Author
+          Log In
         </button>
         <button
           onClick={() => {
             navigate("/admin");
-            dispatch(updateUserDetails({ fullname: "cc", role: "admin" }));
+            dispatch(
+              updateUserDetails({
+                fullname: "Samuel Jackson",
+                email: "samjack8546@gmail.com",
+              })
+            );
           }}
-          className="w-fit h-fit px-3 py-0.5 cursor-pointer bg-gray-500 hover:bg-gray-600 text-white rounded-md"
+          className="w-fit h-fit px-6 py-1 font-semibold cursor-pointer bg-blue-800 hover:bg-blue-700 text-white text-lg rounded-md"
         >
           Admin
         </button>
