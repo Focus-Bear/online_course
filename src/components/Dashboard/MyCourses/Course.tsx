@@ -1,29 +1,32 @@
-import React from "react";
-import next from "../assets/images/next.svg";
-import previous from "../assets/images/previous.svg";
-import parser from "html-react-parser";
-import ReactPlayer from "react-player/lazy";
-import { OnProgressProps } from "react-player/base";
-import { useAppSelector } from "../../store/hooks";
+import React from 'react';
+import next from '../../../assets/images/next.svg';
+import previous from '../../../assets/images/previous.svg';
+import parser from 'html-react-parser';
+import ReactPlayer from 'react-player/lazy';
+import { OnProgressProps } from 'react-player/base';
+import { useAppSelector } from '../../../store/hooks';
 
-const StudentContent = ({
+const Course = ({
   currentStep,
   nextStep,
   previousStep,
   totalSteps,
 }: any) => {
   const { content } = useAppSelector((state) => state);
-  const [duration, setDuration] = React.useState({ current: 0, total: 0 });
+  const [duration, setDuration] = React.useState({
+    current: 0,
+    total: 0,
+  });
 
   return (
-    <div className="w-full h-full flex bg-gray-100 rounded-r-lg">
+    <div className='w-full h-full flex bg-gray-100 rounded-r-lg'>
       <ReactPlayer
         style={{
-          borderTopLeftRadius: "8px",
-          borderBottomLeftRadius: "8px",
+          borderTopLeftRadius: '8px',
+          borderBottomLeftRadius: '8px',
         }}
-        width="50%"
-        height="100%"
+        width='50%'
+        height='100%'
         url={content[currentStep - 1].url}
         config={{
           youtube: {
@@ -43,22 +46,22 @@ const StudentContent = ({
         }}
       />
 
-      <div className="w-1/2 h-full flex flex-col">
-        <div className="w-full h-[10%] flex items-center justify-center font-semibold text-xl gap-2 px-2">
+      <div className='w-1/2 h-full flex flex-col'>
+        <div className='w-full h-[10%] flex items-center justify-center font-semibold text-xl gap-2 px-2'>
           {content[currentStep - 1].title}
         </div>
-        <div className="w-full h-[80%] overflow-y-auto bg-transparent pl-10 pr-4">
+        <div className='w-full h-[80%] overflow-y-auto bg-transparent pl-10 pr-4'>
           {parser(content[currentStep - 1].content)}
         </div>
-        <div className="w-full h-[10%] flex items-center justify-end  px-2 gap-4 relative">
+        <div className='w-full h-[10%] flex items-center justify-end  px-2 gap-4 relative'>
           {currentStep > 1 && (
             <img
               onClick={() => {
                 previousStep();
               }}
-              className="cursor-pointer"
+              className='cursor-pointer'
               src={previous}
-              alt="PREVIOUS"
+              alt='PREVIOUS'
             />
           )}
           {currentStep !== totalSteps && (
@@ -66,20 +69,24 @@ const StudentContent = ({
               onClick={() => {
                 nextStep();
               }}
-              className="cursor-pointer"
+              className='cursor-pointer'
               src={next}
-              alt="NEXT"
+              alt='NEXT'
             />
           )}
-          <div className="absolute bottom-0 left-0 w-full h-1 bg-blue-200">
+          <div className='absolute bottom-0 left-0 w-full h-1 bg-blue-200'>
             <div
               style={{
                 width: `${
                   duration.current <= 0
-                    ? "0"
+                    ? '0'
                     : duration.current >= 100
-                    ? "100%"
-                    : Math.trunc((duration.current / duration.total) * 100)
+                    ? '100%'
+                    : Math.trunc(
+                        (duration.current /
+                          duration.total) *
+                          100
+                      )
                 }%`,
               }}
               className={`h-full bg-blue-600`}
@@ -91,4 +98,4 @@ const StudentContent = ({
   );
 };
 
-export default StudentContent;
+export default Course;

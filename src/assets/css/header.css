@@ -1,5 +1,5 @@
 :root {
-  --indicator-background: #ffc303;
+  --indicator-background: #ffd603;
   --clr: #1e3266;
   --nav-width: 90px;
 }
@@ -79,7 +79,7 @@
 }
 
 .indicator::before {
-  content: "";
+  content: '';
   position: absolute;
   left: -23px;
   top: 50%;
@@ -91,7 +91,7 @@
 }
 
 .indicator::after {
-  content: "";
+  content: '';
   position: absolute;
   right: -23px;
   top: 50%;
