@@ -2,18 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@import 'react-quill/dist/quill.snow.css';
 @import './assets/css/header.css';
-@import 'rsuite/styles/index.less';
-
-/* .rsw_3G {
-  height: 100%;
-}
-
-.ql-toolbar {
-  height: 12%;
-}
-
-.ql-container {
-  height: 88%;
-} */
+@import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+@import './assets/css/custom.css';
+/* @import 'rsuite/styles/index.less'; */

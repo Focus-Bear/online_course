@@ -1,11 +1,18 @@
-.rsw_3G {
-  height: 100%;
+.wrapperClassName {
+  height: 350px;
 }
 
-.ql-toolbar {
-  height: 12%;
+.toolbarClassName {
+  height: 25%;
 }
 
-.ql-container {
-  height: 88%;
+.editorClassName {
+  height: 75%;
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.DraftEditor-root {
+  margin-top: -15px;
 }

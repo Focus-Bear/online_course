@@ -5,7 +5,8 @@
 }
 
 .navigation {
-  width: 320px;
+  align-self: start;
+  width: 230px;
   height: 70px;
   background: #fff;
   display: flex;
@@ -17,7 +18,7 @@
 
 .navigation ul {
   display: flex;
-  width: 270px;
+  width: 180px;
   position: relative;
 }
 
@@ -108,8 +109,4 @@
 
 .navigation ul li:nth-child(2).active ~ .indicator {
   transform: translateX(calc(var(--nav-width) * 1));
-}
-
-.navigation ul li:nth-child(3).active ~ .indicator {
-  transform: translateX(calc(var(--nav-width) * 2));
 }

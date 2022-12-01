@@ -1,45 +1,51 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
+import { Editor } from 'react-draft-wysiwyg';
+import { EditorState } from 'draft-js';
+
 import add from '../../../assets/images/add.svg';
 import next from '../../../assets/images/next.svg';
 import previous from '../../../assets/images/previous.svg';
 import link from '../../../assets/images/link.svg';
-
-import ReactQuill from 'react-quill';
 import {
   useAppDispatch,
   useAppSelector,
 } from '../../../store/hooks';
 import {
-  addNewContent,
-  updateContent,
-} from '../../../store/reducer/teach';
-import { toolbarModules } from '../../../utils/constants';
+  addNewLesson,
+  updateNewCourse,
+} from '../../../store/reducer/user';
 
-const AuthorContent = ({
+const CourseItem = ({
   currentStep,
   nextStep,
   previousStep,
   totalSteps,
+  lesson,
 }: any) => {
   const dispatch = useAppDispatch();
-  const { content } = useAppSelector((state) => state);
+  const [editorState, setEditorState] = useState(
+    EditorState.createEmpty()
+  );
+  const { newCourseLessons } = useAppSelector(
+    (state) => state.user
+  );
 
-  React.useEffect(() => {
-    content.length !== 1 && nextStep();
-  }, [content.length]);
+  useEffect(() => {
+    nextStep();
+  }, [newCourseLessons]);
 
   return (
-    <div className='w-full h-full flex flex-col'>
-      <div className='w-full h-[10%] flex items-center bg-gray-300 gap-2 px-2 rounded-t-md relative'>
-        <div className='font-semibold'>{`Title ${currentStep}`}</div>
+    <div className='w-full h-fit flex flex-col gap-2'>
+      <div className='w-full h-[10%] flex items-center bg-gray-300 gap-2 px-2 py-1 rounded-t-md relative'>
+        <div className='font-bold text-sm'>{`Title ${currentStep}`}</div>
         <input
           className='w-2/3 outline-none rounded px-2 py-0.5 text-sm font-medium tracking-wide focus:bg-gray-50'
-          value={content[currentStep - 1].title}
+          value={lesson.title}
           onChange={(
             e: React.ChangeEvent<HTMLInputElement>
           ) => {
             dispatch(
-              updateContent({
+              updateNewCourse({
                 position: currentStep - 1,
                 type: 'title',
                 data: e.target.value,
@@ -47,36 +53,32 @@ const AuthorContent = ({
             );
           }}
         />
-        <div className='absolute bottom-0 right-1 text-xs font-bold text-blue-600'>
+        <div className='absolute bottom-1 right-2 text-xs font-bold text-blue-600'>
           Author: John Wick
         </div>
       </div>
-      <ReactQuill
-        className='w-full h-[75%] bg-gray-100'
-        value={content[currentStep - 1].content}
-        onChange={(value: string) => {
-          dispatch(
-            updateContent({
-              position: currentStep - 1,
-              type: 'content',
-              data: value,
-            })
-          );
+      <Editor
+        editorState={editorState}
+        toolbarClassName='toolbarClassName'
+        wrapperClassName='wrapperClassName'
+        editorClassName='editorClassName'
+        onEditorStateChange={(editorState) => {
+          editorState && setEditorState(editorState);
         }}
-        placeholder='Write content...'
-        modules={toolbarModules}
       />
-      <div className='w-full h-[15%] flex items-center justify-between bg-gray-300 px-2 rounded-b-md'>
+      <div className='w-full h-[15%] flex items-center justify-between bg-gray-300 px-2 py-2 rounded-b-md'>
         <div className='w-2/3 flex flex-col relative'>
-          <div className='font-semibold'>Youtube URL</div>
+          <div className='font-bold text-sm'>
+            {`Youtube URL ${currentStep}`}
+          </div>
           <input
             className='w-full font-medium text-sm pr-6 pl-2 py-1 rounded outline-none focus:bg-gray-50'
-            value={content[currentStep - 1].url}
+            value={lesson.url}
             onChange={(
               e: React.ChangeEvent<HTMLInputElement>
             ) => {
               dispatch(
-                updateContent({
+                updateNewCourse({
                   position: currentStep - 1,
                   type: 'url',
                   data: e.target.value,
@@ -114,7 +116,7 @@ const AuthorContent = ({
           {currentStep === totalSteps && (
             <img
               onClick={() => {
-                dispatch(addNewContent());
+                dispatch(addNewLesson());
               }}
               className='cursor-pointer'
               src={add}
@@ -127,4 +129,4 @@ const AuthorContent = ({
   );
 };
 
-export default AuthorContent;
+export default CourseItem;

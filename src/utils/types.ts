@@ -1,6 +1,10 @@
 export interface initialStateProps {
-  title: string;
-  content: string;
-  author: string;
-  url: string;
+  details: any;
+  courses: [];
+  newCourse: {
+    title: string;
+    content: string;
+    url: string;
+  }[];
+  newCourseLessons: number;
 }

@@ -1,9 +1,9 @@
 import Rate from 'rsuite/Rate';
-import { trending_courses } from '../../config/constants';
+import { trending_courses } from '../../../config/constants';
 
 const TrendingCourse = () => {
   return (
-    <div className='w-1/4 h-full orounded flex flex-col px-4 py-2 gap-2 bg-gray-100 rounded overflow-y-auto scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-100 '>
+    <div className='w-1/4 h-full orounded flex flex-col px-4 py-2 gap-2 bg-gray-100 rounded overflow-y-auto scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-100 scrollbar-track-rounded scrollbar-thumb-rounded'>
       <div className='font-bold text-blue-900'>
         Trending Courses
       </div>

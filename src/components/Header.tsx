@@ -1,5 +1,4 @@
 import {
-  MdOutlineEditNote,
   MdOutlineDashboard,
   MdOutlineCases,
 } from 'react-icons/md';
@@ -34,17 +33,6 @@ const Header = ({ position, setPosition }: Props) => {
         >
           <MdOutlineCases id='icon' />
           <div className='text'>My Courses</div>
-        </li>
-        <li
-          onClick={() => {
-            setPosition(2);
-          }}
-          className={`cursor-pointer ${
-            position === 2 ? 'active' : ''
-          }`}
-        >
-          <MdOutlineEditNote id='icon' />
-          <div className='text'>Teach</div>
         </li>
         <div className='indicator'></div>
       </ul>
