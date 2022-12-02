@@ -1,28 +1,27 @@
 import { Fragment, useState } from 'react';
-import Header from '../../Header';
-import DashboardCourse from './DashboardCourse';
-import MyCourses from '../MyCourses';
-import {
-  MdLogout,
-  MdOutlineWysiwyg,
-} from 'react-icons/md';
+import { MdLogout, MdOutlineWysiwyg } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
-import NewCourse from '../MyCourses/NewCourse';
+import Header from '../Header';
+import MyCourses from './MyCourse';
+import NewCourse from '../Course/NewCourse';
+import Setting from './Setting';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { updateIsNewCourseOpened } from '../../store/reducer/user';
 
-const Dashboard = () => {
+const User = () => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [position, setPosition] = useState(0);
-  const [showNewCourse, setShowNewCourse] =
-    useState(false);
+  const { isNewCourseOpened } = useAppSelector((state) => state.user);
 
   return (
     <Fragment>
       <div className='w-full h-full flex flex-col items-center relative'>
         <div className='absolute top-[10%] right-0 flex items-center gap-4'>
-          {position !== 0 && (
+          {position === 0 && (
             <button
               onClick={() => {
-                setShowNewCourse(true);
+                dispatch(updateIsNewCourseOpened(true));
               }}
               className='flex items-center gap-2 w-fit h-fit text-blue-900 bg-gray-100 hover:bg-gray-300 font-semibold px-4 py-1 rounded'
             >
@@ -40,23 +39,12 @@ const Dashboard = () => {
             <MdLogout />
           </button>
         </div>
-        <Header
-          position={position}
-          setPosition={setPosition}
-        />
-        {position === 0 ? (
-          <DashboardCourse />
-        ) : (
-          <MyCourses />
-        )}
+        <Header position={position} setPosition={setPosition} />
+        {position === 0 ? <MyCourses /> : <Setting />}
       </div>
-      {showNewCourse && (
-        <NewCourse
-          setShowNewCourse={setShowNewCourse}
-        />
-      )}
+      {isNewCourseOpened && <NewCourse />}
     </Fragment>
   );
 };
 
-export default Dashboard;
+export default User;

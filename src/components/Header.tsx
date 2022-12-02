@@ -1,7 +1,4 @@
-import {
-  MdOutlineDashboard,
-  MdOutlineCases,
-} from 'react-icons/md';
+import { MdOutlineDashboard, MdOutlineCases } from 'react-icons/md';
 
 interface Props {
   position: number;
@@ -20,8 +17,8 @@ const Header = ({ position, setPosition }: Props) => {
             position === 0 ? 'active' : ''
           }`}
         >
-          <MdOutlineDashboard id='icon' />
-          <div className='text'>Dashboard</div>
+          <MdOutlineCases id='icon' />
+          <div className='text'>My Courses</div>
         </li>
         <li
           onClick={() => {
@@ -31,8 +28,8 @@ const Header = ({ position, setPosition }: Props) => {
             position === 1 ? 'active' : ''
           }`}
         >
-          <MdOutlineCases id='icon' />
-          <div className='text'>My Courses</div>
+          <MdOutlineDashboard id='icon' />
+          <div className='text'>Setting</div>
         </li>
         <div className='indicator'></div>
       </ul>

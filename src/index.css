@@ -5,4 +5,5 @@
 @import './assets/css/header.css';
 @import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 @import './assets/css/custom.css';
-/* @import 'rsuite/styles/index.less'; */
+@import 'react-tabs/style/react-tabs.css';
+@import 'react-toastify/dist/ReactToastify.css';
