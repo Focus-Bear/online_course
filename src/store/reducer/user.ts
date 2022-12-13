@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { initialStateProps } from '../../utils/types';
 import _ from 'lodash';
-import { initNewCourse } from '../../config/constants';
+import { initNewCourse } from '../../utils/constants';
 
 const initialState: initialStateProps = {
   details: null,

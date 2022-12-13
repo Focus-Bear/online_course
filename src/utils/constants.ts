@@ -13,3 +13,9 @@ export const initNewCourse = {
     },
   ],
 };
+
+export const ENDPOINT = {
+  GET_ALL_COURSES: 'course/get-all-course',
+  GET_COURSE: 'course/get-course/',
+  CREATE_COURSE: 'course/create-course',
+};
