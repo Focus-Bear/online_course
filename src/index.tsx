@@ -3,6 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import { Provider } from 'react-redux';
 import { store } from './store';
+import Auth0ProviderWithHistory from './auth/auth0-provider-with-history';
 import './index.css';
 
 const root = ReactDOM.createRoot(
@@ -10,8 +11,10 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <BrowserRouter>
-    <Provider store={store()}>
-      <App />
-    </Provider>
+    <Auth0ProviderWithHistory>
+      <Provider store={store()}>
+        <App />
+      </Provider>
+    </Auth0ProviderWithHistory>
   </BrowserRouter>
 );

@@ -19,3 +19,9 @@ export const ENDPOINT = {
   GET_COURSE: 'course/get-course/',
   CREATE_COURSE: 'course/create-course',
 };
+
+export const TOKEN_ROLES_KEY = 'https://api.focusbear.io/roles';
+export const USER_ROLES = {
+  USER: 'USER',
+  ADMIN: 'ADMIN',
+};

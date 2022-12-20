@@ -1,12 +1,12 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { RootState } from '..';
 import { ENDPOINT } from '../../utils/constants';
+import { CourseProps } from '../../utils/types';
 
 export const API = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.REACT_APP_BASE_URL,
-    prepareHeaders: (headers, { getState }) => {
+    prepareHeaders: (headers) => {
       const token = window.localStorage.getItem('token');
       if (token) {
         headers.set('authorization', `Bearer ${token}`);
@@ -15,11 +15,11 @@ export const API = createApi({
     },
   }),
   endpoints: (builder) => ({
-    getAllCourse: builder.query({
+    getAllCourse: builder.query<CourseProps[], void>({
       query: () => ENDPOINT.GET_ALL_COURSES,
     }),
-    getCourse: builder.query({
-      query: (course_id) => ENDPOINT.GET_COURSE + course_id,
+    getCourse: builder.query<CourseProps, string>({
+      query: (course_id: string) => ENDPOINT.GET_COURSE + course_id,
     }),
     createCourse: builder.mutation({
       query: (course) => ({
@@ -31,4 +31,4 @@ export const API = createApi({
   }),
 });
 
-export const { useGetAllCourseQuery, useLazyGetCourseQuery } = API;
+export const { useGetAllCourseQuery, useGetCourseQuery } = API;

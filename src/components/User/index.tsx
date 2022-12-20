@@ -1,18 +1,19 @@
 import { Fragment, useState } from 'react';
 import { MdLogout, MdOutlineWysiwyg } from 'react-icons/md';
-import { useNavigate } from 'react-router-dom';
 import Header from '../Header';
 import MyCourses from './MyCourse';
 import NewCourse from '../Course/NewCourse';
 import Setting from './Setting';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { updateIsNewCourseOpened } from '../../store/reducer/user';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const User = () => {
+  const { logout } = useAuth0();
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   const [position, setPosition] = useState(0);
   const { isNewCourseOpened } = useAppSelector((state) => state.user);
+  // const { isError, data } = useGetAllCourseQuery();
 
   return (
     <Fragment>
@@ -31,7 +32,9 @@ const User = () => {
           )}
           <button
             onClick={() => {
-              navigate('/', { replace: true });
+              logout({
+                returnTo: process.env.REACT_APP_AUTH0_LOGOUT_REDIRECT_URI!,
+              });
             }}
             className='flex items-center gap-2 w-fit h-fit bg-yellow-300 hover:bg-yellow-400 font-semibold px-4 py-1 text-blue-900 rounded'
           >

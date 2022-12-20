@@ -16,7 +16,7 @@ const MyCourse = () => {
         {courses.length === 0 ? (
           <div className='w-full h-full text-2xl font-semibold flex items-center justify-center gap-2'>
             <MdHourglassEmpty />
-            You've created any course yet.
+            You've not created any course yet.
           </div>
         ) : (
           courses.map((course, idx) => (

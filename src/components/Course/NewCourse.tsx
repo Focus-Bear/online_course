@@ -33,12 +33,10 @@ const NewCourse = ({}) => {
       : dispatch(saveCourse(newCourse));
   };
 
-  //const validation = () => {};
-
   return (
     <div className='fixed fade inset-0 bg-gray-700 bg-opacity-50 h-full w-full z-50'>
       <div className='top-[5%] mx-auto w-[50%] h-[85%] relative'>
-        <div className='w-full h-full flex flex-col items-center bg-gray-200 rounded-md relative'>
+        <div className='w-full h-full flex flex-col gap-3 items-center bg-gray-200 rounded-md relative'>
           <div className='absolute right-2 top-1.5 w-fit h-fit flex items-center gap-3'>
             <button
               onClick={() => {
@@ -144,7 +142,7 @@ const NewCourse = ({}) => {
               </div>
             </div>
           </div>
-          <div className='w-full h-[82%] flex flex-col gap-3 rounded-b px-5 py-3 overflow-y-auto scrollbar-thin scrollbar-track-blue-200 scrollbar-thumb-blue-600 scrollbar-track-rounded  scrollbar-thumb-rounded'>
+          <div className='w-full h-[82%] flex flex-col gap-3 rounded-b px-5 overflow-y-auto scrollbar-thin scrollbar-thumb-blue-400'>
             {newCourse.lessons.map((lesson, idx) => (
               <CourseItem key={idx} lesson={lesson} position={idx} />
             ))}

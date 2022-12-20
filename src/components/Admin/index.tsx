@@ -1,19 +1,20 @@
+import { useAuth0 } from '@auth0/auth0-react';
 import { MdLogout } from 'react-icons/md';
-import { useNavigate } from 'react-router-dom';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import Courses from './Courses';
 import Permissions from './Permissions';
 import Users from './Users';
 
 const Admin = () => {
-  const navigate = useNavigate();
-
+  const { logout } = useAuth0();
   return (
     <div className='w-full h-full flex flex-col items-center relative pt-10'>
       <div className='absolute top-0 right-0 flex items-center gap-4'>
         <button
           onClick={() => {
-            navigate('/', { replace: true });
+            logout({
+              returnTo: process.env.REACT_APP_AUTH0_LOGOUT_REDIRECT_URI!,
+            });
           }}
           className='flex items-center gap-2 w-fit h-fit bg-yellow-300 hover:bg-yellow-400 font-semibold px-4 py-1 text-blue-900 rounded'
         >

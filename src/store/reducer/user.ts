@@ -9,6 +9,7 @@ const initialState: initialStateProps = {
   newCourse: initNewCourse,
   isEditingCourse: false,
   isNewCourseOpened: false,
+  isLoading: false,
 };
 
 export const userSlice = createSlice({
@@ -17,6 +18,7 @@ export const userSlice = createSlice({
   reducers: {
     updateUserDetails: (state, { payload }) => {
       state.details = payload;
+      state.isLoading = true;
     },
     updateNewCourse: (
       state,
@@ -63,7 +65,7 @@ export const userSlice = createSlice({
     saveCourse: (state, { payload }) => {
       state.courses.push({
         ...payload,
-        author: state.details.fullname,
+        author: state.details?.name,
         created_at: new Date().toISOString(),
       });
       state.isNewCourseOpened = false;
@@ -94,6 +96,9 @@ export const userSlice = createSlice({
     updateIsNewCourseOpened: (state, { payload }) => {
       state.isNewCourseOpened = payload;
     },
+    updateIsLoading: (state, { payload }: PayloadAction<boolean>) => {
+      state.isLoading = payload;
+    },
   },
 });
 
@@ -107,5 +112,6 @@ export const {
   updateIsEditingCourse,
   updateIsNewCourseOpened,
   updateCourse,
+  updateIsLoading,
 } = userSlice.actions;
 export default userSlice.reducer;

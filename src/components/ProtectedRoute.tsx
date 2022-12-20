@@ -1,17 +1,22 @@
-import { Navigate, Outlet } from 'react-router-dom';
-import { useAppSelector } from '../store/hooks';
+import { useEffect } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { TOKEN_ROLES_KEY, USER_ROLES } from '../utils/constants';
 
 const ProtectedRoute = () => {
-  const { user } = useAppSelector((state) => state);
+  const navigate = useNavigate();
+  const { user } = useAuth0();
 
-  if (!user.details) {
-    return <Navigate to='/' replace />;
-  }
-  return (
-    <div className='w-5/6 h-3/4 flex flex-col items-center'>
-      <Outlet />
-    </div>
-  );
+  useEffect(() => {
+    if (!user) navigate('/login');
+    else {
+      if (user?.[TOKEN_ROLES_KEY]?.[0] === USER_ROLES.ADMIN)
+        navigate('admin');
+      else navigate('dashboard');
+    }
+  }, []);
+
+  return <Outlet />;
 };
 
 export default ProtectedRoute;

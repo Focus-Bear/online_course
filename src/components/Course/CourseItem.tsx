@@ -44,7 +44,7 @@ const CourseItem = ({ lesson, position }: any) => {
         onClick={() => {
           setIsCollapsedOpen(!isCollapseOpened);
         }}
-        className='w-full h-fit text-sm font-semibold tracking-wider cursor-pointer rounded px-2 py-1 tracking-wide text-white bg-blue-700 hover:bg-blue-600'
+        className='w-full h-fit text-sm font-semibold tracking-wider cursor-pointer rounded px-2 py-1  text-white bg-blue-700 hover:bg-blue-600'
       >{`Lesson ${position + 1}`}</div>
       <UnmountClosed isOpened={isCollapseOpened}>
         <div className='w-full h-[10%] flex items-center bg-gray-200 gap-2 px-2 py-1 rounded-t-md relative'>
@@ -71,7 +71,7 @@ const CourseItem = ({ lesson, position }: any) => {
             }}
           />
           <div className='absolute top-1/2 -translate-y-1/2 right-2 text-sm uppercase font-bold text-blue-700'>
-            {details?.fullname}
+            {details?.nickname}
           </div>
         </div>
         <Editor
