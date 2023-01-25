@@ -3,12 +3,12 @@ import { MdHourglassEmpty } from 'react-icons/md';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import StarsRating from 'react-star-ratings';
 import NewCourse from '../Course/NewCourse';
-import { editCourseContent } from '../../store/reducer/user';
+import { editCourseContent } from '../../store/reducer/course';
 
 const Courses = () => {
   const dispatch = useAppDispatch();
   const { courses, isEditingCourse } = useAppSelector(
-    (state) => state.user
+    (state) => state.course
   );
 
   return (
@@ -34,7 +34,7 @@ const Courses = () => {
             </div>
             <div className='w-[65%] h-full bg-gray-100 flex flex-col text-sm font-semibold gap-1.5 p-2 rounded-r-md'>
               <div className='text-blue-900 text-base font-bold line-clamp-1'>
-                {course.name}
+                {/* {course.name} */}
               </div>
               <div className='line-clamp-2 leading-4 text-xs'>
                 {course.description}
@@ -51,10 +51,10 @@ const Courses = () => {
               <div className='w-full flex items-center justify-between'>
                 <div className='w-fit flex gap-1 text-xs font-bold items-center'>
                   <span className='underline'>Author:</span>
-                  {course.author}
+                  {/* {course.author} */}
                 </div>
                 <div className='w-fit text-blue-600 text-xs self-end'>
-                  {moment(course.created_at).fromNow()}
+                  {/* {moment(course.created_at).fromNow()} */}
                 </div>
               </div>
             </div>

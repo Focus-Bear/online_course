@@ -1,18 +1,20 @@
-export interface LessonProps {
+export interface LessonType {
   title: string;
   content: string;
   url: string;
 }
 
-export interface CourseProps {
+export interface CourseType {
   id: string;
+  author_id: string;
   name: string;
   description: string;
   rate: number;
-  lessons: LessonProps[];
-  author?: string;
-  created_at?: Date;
-  updated_at?: Date;
+  is_hidden: boolean;
+  deleted: boolean;
+  createdAt: Date;
+  updatedAt?: Date;
+  lessons?: Lesson[];
 }
 
 interface UserDetails {
@@ -24,11 +26,43 @@ interface UserDetails {
   'https://api.focusbear.io/roles': [];
 }
 
-export interface InitialStateProps {
-  details: UserDetails | null;
-  courses: CourseProps[];
-  newCourse: CourseProps;
+export interface Lesson {
+  title: '';
+  content: '';
+  url: '';
+}
+
+export interface CourseSliceType {
+  courses: CourseType[];
   isEditingCourse: boolean;
-  isNewCourseOpened: boolean;
+  isNewCourseModalOpened: boolean;
   isLoading: boolean;
+  isCourseFetching: boolean;
+  isCreatingCourse: boolean;
+  error: {
+    value: boolean;
+    message: string;
+  };
+}
+
+export interface ErrorSliceType {
+  hasError: boolean;
+  message: string;
+}
+
+export interface CreateCourseType {
+  name: string;
+  description: string;
+}
+
+export interface AccountType {
+  auth0_id: string;
+  email: string;
+  name: string;
+}
+
+export interface UserSliceType {
+  details: any;
+  isLoading: boolean;
+  isNewCourseModalOpened: boolean;
 }

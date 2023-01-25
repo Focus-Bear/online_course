@@ -11,10 +11,10 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <BrowserRouter>
-    <Auth0ProviderWithHistory>
-      <Provider store={store()}>
+    <Provider store={store()}>
+      <Auth0ProviderWithHistory>
         <App />
-      </Provider>
-    </Auth0ProviderWithHistory>
+      </Auth0ProviderWithHistory>
+    </Provider>
   </BrowserRouter>
 );

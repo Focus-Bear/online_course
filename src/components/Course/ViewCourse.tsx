@@ -9,10 +9,10 @@ const ViewCourse = ({
   id: number;
   setShowCourseDetail: (value: boolean) => void;
 }) => {
-  const { courses } = useAppSelector((state) => state.user);
+  // const { courses } = useAppSelector((state) => state.user);
   return (
     <div className='fixed inset-0 bg-gray-600 bg-opacity-50 h-full w-full z-50'>
-      <div className='relative top-1/2 -translate-y-1/2 mx-auto w-5/6 h-[77%] flex items-center'>
+      {/* <div className='relative top-1/2 -translate-y-1/2 mx-auto w-5/6 h-[77%] flex items-center'>
         <button
           onClick={() => {
             setShowCourseDetail(false);
@@ -26,7 +26,7 @@ const ViewCourse = ({
             <ViewCourseItem key={index} course={course} />
           ))}
         </StepWizard>
-      </div>
+      </div> */}
     </div>
   );
 };

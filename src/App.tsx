@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import User from './components/User';
 import Login from './components/Login';
 import Admin from './components/Admin';
@@ -10,8 +10,11 @@ import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from './store/hooks';
 import { updateIsLoading, updateUserDetails } from './store/reducer/user';
 import ProtectedRoute from './components/ProtectedRoute';
+import { ROUTES, TOKEN_NAME } from './utils/constants';
+import ErrorPage from './components/Error';
 
 function App() {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const {
     isLoading: isAuthLoading,
@@ -19,18 +22,26 @@ function App() {
     user,
     getAccessTokenSilently,
   } = useAuth0();
-  const { isLoading } = useAppSelector((state) => state.user);
+  const {
+    user: { isLoading },
+    error,
+  } = useAppSelector((state) => state);
 
   useEffect(() => {
     if (isAuthenticated) {
       dispatch(updateUserDetails(user));
       saveTokenToLocalStorage();
     }
-  }, [isAuthenticated]);
+    if (error.hasError) {
+      navigate(ROUTES.ERROR);
+    }
+  }, [isAuthenticated, error]);
 
   const saveTokenToLocalStorage = async () => {
     const token = await getAccessTokenSilently();
-    if (token) window.localStorage.setItem('token', token);
+    if (token) {
+      window.localStorage.setItem(TOKEN_NAME, token);
+    }
     dispatch(updateIsLoading(false));
   };
 
@@ -42,12 +53,13 @@ function App() {
     >
       <div className='w-5/6 h-3/4 flex flex-col items-center'>
         <Routes>
-          <Route path='login' element={<Login />} />
-          <Route path='/' element={<ProtectedRoute />}>
-            <Route path='dashboard' element={<User />} />
-            <Route path='admin' element={<Admin />} />
+          <Route path={ROUTES.LOGIN} element={<Login />} />
+          <Route path={ROUTES.HOME} element={<ProtectedRoute />}>
+            <Route path={ROUTES.DASHBOARD} element={<User />} />
+            <Route path={ROUTES.ADMIN} element={<Admin />} />
           </Route>
-          <Route path='*' element={<NotFound />} />
+          <Route path={ROUTES.ERROR} element={<ErrorPage />} />
+          <Route path={ROUTES.NOT_FOUND} element={<NotFound />} />
         </Routes>
         <ToastContainer />
       </div>

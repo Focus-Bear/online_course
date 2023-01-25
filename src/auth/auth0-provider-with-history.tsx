@@ -1,5 +1,4 @@
-import React from 'react';
-import { Auth0Provider } from '@auth0/auth0-react';
+import { AppState, Auth0Provider } from '@auth0/auth0-react';
 import { useNavigate } from 'react-router-dom';
 
 type Props = {
@@ -8,10 +7,9 @@ type Props = {
 
 function Auth0ProviderWithHistory({ children }: Props) {
   const uri = process.env.REACT_APP_AUTH0_REDIRECT_URI;
-
   const navigate = useNavigate();
 
-  const onRedirectCallback = (appState: any) => {
+  const onRedirectCallback = (appState: AppState | undefined) => {
     navigate(appState?.returnTo || window.location.pathname);
   };
   return (
