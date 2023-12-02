@@ -1,8 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { toast } from 'react-toastify';
-import { TOKEN_NAME } from '../../utils/constants';
-import Endpoint from '../../utils/endpoints';
-import { CourseType, CreateCourseType } from '../../utils/types';
 import {
   updateCourses,
   updateError,
@@ -10,6 +7,9 @@ import {
   updateIsCreatingCourse,
 } from './course';
 import { updateIsNewCourseModalOpened } from './user';
+import { TOKEN_NAME } from '../../constant/general';
+import { CourseType, CreateCourseType } from '../../constant/interface';
+import Endpoint from '../../constant/endpoints';
 
 export const API = createApi({
   reducerPath: 'api',

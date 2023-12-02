@@ -1,9 +1,9 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { MdLogout } from 'react-icons/md';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import Courses from './Courses';
-import Permissions from './Permissions';
-import Users from './Users';
+import Courses from '../components/Admin/Courses';
+import Permissions from '../components/Admin/Permissions';
+import Users from '../components/Admin/Users';
 
 const Admin = () => {
   const { logout } = useAuth0();

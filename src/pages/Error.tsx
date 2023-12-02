@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../store/hooks';
 import { updateError } from '../store/reducer/error';
-import { ROUTES } from '../utils/constants';
+import { ROUTES } from '../constant/general';
 
 const ErrorPage = () => {
   const dispatch = useAppDispatch();

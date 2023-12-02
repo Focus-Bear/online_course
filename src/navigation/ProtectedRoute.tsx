@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { TOKEN_ROLES_KEY, USER_ROLES } from '../utils/constants';
+import { TOKEN_ROLES_KEY, USER_ROLES } from '../constant/general';
 
 const ProtectedRoute = () => {
   const navigate = useNavigate();

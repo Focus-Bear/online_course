@@ -1,13 +1,13 @@
 import { Fragment, useEffect, useState } from 'react';
 import { MdLogout, MdOutlineWysiwyg } from 'react-icons/md';
-import Header from '../Header';
-import MyCourses from './MyCourse';
-import NewCourse from '../Course/NewCourse';
-import Setting from './Setting';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { updateIsNewCourseModalOpened } from '../../store/reducer/user';
+import Header from '../components/Header';
+import MyCourses from '../components/User/MyCourse';
+import NewCourse from '../components/Course/NewCourse';
+import Setting from '../components/User/Setting';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { updateIsNewCourseModalOpened } from '../store/reducer/user';
 import { useAuth0 } from '@auth0/auth0-react';
-import { useLazyGetAllCourseQuery } from '../../store/reducer/api';
+import { useLazyGetAllCourseQuery } from '../store/reducer/api';
 
 const User = () => {
   const { logout } = useAuth0();

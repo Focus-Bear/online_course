@@ -1,3 +1,8 @@
+export interface createCourse {
+  name: string;
+  description: string;
+}
+
 export interface LessonType {
   title: string;
   content: string;

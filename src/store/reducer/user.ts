@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import _ from 'lodash';
-import { UserSliceType } from '../../utils/types';
+import { UserSliceType } from '../../constant/interface';
 
 const initialState: UserSliceType = {
   details: null,

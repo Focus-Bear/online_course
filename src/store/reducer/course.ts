@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import _ from 'lodash';
-import { CourseType, CourseSliceType } from '../../utils/types';
+import { CourseSliceType, CourseType } from '../../constant/interface';
 
 const initialState: CourseSliceType = {
   courses: [],
