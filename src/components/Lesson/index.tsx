@@ -1,7 +1,7 @@
 import { useLayoutEffect, useRef } from 'react';
-import { useAppDispatch } from '../../store/hooks';
+import { useAppDispatch } from 'store';
 import LessonItem from './LessonItem';
-import { LessonType } from '../../constant/interface';
+import { LessonType } from 'constants/interface';
 
 interface LessonProps {
   lessons: LessonType[];

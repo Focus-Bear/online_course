@@ -1,11 +1,11 @@
 import { Routes, Route } from 'react-router-dom';
-import User from '../pages/User';
-import Login from '../pages/Login';
-import Admin from '../pages/Admin';
-import NotFound from '../pages/404';
-import ErrorPage from '../pages/Error';
+import User from 'pages/User';
+import Login from 'pages/Login';
+import Admin from 'pages/Admin';
+import NotFound from 'pages/NotFound';
+import ErrorPage from 'pages/Error';
 import ProtectedRoute from './ProtectedRoute';
-import { ROUTES } from '../constant/general';
+import { ROUTES } from 'constants/routes';
 
 const AppRoutes = () => {
   return (

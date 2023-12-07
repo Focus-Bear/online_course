@@ -1,13 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { CourseSliceType, CourseType } from '../../constant/interface';
+import { CourseSliceType, CourseType } from 'constants/interface';
 
 const initialState: CourseSliceType = {
   courses: [],
+  showCourseDetail: false,
   isEditingCourse: false,
   isNewCourseModalOpened: false,
   isLoading: false,
-  isCourseFetching: false,
-  isCreatingCourse: false,
   error: {
     value: false,
     message: '',
@@ -18,42 +17,32 @@ export const courseSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    saveCourse: (state, { payload }) => {
-      // state.courses = [...payload];
-      //state.isNewCourseOpened = false;
-      // state.newCourse = initNewCourse;
-    },
     updateCourses: (state, { payload }: PayloadAction<CourseType[]>) => {
-      state.courses = [...state.courses, ...payload];
-      state.isCourseFetching = false;
+      state.courses = payload;
     },
-    editCourseContent: (state, { payload }) => {
-      // state.newCourse = payload;
-      state.isEditingCourse = true;
+    updateCourse: (
+      state,
+      {
+        payload,
+      }: PayloadAction<{ course: CourseType; showCourseDetail: boolean }>
+    ) => {
+      state.course = payload.course;
+      state.showCourseDetail = payload.showCourseDetail;
+    },
+    updateShowCourseDetail: (
+      state,
+      { payload }: PayloadAction<boolean>
+    ) => {
+      state.showCourseDetail = payload;
     },
     updateIsEditingCourse: (state, { payload }) => {
       state.isEditingCourse = payload;
-    },
-    updateIsCourseFetching: (
-      state,
-      { payload }: PayloadAction<boolean>
-    ) => {
-      state.isCourseFetching = payload;
-    },
-    updateIsCreatingCourse: (
-      state,
-      { payload }: PayloadAction<boolean>
-    ) => {
-      state.isCreatingCourse = payload;
     },
     updateError: (
       state,
       { payload }: PayloadAction<{ value: boolean; message: string }>
     ) => {
       state.error = payload;
-    },
-    localCreateCourse: (state, { payload }) => {
-      state.courses.push(payload);
     },
     localAddLesson: (state, { payload }: PayloadAction<number>) => {
       state.courses[payload].lessons?.push({
@@ -66,14 +55,11 @@ export const courseSlice = createSlice({
 });
 
 export const {
-  saveCourse,
-  editCourseContent,
+  updateCourse,
   updateIsEditingCourse,
   updateCourses,
-  updateIsCourseFetching,
-  updateIsCreatingCourse,
   updateError,
-  localCreateCourse,
   localAddLesson,
+  updateShowCourseDetail,
 } = courseSlice.actions;
 export default courseSlice.reducer;

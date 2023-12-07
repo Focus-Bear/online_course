@@ -1,12 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { useAuth0 } from '@auth0/auth0-react';
-import Loading from '../components/Loading';
+import Loading from 'components/Loading';
 import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { updateIsLoading, updateUserDetails } from '../store/reducer/user';
-import { ROUTES, TOKEN_NAME } from '../constant/general';
+import { useAppDispatch, useAppSelector } from 'store';
+import { updateIsLoading, updateUserDetails } from 'store/reducer/user';
+import { TOKEN_NAME } from 'constants/general';
 import AppRoutes from './AppRoutes';
+import { ROUTES } from 'constants/routes';
 
 function Navigation() {
   const navigate = useNavigate();
@@ -32,6 +33,8 @@ function Navigation() {
     }
   }, [isAuthenticated, error]);
 
+  //TODO: fetch user details
+
   const saveTokenToLocalStorage = async () => {
     const token = await getAccessTokenSilently();
     if (token) {
@@ -40,16 +43,10 @@ function Navigation() {
     dispatch(updateIsLoading(false));
   };
 
-  return isAuthLoading || isLoading ? (
-    <Loading />
-  ) : (
-    <div
-      className={`w-screen h-screen flex flex-col items-center justify-center overflow-hidden bg-[url('./assets/images/background.svg')] bg-no-repeat bg-center bg-cover`}
-    >
-      <div className='w-5/6 h-3/4 flex flex-col items-center'>
-        <AppRoutes />
-        <ToastContainer />
-      </div>
+  return (
+    <div className='w-screen h-screen flex flex-col items-center justify-center bg-main overflow-y-auto scrollbar-thin scrollbar-thumb-gray-500'>
+      {isAuthLoading || isLoading ? <Loading /> : <AppRoutes />}
+      <ToastContainer />
     </div>
   );
 }

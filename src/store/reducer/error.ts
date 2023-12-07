@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ErrorSliceType } from '../../constant/interface';
+import { ErrorSliceType } from 'constants/interface';
 
 const initialState: ErrorSliceType = {
   hasError: false,

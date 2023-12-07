@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { Editor } from 'react-draft-wysiwyg';
 import { convertFromHTML, ContentState, EditorState } from 'draft-js';
 import { convertToHTML } from 'draft-convert';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { isYoutubeURL } from '../../utils/support';
+import { useAppDispatch, useAppSelector } from 'store';
+import { isYoutubeURL } from 'utils/support';
 import { UnmountClosed } from 'react-collapse';
-import link from '../../assets/images/link.svg';
+import link from 'assets/images/link.svg';
 import { MdKeyboardArrowUp, MdKeyboardArrowDown } from 'react-icons/md';
 
 const LessonItem = ({ lesson, position }: any) => {

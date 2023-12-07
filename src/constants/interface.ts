@@ -39,15 +39,15 @@ export interface Lesson {
 
 export interface CourseSliceType {
   courses: CourseType[];
+  showCourseDetail: boolean;
   isEditingCourse: boolean;
   isNewCourseModalOpened: boolean;
   isLoading: boolean;
-  isCourseFetching: boolean;
-  isCreatingCourse: boolean;
   error: {
     value: boolean;
     message: string;
   };
+  course?: CourseType;
 }
 
 export interface ErrorSliceType {
@@ -55,7 +55,7 @@ export interface ErrorSliceType {
   message: string;
 }
 
-export interface CreateCourseType {
+export interface CreateCoursePayload {
   name: string;
   description: string;
 }
@@ -70,4 +70,13 @@ export interface UserSliceType {
   details: any;
   isLoading: boolean;
   isNewCourseModalOpened: boolean;
+}
+
+export interface SettingSliceType {
+  currentTab: string;
+}
+
+export interface IconProps {
+  style?: string;
+  fill?: string;
 }

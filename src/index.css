@@ -1,9 +1,7 @@
+@import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+@import 'react-tabs/style/react-tabs.css';
+@import 'react-toastify/dist/ReactToastify.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import './assets/css/header.css';
-@import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-@import './assets/css/custom.css';
-@import 'react-tabs/style/react-tabs.css';
-@import 'react-toastify/dist/ReactToastify.css';

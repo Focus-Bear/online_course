@@ -1,6 +1,6 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
-import { useDispatch, useSelector } from "react-redux";
-import type { TypedUseSelectorHook } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
+import type { TypedUseSelectorHook } from 'react-redux';
 
 import { API } from './reducer/api';
 import type { PreloadedState } from '@reduxjs/toolkit';
@@ -8,11 +8,13 @@ import { errorLogger } from './middleware/errorLogger';
 import user from './reducer/user';
 import course from './reducer/course';
 import error from './reducer/error';
+import setting from './reducer/setting';
 
 const rootReducer = combineReducers({
   [API.reducerPath]: API.reducer,
   user,
   course,
+  setting,
   error,
 });
 

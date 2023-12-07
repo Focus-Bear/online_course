@@ -1,28 +1,21 @@
-import React from 'react';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from 'store';
 import ReactTooltip from 'react-tooltip';
 import { MdSave } from 'react-icons/md';
-import { localAddLesson } from '../../store/reducer/course';
-import Lesson from '../Lesson';
+import Lesson from '../../Lesson';
+import { updateShowCourseDetail } from 'store/reducer/course';
+import ModalOverlay from 'components/common/ModalOverlay';
+import ModalContentWrapper from 'components/common/ModalContentWrapper';
 
-interface CourseDetailsProps {
-  id: number;
-  setShowCourseDetail: (arg: boolean) => void;
-}
-
-const CourseDetails = ({
-  id,
-  setShowCourseDetail,
-}: CourseDetailsProps) => {
+const CourseDetails = () => {
   const dispatch = useAppDispatch();
-  const { courses } = useAppSelector((state) => state.course);
+  const { course } = useAppSelector((state) => state.course);
   return (
-    <div className='fixed inset-0 bg-gray-600 bg-opacity-50 h-full w-full z-50'>
-      <div className='relative top-1/2 -translate-y-1/2 mx-auto w-1/2 h-[80%] flex flex-col bg-sky-700 text-white rounded-md px-4 py-3 gap-4'>
+    <ModalOverlay>
+      <ModalContentWrapper styles='bg-sky-700 text-white gap-4'>
         <div className='absolute -top-7 right-0 w-fit h-fit flex items-center gap-2'>
           <button
             onClick={() => {
-              dispatch(localAddLesson(id));
+              //  dispatch(localAddLesson(id));
             }}
             className='w-fit h-fit text-xs tracking-wider font-semibold text-white bg-gray-800 hover:bg-gray-700 px-3 py-1 rounded self-center'
           >
@@ -52,7 +45,7 @@ const CourseDetails = ({
             />
             <button
               onClick={() => {
-                setShowCourseDetail(false);
+                dispatch(updateShowCourseDetail(false));
               }}
               data-for='exit'
               data-tip='Exit'
@@ -63,14 +56,14 @@ const CourseDetails = ({
           </div>
         </div>
         <div className='w-full h-fit flex flex-col gap-1'>
-          <div className='font-bold italic'>{courses[id]?.name ?? ''}</div>
+          <div className='font-bold italic'>{course?.name ?? ''}</div>
           <div className='font-medium text-sm leading-4 tracking-wide text-justify line-clamp-3'>
-            {courses[id]?.description ?? ''}
+            {course?.description ?? ''}
           </div>
         </div>
-        <Lesson lessons={courses[id].lessons ?? []} />
-      </div>
-    </div>
+        <Lesson lessons={course?.lessons ?? []} />
+      </ModalContentWrapper>
+    </ModalOverlay>
   );
 };
 

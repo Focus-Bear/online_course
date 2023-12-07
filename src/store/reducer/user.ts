@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { UserSliceType } from '../../constant/interface';
+import { UserSliceType } from 'constants/interface';
 
 const initialState: UserSliceType = {
   details: null,
