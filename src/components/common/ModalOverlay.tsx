@@ -1,7 +1,13 @@
 import { ReactNode } from 'react';
 
-const ModalOverlay = ({ children }: { readonly children: ReactNode }) => (
-  <div className='fixed inset-0 bg-gray-600 bg-opacity-50 h-full w-full z-50'>
+const ModalOverlay = ({
+  children,
+  styles = 'bg-gray-700 bg-opacity-50',
+}: {
+  readonly children: ReactNode;
+  styles?: string;
+}) => (
+  <div className={`fixed inset-0 50 h-full w-full z-40 ${styles}`}>
     {children}
   </div>
 );

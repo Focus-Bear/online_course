@@ -1,12 +1,15 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { updateCourses, updateError } from './course';
+import { updateCourseLessons, updateCourses, updateError } from './course';
 import { API_TAG, TOKEN_NAME } from 'constants/general';
 import {
   CourseType,
   CreateCoursePayload,
   Lesson,
+  UpdateLessonPayload,
 } from 'constants/interface';
 import Endpoint from 'constants/endpoints';
+import { updateUserDetails } from './user';
+import { toast } from 'react-toastify';
 
 export const API = createApi({
   reducerPath: 'api',
@@ -22,6 +25,19 @@ export const API = createApi({
   }),
   tagTypes: Object.values(API_TAG),
   endpoints: (builder) => ({
+    getUserDetails: builder.query({
+      query: () => Endpoint.USER_DETAILS,
+      onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(updateUserDetails(data));
+        } catch (error) {
+          dispatch(
+            updateError({ value: true, message: JSON.stringify(error) })
+          );
+        }
+      },
+    }),
     getAllCourse: builder.query<CourseType[], void>({
       query: () => Endpoint.GET_ALL_COURSES,
       providesTags: [API_TAG.ALL_COURSES],
@@ -75,11 +91,11 @@ export const API = createApi({
     getAllCourseLessons: builder.query({
       query: (course_id: string) =>
         Endpoint.GET_ALL_COURSE_LESSONS(course_id),
-      providesTags: [API_TAG.ALL_COURSES],
+      providesTags: [API_TAG.ALL_LESSONS],
       onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
         try {
           const { data } = await queryFulfilled;
-          //TODO: update course lessons
+          dispatch(updateCourseLessons(data ?? []));
         } catch (error) {
           dispatch(
             updateError({ value: true, message: JSON.stringify(error) })
@@ -88,20 +104,60 @@ export const API = createApi({
       },
     }),
     createCourseLessons: builder.mutation({
-      query: (data: Lesson[]) => ({
+      query: (payload: { course_id: string; lessons: Lesson[] }) => ({
         url: Endpoint.CREATE_COURSE_LESSONS,
         method: 'POST',
-        body: data,
+        body: payload,
+      }),
+      invalidatesTags: [API_TAG.ALL_LESSONS],
+      onQueryStarted: async (_, { queryFulfilled }) => {
+        const { meta } = await queryFulfilled;
+        meta?.response?.status === 201
+          ? toast.success('Lessons updated successfully!')
+          : toast.error('Could not update lessons');
+      },
+    }),
+    updateCourseLesson: builder.mutation({
+      query: (payload: UpdateLessonPayload) => ({
+        url: Endpoint.CREATE_COURSE_LESSONS,
+        method: 'PATCH',
+        body: payload,
+      }),
+      invalidatesTags: [API_TAG.LESSON],
+      onQueryStarted: async (_, { queryFulfilled }) => {
+        const { meta } = await queryFulfilled;
+        //  console.log(meta);
+        meta?.response?.status === 201
+          ? toast.success('Lesson updated successfully!')
+          : toast.error('Could not update lesson');
+      },
+    }),
+    createCourseRating: builder.mutation({
+      query: (payload: { course_id: string; rating: number }) => ({
+        url: Endpoint.CREATE_COURSE_RATING,
+        method: 'POST',
+        body: { ...payload, review: '' },
       }),
       invalidatesTags: [API_TAG.ALL_COURSES],
+      onQueryStarted: async (_, { queryFulfilled }) => {
+        const { meta } = await queryFulfilled;
+        meta?.response?.status === 201
+          ? toast.success('Thank you for your feedback.')
+          : toast.error('Could not process feedback');
+      },
     }),
   }),
 });
 
 export const {
+  useLazyGetUserDetailsQuery,
   useLazyGetAllCourseQuery,
   useCreateCourseMutation,
   useUpdateCourseMutation,
   useLazyGetAllCourseLessonsQuery,
   useCreateCourseLessonsMutation,
+  useUpdateCourseLessonMutation,
+  useDeleteCourseMutation,
+  useHideCourseMutation,
+  useCreateCourseRatingMutation,
 } = API;

@@ -1,31 +1,86 @@
 import Eye from 'assets/svg/Eye';
+import EyeClosed from 'assets/svg/EyeClosed';
 import Pencil from 'assets/svg/Pencil';
 import Trash from 'assets/svg/Trash';
 import COLOR from 'constants/color';
 import { NUMBER_OF_STARS } from 'constants/general';
 import { CourseType } from 'constants/interface';
+import { ROUTES } from 'constants/routes';
 import moment from 'moment';
+import { useMemo } from 'react';
 import StarsRating from 'react-star-ratings';
 import ReactTooltip from 'react-tooltip';
 import { useAppDispatch, useAppSelector } from 'store';
-import { updateCourse } from 'store/reducer/course';
+import {
+  useCreateCourseRatingMutation,
+  useDeleteCourseMutation,
+  useHideCourseMutation,
+} from 'store/reducer/api';
+import {
+  updateCourse,
+  updateIsNewCourseModalOpened,
+  updateNewCourse,
+} from 'store/reducer/course';
+import { isUserAdmin } from 'utils/support';
 
 interface CourseItemProps {
   course: CourseType;
 }
 
-const CourseItemActions = () => {
+const CourseItemActions = ({ course }: CourseItemProps) => {
+  const dispatch = useAppDispatch();
+  const [deleteCourse, { isLoading: isDeletingCourse }] =
+    useDeleteCourseMutation();
+  const [hideCourse, { isLoading: isHidingCourse }] =
+    useHideCourseMutation();
+
   return (
     <div className='w-fit flex items-center gap-4 text-xs sm:text-sm text-white font-semibold pb-1'>
-      <button data-for='edit' data-tip='Edit'>
-        <Pencil />
-      </button>
-      <button data-tip data-for='delete'>
-        <Trash />
-      </button>
-      <button data-tip data-for='hide'>
-        <Eye />
-      </button>
+      {isDeletingCourse || isHidingCourse ? (
+        <div className='w-5 h-5 border-t border-gray-800 animate-spin rounded-full'></div>
+      ) : (
+        <>
+          <button
+            onClick={(event) => {
+              event.stopPropagation();
+              dispatch(
+                updateNewCourse({
+                  id: course.id,
+                  name: course.name,
+                  description: course.description,
+                  isNew: false,
+                })
+              );
+              dispatch(updateIsNewCourseModalOpened(true));
+            }}
+            data-for='edit'
+            data-tip='Edit'
+          >
+            <Pencil />
+          </button>
+          <button
+            onClick={(event) => {
+              event.stopPropagation();
+              deleteCourse(course.id);
+            }}
+            data-tip
+            data-for='delete'
+          >
+            <Trash />
+          </button>
+          <button
+            onClick={(event) => {
+              event.stopPropagation();
+              hideCourse(course.id);
+            }}
+            data-tip
+            data-for='hide'
+          >
+            {course.is_hidden ? <EyeClosed /> : <Eye />}
+          </button>
+        </>
+      )}
+
       <ReactTooltip id='edit' place='left' type='dark' effect='float'>
         Edit
       </ReactTooltip>
@@ -42,15 +97,19 @@ const CourseItemActions = () => {
 const CourseItem = ({ course }: CourseItemProps) => {
   const dispatch = useAppDispatch();
   const { details: userInfo } = useAppSelector((state) => state.user);
+  const [createRating, { isLoading }] = useCreateCourseRatingMutation();
+  const isAdmin = useMemo(() => isUserAdmin(), []);
 
   return (
-    <button
+    <div
       onClick={() =>
         dispatch(updateCourse({ course, showCourseDetail: true }))
       }
       className='flex flex-col'
     >
-      {userInfo?.id !== course.author_id ? <CourseItemActions /> : null}
+      {isAdmin || userInfo?.id === course.author_id ? (
+        <CourseItemActions course={course} />
+      ) : null}
       <div className='w-full h-fit flex flex-col sm:flex-row shadow-md cursor-pointer'>
         <div className='w-full sm:w-[35%] h-32 sm:max-h-full bg-yellow-400 rounded-l-md flex items-center justify-center'>
           <div className='text-sm text-blue-600 -rotate-45 font-bold'>
@@ -70,15 +129,22 @@ const CourseItem = ({ course }: CourseItemProps) => {
         </div>
       </div>
       <div className='flex flex-col gap-1 self-end'>
-        <StarsRating
-          rating={course.rate}
-          starRatedColor={COLOR.ORANGE}
-          numberOfStars={NUMBER_OF_STARS}
-          starDimension='18px'
-          starSpacing='2px'
-        />
+        {isLoading ? (
+          <div className='w-4 h-4 border-t border-gray-800 animate-spin rounded-full mt-2'></div>
+        ) : (
+          <StarsRating
+            rating={course.rate}
+            starRatedColor={COLOR.ORANGE}
+            numberOfStars={NUMBER_OF_STARS}
+            starDimension='18px'
+            starSpacing='2px'
+            changeRating={(rating) => {
+              createRating({ course_id: course.id, rating });
+            }}
+          />
+        )}
       </div>
-    </button>
+    </div>
   );
 };
 

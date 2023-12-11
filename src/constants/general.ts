@@ -13,8 +13,17 @@ export const TAB = {
 };
 
 export const API_TAG = {
+  USER_DETAILS: 'user-details',
   ALL_COURSES: 'all-courses',
-  ALL_COURSE_LESSONS: 'all-course-lessons',
+  ALL_LESSONS: 'all-lessons',
+  LESSON: 'lesson',
 };
 
 export const NUMBER_OF_STARS = 5;
+
+export const EMPTY_TEXT_EDITOR = '<p></p>';
+export const COURSE_FEATURE = {
+  TITLE: 'title',
+  CONTENT: 'content',
+  URL: 'url',
+};

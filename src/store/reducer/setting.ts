@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { TAB } from 'constants/general';
 import { SettingSliceType } from 'constants/interface';
 

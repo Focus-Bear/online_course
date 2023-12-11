@@ -22,8 +22,8 @@ const Courses = () => {
       {isLoading || isFetching ? (
         <Spinner />
       ) : courses.length ? (
-        <div className='w-full h-full bg-gray-200/50 rounded-t grid grid-rows-none sm:grid-rows-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-36 p-6 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-100 scrollbar-track-rounded scrollbar-thumb-rounded'>
-          {courses.map((course, idx) => (
+        <div className='w-full h-full bg-gray-200/50 rounded-t grid grid-rows-none sm:grid-rows-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-5 sm:gap-y-36 p-6 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-100 scrollbar-track-rounded scrollbar-thumb-rounded'>
+          {courses.map((course) => (
             <CourseItem key={course.id} course={course} />
           ))}
         </div>

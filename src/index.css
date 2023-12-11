@@ -5,3 +5,33 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .wrapperClassName {
+    height: calc(100vh / 2.2);
+  }
+
+  .toolbarClassName {
+    height: 25%;
+  }
+
+  .editorClassName {
+    height: 70%;
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 0 10px;
+  }
+
+  .editorEmptyClassName {
+    border-radius: 5px;
+    border: 1px solid red;
+  }
+
+  .public-DraftStyleDefault-block.public-DraftStyleDefault-ltr {
+    margin: 0;
+  }
+
+  .ReactCollapse--collapse {
+    transition: height 500ms;
+  }
+}

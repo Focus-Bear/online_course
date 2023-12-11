@@ -1,15 +1,36 @@
 import { useAuth0 } from '@auth0/auth0-react';
-import { MdLogout } from 'react-icons/md';
+import { MdLogout, MdOutlineWysiwyg } from 'react-icons/md';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import Courses from '../components/common/course';
-import Permissions from '../components/Admin/Permissions';
-import Users from '../components/Admin/Users';
-import Layout from 'components/Layout';
+import Permissions from '../components/admin/Permissions';
+import Users from '../components/admin/Users';
+import Layout from 'components/layout';
+import { useAppDispatch, useAppSelector } from 'store';
+import { TAB } from 'constants/general';
+import {
+  updateIsNewCourseModalOpened,
+  updateNewCourse,
+} from 'store/reducer/course';
+import { DEFAULT_NEW_COURSE } from 'assets/data';
 
 const AdminActions = () => {
   const { logout } = useAuth0();
+  const dispatch = useAppDispatch();
+  const { currentTab } = useAppSelector((state) => state.setting);
   return (
     <div className='absolute -top-10 right-0 flex items-center gap-4'>
+      {currentTab === TAB.COURSES && (
+        <button
+          onClick={() => {
+            dispatch(updateNewCourse(DEFAULT_NEW_COURSE));
+            dispatch(updateIsNewCourseModalOpened(true));
+          }}
+          className='flex items-center gap-2 w-fit h-fit text-blue-900 bg-gray-100 hover:bg-gray-300 font-semibold px-4 py-1 rounded'
+        >
+          New Course
+          <MdOutlineWysiwyg />
+        </button>
+      )}
       <button
         onClick={() => {
           logout({

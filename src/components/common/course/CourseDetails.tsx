@@ -1,67 +1,107 @@
 import { useAppDispatch, useAppSelector } from 'store';
 import ReactTooltip from 'react-tooltip';
-import { MdSave } from 'react-icons/md';
-import Lesson from '../../Lesson';
-import { updateShowCourseDetail } from 'store/reducer/course';
+import { MdClose, MdLibraryAdd, MdSave } from 'react-icons/md';
+import Lesson from '../lesson';
+import {
+  updateNewLesson,
+  updateShowCourseDetail,
+} from 'store/reducer/course';
 import ModalOverlay from 'components/common/ModalOverlay';
 import ModalContentWrapper from 'components/common/ModalContentWrapper';
+import { EMPTY_TEXT_EDITOR } from 'constants/general';
+import { isYoutubeURL } from 'utils/support';
+import { useCreateCourseLessonsMutation } from 'store/reducer/api';
 
-const CourseDetails = () => {
+const CourseDetailsActions = () => {
   const dispatch = useAppDispatch();
-  const { course } = useAppSelector((state) => state.course);
+  const { course: course_details, courses } = useAppSelector(
+    (state) => state.course
+  );
+  const [createOrUpdateLessons, { isLoading }] =
+    useCreateCourseLessonsMutation();
+  const lessons = course_details?.lessons ?? [];
+  const shouldAllowAddOrSaveLessons = lessons.every((lesson) => {
+    const isRequiredFieldsValid =
+      lesson.title &&
+      lesson.content &&
+      lesson.content !== EMPTY_TEXT_EDITOR;
+    const isUrlValid = lesson.url ? isYoutubeURL(lesson.url) : true;
+    return isRequiredFieldsValid && isUrlValid;
+  });
+
+  const shouldHaveEmptyLessons =
+    courses.find(({ id }) => id === course_details.id)?.lessons?.length ===
+    0;
+
   return (
-    <ModalOverlay>
-      <ModalContentWrapper styles='bg-sky-700 text-white gap-4'>
-        <div className='absolute -top-7 right-0 w-fit h-fit flex items-center gap-2'>
-          <button
+    <div className='absolute top-1 right-1 w-fit h-fit flex items-center gap-2'>
+      {isLoading ? (
+        <div className='w-4 h-4 rounded-full border-t border-gray-800 animate-spin'></div>
+      ) : (
+        <>
+          <MdLibraryAdd
+            data-for='new_lesson'
+            data-tip='New Lesson'
             onClick={() => {
-              //  dispatch(localAddLesson(id));
+              shouldAllowAddOrSaveLessons && dispatch(updateNewLesson());
             }}
-            className='w-fit h-fit text-xs tracking-wider font-semibold text-white bg-gray-800 hover:bg-gray-700 px-3 py-1 rounded self-center'
-          >
-            New Lesson
-          </button>
-          <div className='w-fit h-fit'>
-            <ReactTooltip
-              id='save'
-              place='top'
-              type='dark'
-              effect='float'
-            />
+            className={`w-fit h-6 text-white rounded p-0.5 cursor-pointer outline-none ${
+              shouldAllowAddOrSaveLessons ? 'bg-gray-800' : 'bg-gray-400'
+            }`}
+          />
+          {shouldHaveEmptyLessons ? (
             <MdSave
               data-for='save'
               data-tip='Save Lesson'
-              data-iscapture='true'
-              //    onClick={handleSave}
-              className='w-fit h-fit text-white bg-black hover:text-gray-300 cursor-pointer p-0.5 text-[18px] rounded'
-            />
-          </div>
-          <div className='w-fit h-fit'>
-            <ReactTooltip
-              id='exit'
-              place='right'
-              type='dark'
-              effect='float'
-            />
-            <button
               onClick={() => {
-                dispatch(updateShowCourseDetail(false));
+                shouldAllowAddOrSaveLessons &&
+                  createOrUpdateLessons({
+                    course_id: course_details.id,
+                    lessons,
+                  });
               }}
-              data-for='exit'
-              data-tip='Exit'
-              className='w-fit h-fit text-sm bg-black rounded px-1.5 text-white z-50'
-            >
-              X
-            </button>
-          </div>
-        </div>
-        <div className='w-full h-fit flex flex-col gap-1'>
-          <div className='font-bold italic'>{course?.name ?? ''}</div>
-          <div className='font-medium text-sm leading-4 tracking-wide text-justify line-clamp-3'>
+              className={`w-fit h-6 text-white rounded p-0.5 cursor-pointer outline-none ${
+                shouldAllowAddOrSaveLessons ? 'bg-gray-800' : 'bg-gray-400'
+              }`}
+            />
+          ) : null}
+          <MdClose
+            onClick={() => {
+              dispatch(updateShowCourseDetail(false));
+            }}
+            className='w-fit h-6 bg-gray-800 text-white rounded p-0.5 cursor-pointer'
+          />
+          <ReactTooltip
+            id='new_lesson'
+            place='bottom'
+            type='dark'
+            effect='float'
+          />
+          <ReactTooltip
+            id='save'
+            place='left'
+            type='dark'
+            effect='float'
+          />
+        </>
+      )}
+    </div>
+  );
+};
+
+const CourseDetails = () => {
+  const { course } = useAppSelector((state) => state.course);
+  return (
+    <ModalOverlay>
+      <ModalContentWrapper styles='bg-gray-200 gap-4'>
+        <CourseDetailsActions />
+        <div className='w-full h-fit flex flex-col gap-1 py-2'>
+          <h5 className='font-bold italic'>{course?.name ?? ''}</h5>
+          <p className='font-medium text-sm leading-4 tracking-wide text-justify line-clamp-3'>
             {course?.description ?? ''}
-          </div>
+          </p>
         </div>
-        <Lesson lessons={course?.lessons ?? []} />
+        <Lesson />
       </ModalContentWrapper>
     </ModalOverlay>
   );

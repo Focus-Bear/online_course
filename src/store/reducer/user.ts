@@ -1,9 +1,8 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { UserSliceType } from 'constants/interface';
 
 const initialState: UserSliceType = {
   details: null,
-  isLoading: false,
   isNewCourseModalOpened: false,
 };
 
@@ -13,20 +12,13 @@ export const userSlice = createSlice({
   reducers: {
     updateUserDetails: (state, { payload }) => {
       state.details = payload;
-      state.isLoading = true;
     },
     updateIsNewCourseModalOpened: (state, { payload }) => {
       state.isNewCourseModalOpened = payload;
     },
-    updateIsLoading: (state, { payload }: PayloadAction<boolean>) => {
-      state.isLoading = payload;
-    },
   },
 });
 
-export const {
-  updateUserDetails,
-  updateIsNewCourseModalOpened,
-  updateIsLoading,
-} = userSlice.actions;
+export const { updateUserDetails, updateIsNewCourseModalOpened } =
+  userSlice.actions;
 export default userSlice.reducer;
