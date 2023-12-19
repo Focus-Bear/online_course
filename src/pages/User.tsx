@@ -1,15 +1,26 @@
-import { useEffect } from 'react';
 import { MdLogout, MdOutlineWysiwyg } from 'react-icons/md';
 import MyCourses from 'components/common/course';
 import { updateIsNewCourseModalOpened } from 'store/reducer/user';
 import { useAuth0 } from '@auth0/auth0-react';
-import { useLazyGetAllCourseQuery } from 'store/reducer/api';
 import { useAppDispatch, useAppSelector } from 'store';
-import { TAB } from 'constants/general';
-import Configuration from 'components/user/Configuration';
+import { USER_TAB } from 'constants/general';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { updateNewCourse } from 'store/reducer/course';
 import { DEFAULT_NEW_COURSE } from 'assets/data';
+import EnrolledCourses from 'components/user/EnrolledCourses';
+import WhatToLearnNextCourses from 'components/user/WhatToLearnNextCourses';
+import { updateCurrentTab } from 'store/reducer/setting';
+
+const getTabContent = (tab: number) => {
+  switch (tab) {
+    case USER_TAB.ENROLLED_COURSES.tabIndex:
+      return <EnrolledCourses />;
+    case USER_TAB.MY_COURSES.tabIndex:
+      return <MyCourses />;
+    default:
+      return <WhatToLearnNextCourses />;
+  }
+};
 
 const UserActions = () => {
   const { logout } = useAuth0();
@@ -18,7 +29,7 @@ const UserActions = () => {
 
   return (
     <div className='absolute -top-10 right-0 flex items-center gap-4'>
-      {currentTab === TAB.COURSES && (
+      {currentTab === USER_TAB.MY_COURSES.tabIndex && (
         <button
           onClick={() => {
             dispatch(updateNewCourse(DEFAULT_NEW_COURSE));
@@ -46,29 +57,38 @@ const UserActions = () => {
 };
 
 const User = () => {
-  const [getAllCourses] = useLazyGetAllCourseQuery();
-
-  useEffect(() => {
-    getAllCourses();
-  }, []);
-
+  const dispatch = useAppDispatch();
+  const { currentTab } = useAppSelector((state) => state.setting);
   return (
     <>
-      <Tabs className='w-full h-full bg-gray-200/50 rounded overflow-hidden'>
-        <TabList className='w-full h-[5%] flex gap-2 bg-gray-400 border-b-2 border-gray-100 rounded-t'>
-          <Tab className='w-fit text-center font-bold text-sm px-5 py-1 tracking-wide cursor-pointer outline-none leading-3 xl:leading-6'>
-            My Courses
-          </Tab>
-          <Tab className='w-fit text-center font-bold text-sm px-5 py-1 tracking-wide cursor-pointer outline-none leading-3 xl:leading-6'>
-            Configuration
-          </Tab>
+      <Tabs
+        selectedIndex={currentTab}
+        onSelect={(tabIndex) => {
+          dispatch(updateCurrentTab(tabIndex));
+        }}
+        className='w-full h-full bg-gray-200/50 rounded'
+        selectedTabClassName='border-b-4 border-blue-500 bg-gray-100 text-black'
+      >
+        <TabList className='w-full h-[5%] flex gap-2 bg-gray-600 text-white rounded-t overflow-x-auto scrollbar-thin scrollbar-thumb-gray-500 shadow-md'>
+          {Object.values(USER_TAB).map(({ title }) => (
+            <Tab
+              key={title}
+              className='min-w-max w-fit h-full font-bold text-sm px-5 tracking-wide cursor-pointer outline-none flex items-center justify-center'
+            >
+              {title}
+            </Tab>
+          ))}
         </TabList>
-        <TabPanel className='w-full h-[95%]'>
-          <MyCourses />
-        </TabPanel>
-        <TabPanel className='w-full h-[95%]'>
-          <Configuration />
-        </TabPanel>
+        {Object.values(USER_TAB).map(({ tabIndex }) => (
+          <TabPanel
+            key={tabIndex}
+            className={`w-full h-[95%] ${
+              tabIndex !== currentTab && 'hidden'
+            }`}
+          >
+            {getTabContent(tabIndex)}
+          </TabPanel>
+        ))}
       </Tabs>
       <UserActions />
     </>

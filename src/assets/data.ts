@@ -1,4 +1,5 @@
 export const DEFAULT_NEW_LESSON = {
+  id: '',
   title: '',
   content: '',
   url: '',

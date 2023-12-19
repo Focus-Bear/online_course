@@ -1,4 +1,4 @@
-import { ROUTES } from 'constants/routes';
+import { Rating } from 'constants/interface';
 
 export const isYoutubeURL = (url: string) =>
   url.match(
@@ -7,6 +7,9 @@ export const isYoutubeURL = (url: string) =>
 
 export const increment = (value: number) => ++value;
 
-export const decrement = (value: number) => -value;
+export const decrement = (value: number) => --value;
 
-export const isUserAdmin = () => window.location.pathname === ROUTES.ADMIN;
+export const getAverageRating = (ratings: Rating[]) => {
+  const total = ratings.reduce((acc, curr) => acc + curr.rating, 0);
+  return ratings?.length ? total / ratings.length : 0;
+};

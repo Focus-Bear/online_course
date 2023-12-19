@@ -11,6 +11,7 @@ import { toast } from 'react-toastify';
 import ModalOverlay from 'components/common/ModalOverlay';
 import ModalContentWrapper from 'components/common/ModalContentWrapper';
 import { updateNewCourse } from 'store/reducer/course';
+import { MODAL_TYPE } from 'constants/general';
 
 const NewCourse = () => {
   const dispatch = useAppDispatch();
@@ -53,18 +54,10 @@ const NewCourse = () => {
 
   return (
     <ModalOverlay>
-      <ModalContentWrapper>
-        <div className='absolute right-2 top-1.5 w-fit h-fit'>
-          <MdClose
-            className='w-fit h-6 bg-gray-800 text-white rounded p-0.5 cursor-pointer'
-            onClick={() => {
-              dispatch(updateIsNewCourseModalOpened(false));
-            }}
-          />
-        </div>
-        <div className='w-fit h-fit text-base italic font-bold leading-4'>
-          {isNew ? 'Create New Course' : 'Update Course'}
-        </div>
+      <ModalContentWrapper
+        modal={MODAL_TYPE.NEW_COURSE}
+        title={isNew ? 'Create New Course' : 'Update Course'}
+      >
         <div className='w-full flex flex-col items-center gap-4'>
           <div className='w-full flex flex-col gap-0.5'>
             <div className='text-xs font-bold'>Name</div>

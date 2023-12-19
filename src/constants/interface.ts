@@ -14,12 +14,23 @@ export interface CourseType {
   author_id?: string;
   name: string;
   description: string;
-  rate?: number;
   is_hidden?: boolean;
   deleted?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
   lessons: Lesson[];
+  ratings?: Rating[];
+}
+
+export interface Rating {
+  id: string;
+  user_id: string;
+  course_id: string;
+  lesson_id: string;
+  rating: number;
+  review: string;
+  created_at: Date;
+  updated_at: Date;
 }
 
 interface UserDetails {
@@ -32,7 +43,7 @@ interface UserDetails {
 }
 
 export interface Lesson {
-  id?: string;
+  id: string;
   title: string;
   content: string;
   url: string;
@@ -40,6 +51,8 @@ export interface Lesson {
 
 export interface CourseSliceType {
   courses: CourseType[];
+  whatToLearnCourses: CourseType[];
+  enrolledCourses: CourseType[];
   showCourseDetail: boolean;
   isEditingCourse: boolean;
   isNewCourseModalOpened: boolean;
@@ -55,6 +68,7 @@ export interface CourseSliceType {
     description: string;
     isNew: boolean;
   };
+  showEnrolledCourseModal: boolean;
 }
 
 export interface ErrorSliceType {
@@ -76,10 +90,11 @@ export interface AccountType {
 export interface UserSliceType {
   details: any;
   isNewCourseModalOpened: boolean;
+  isAdmin: boolean;
 }
 
 export interface SettingSliceType {
-  currentTab: string;
+  currentTab: number;
 }
 
 export interface IconProps {

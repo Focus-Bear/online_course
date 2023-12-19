@@ -5,6 +5,8 @@ import { CourseSliceType, CourseType, Lesson } from 'constants/interface';
 
 const initialState: CourseSliceType = {
   courses: [],
+  whatToLearnCourses: [],
+  enrolledCourses: [],
   showCourseDetail: false,
   isEditingCourse: false,
   isNewCourseModalOpened: false,
@@ -20,6 +22,7 @@ const initialState: CourseSliceType = {
     description: '',
     isNew: true,
   },
+  showEnrolledCourseModal: false,
 };
 
 export const courseSlice = createSlice({
@@ -33,16 +36,21 @@ export const courseSlice = createSlice({
       state,
       {
         payload,
-      }: PayloadAction<{ course: CourseType; showCourseDetail: boolean }>
+      }: PayloadAction<{
+        course: CourseType;
+        showCourseDetail?: boolean;
+        showEnrolledCourseModal?: boolean;
+        isNewCourseModalOpened?: boolean;
+      }>
     ) => {
       state.course = payload.course;
-      state.showCourseDetail = payload.showCourseDetail;
-    },
-    updateShowCourseDetail: (
-      state,
-      { payload }: PayloadAction<boolean>
-    ) => {
-      state.showCourseDetail = payload;
+      state.showEnrolledCourseModal = Boolean(
+        payload.showEnrolledCourseModal
+      );
+      state.showCourseDetail = Boolean(payload.showCourseDetail);
+      state.isNewCourseModalOpened = Boolean(
+        payload.isNewCourseModalOpened
+      );
     },
     updateIsEditingCourse: (state, { payload }) => {
       state.isEditingCourse = payload;
@@ -89,12 +97,6 @@ export const courseSlice = createSlice({
         }
       }
     },
-    updateIsNewCourseModalOpened: (
-      state,
-      { payload }: PayloadAction<boolean>
-    ) => {
-      state.isNewCourseModalOpened = payload;
-    },
     updateNewCourse: (
       state,
       {
@@ -107,6 +109,19 @@ export const courseSlice = createSlice({
       }>
     ) => {
       state.newCourse = payload;
+      state.isNewCourseModalOpened = true;
+    },
+    updateWhatToLearnCourses: (
+      state,
+      { payload }: PayloadAction<CourseType[]>
+    ) => {
+      state.whatToLearnCourses = payload;
+    },
+    updateEnrolledCourses: (
+      state,
+      { payload }: PayloadAction<CourseType[]>
+    ) => {
+      state.enrolledCourses = payload;
     },
   },
 });
@@ -117,11 +132,11 @@ export const {
   updateCourses,
   updateError,
   updateNewLesson,
-  updateShowCourseDetail,
   removeCourseLesson,
   updateCourseDetails,
   updateCourseLessons,
-  updateIsNewCourseModalOpened,
   updateNewCourse,
+  updateWhatToLearnCourses,
+  updateEnrolledCourses,
 } = courseSlice.actions;
 export default courseSlice.reducer;

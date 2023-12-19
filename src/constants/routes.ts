@@ -6,3 +6,5 @@ export const ROUTES = {
   ERROR: 'error',
   NOT_FOUND: '*',
 };
+
+export const TOKEN_ROLES_KEY = 'https://api.focusbear.io/roles';

@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { TAB } from 'constants/general';
+import { USER_TAB } from 'constants/general';
 import { SettingSliceType } from 'constants/interface';
 
 const initialState: SettingSliceType = {
-  currentTab: TAB.COURSES,
+  currentTab: USER_TAB.WHAT_TO_LEARN_NEXT.tabIndex,
 };
 
 export const setting = createSlice({

@@ -13,6 +13,7 @@
 
   .toolbarClassName {
     height: 25%;
+    overflow-y: auto;
   }
 
   .editorClassName {

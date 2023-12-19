@@ -1,6 +1,12 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { updateCourseLessons, updateCourses, updateError } from './course';
-import { API_TAG, TOKEN_NAME } from 'constants/general';
+import {
+  updateCourseLessons,
+  updateCourses,
+  updateEnrolledCourses,
+  updateError,
+  updateWhatToLearnCourses,
+} from './course';
+import { API_TAG, TOKEN_NAME, USER_TAB } from 'constants/general';
 import {
   CourseType,
   CreateCoursePayload,
@@ -10,6 +16,7 @@ import {
 import Endpoint from 'constants/endpoints';
 import { updateUserDetails } from './user';
 import { toast } from 'react-toastify';
+import { updateCurrentTab } from './setting';
 
 export const API = createApi({
   reducerPath: 'api',
@@ -25,7 +32,7 @@ export const API = createApi({
   }),
   tagTypes: Object.values(API_TAG),
   endpoints: (builder) => ({
-    getUserDetails: builder.query({
+    getUserDetails: builder.query<void, void>({
       query: () => Endpoint.USER_DETAILS,
       onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
         try {
@@ -38,8 +45,8 @@ export const API = createApi({
         }
       },
     }),
-    getAllCourse: builder.query<CourseType[], void>({
-      query: () => Endpoint.GET_ALL_COURSES,
+    getAdminCourses: builder.query<CourseType[], void>({
+      query: () => Endpoint.GET_ADMIN_COURSES,
       providesTags: [API_TAG.ALL_COURSES],
       onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
         try {
@@ -58,7 +65,7 @@ export const API = createApi({
         method: 'POST',
         body: data,
       }),
-      invalidatesTags: [API_TAG.ALL_COURSES],
+      invalidatesTags: [API_TAG.ALL_COURSES, API_TAG.USER_COURSES],
     }),
     updateCourse: builder.mutation({
       query: ({
@@ -72,19 +79,21 @@ export const API = createApi({
         method: 'PATCH',
         body: data,
       }),
-      invalidatesTags: [API_TAG.ALL_COURSES],
+      invalidatesTags: [API_TAG.ALL_COURSES, API_TAG.USER_COURSES],
     }),
     hideCourse: builder.mutation({
-      query: (course_id) => ({
+      query: ({ course_id, should_hide }) => ({
         url: Endpoint.HIDE_COURSE(course_id),
         method: 'PATCH',
+        body: { should_hide },
       }),
       invalidatesTags: [API_TAG.ALL_COURSES],
     }),
     deleteCourse: builder.mutation({
-      query: (course_id) => ({
+      query: ({ course_id, deleted }) => ({
         url: Endpoint.DELETE_COURSE(course_id),
         method: 'DELETE',
+        body: { deleted },
       }),
       invalidatesTags: [API_TAG.ALL_COURSES],
     }),
@@ -126,7 +135,6 @@ export const API = createApi({
       invalidatesTags: [API_TAG.LESSON],
       onQueryStarted: async (_, { queryFulfilled }) => {
         const { meta } = await queryFulfilled;
-        //  console.log(meta);
         meta?.response?.status === 201
           ? toast.success('Lesson updated successfully!')
           : toast.error('Could not update lesson');
@@ -138,7 +146,7 @@ export const API = createApi({
         method: 'POST',
         body: { ...payload, review: '' },
       }),
-      invalidatesTags: [API_TAG.ALL_COURSES],
+      invalidatesTags: [API_TAG.USER_ENROLLED_COURSES],
       onQueryStarted: async (_, { queryFulfilled }) => {
         const { meta } = await queryFulfilled;
         meta?.response?.status === 201
@@ -146,12 +154,88 @@ export const API = createApi({
           : toast.error('Could not process feedback');
       },
     }),
+    getUserNotEnrolledCourses: builder.query<[], void>({
+      query: () => Endpoint.USER_NOT_ENROLLED_COURSES,
+      providesTags: [API_TAG.USER_NOT_ENROLLED_COURSES],
+      onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(updateWhatToLearnCourses(data ?? []));
+        } catch (error) {
+          dispatch(
+            updateError({ value: true, message: JSON.stringify(error) })
+          );
+        }
+      },
+    }),
+    getUserCourses: builder.query<[], void>({
+      query: () => Endpoint.USER_COURSES,
+      providesTags: [API_TAG.USER_COURSES],
+      onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
+        try {
+          const { data } = await queryFulfilled;
+          console.log(data);
+          dispatch(updateCourses(data ?? []));
+        } catch (error) {
+          dispatch(
+            updateError({ value: true, message: JSON.stringify(error) })
+          );
+        }
+      },
+    }),
+    getUserEnrolledCourses: builder.query({
+      query: () => Endpoint.USER_ENROLLED_COURSES,
+      providesTags: [API_TAG.USER_ENROLLED_COURSES],
+      onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(updateEnrolledCourses(data));
+        } catch (error) {
+          dispatch(
+            updateError({ value: true, message: JSON.stringify(error) })
+          );
+        }
+      },
+    }),
+    createCourseEnrollment: builder.mutation({
+      query: (payload: { course_id: string; lesson_id: string }) => ({
+        url: Endpoint.CREATE_COURSE_ENROLLMENT,
+        method: 'POST',
+        body: payload,
+      }),
+      invalidatesTags: [
+        API_TAG.USER_NOT_ENROLLED_COURSES,
+        API_TAG.USER_ENROLLED_COURSES,
+      ],
+      onQueryStarted: async (_, { queryFulfilled, dispatch }) => {
+        const { meta } = await queryFulfilled;
+        if (meta?.response?.status === 201) {
+          toast.success('You have successfully enrolled in this course');
+          dispatch(updateCurrentTab(USER_TAB.ENROLLED_COURSES.tabIndex));
+        } else {
+          toast.error('Could not enroll in this course');
+        }
+      },
+    }),
+    createLessonCompeted: builder.mutation({
+      query: (payload: { course_id: string; lesson_id: string }) => ({
+        url: Endpoint.LESSON_COMPLETE,
+        method: 'POST',
+        body: payload,
+      }),
+      invalidatesTags: [API_TAG.USER_ENROLLED_COURSES],
+      onQueryStarted: async (_, { queryFulfilled }) => {
+        const { meta } = await queryFulfilled;
+        meta?.response?.status !== 201 &&
+          toast.error('Could not your progress');
+      },
+    }),
   }),
 });
 
 export const {
   useLazyGetUserDetailsQuery,
-  useLazyGetAllCourseQuery,
+  useLazyGetAdminCoursesQuery,
   useCreateCourseMutation,
   useUpdateCourseMutation,
   useLazyGetAllCourseLessonsQuery,
@@ -160,4 +244,9 @@ export const {
   useDeleteCourseMutation,
   useHideCourseMutation,
   useCreateCourseRatingMutation,
+  useLazyGetUserNotEnrolledCoursesQuery,
+  useLazyGetUserCoursesQuery,
+  useLazyGetUserEnrolledCoursesQuery,
+  useCreateCourseEnrollmentMutation,
+  useCreateLessonCompetedMutation,
 } = API;

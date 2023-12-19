@@ -1,14 +1,11 @@
 import { useAppDispatch, useAppSelector } from 'store';
 import ReactTooltip from 'react-tooltip';
-import { MdClose, MdLibraryAdd, MdSave } from 'react-icons/md';
+import { MdLibraryAdd, MdSave } from 'react-icons/md';
 import Lesson from '../lesson';
-import {
-  updateNewLesson,
-  updateShowCourseDetail,
-} from 'store/reducer/course';
+import { updateNewLesson } from 'store/reducer/course';
 import ModalOverlay from 'components/common/ModalOverlay';
 import ModalContentWrapper from 'components/common/ModalContentWrapper';
-import { EMPTY_TEXT_EDITOR } from 'constants/general';
+import { EMPTY_TEXT_EDITOR, MODAL_TYPE } from 'constants/general';
 import { isYoutubeURL } from 'utils/support';
 import { useCreateCourseLessonsMutation } from 'store/reducer/api';
 
@@ -34,7 +31,7 @@ const CourseDetailsActions = () => {
     0;
 
   return (
-    <div className='absolute top-1 right-1 w-fit h-fit flex items-center gap-2'>
+    <div className='absolute top-1.5 right-10 w-fit h-fit flex items-center gap-2'>
       {isLoading ? (
         <div className='w-4 h-4 rounded-full border-t border-gray-800 animate-spin'></div>
       ) : (
@@ -65,12 +62,6 @@ const CourseDetailsActions = () => {
               }`}
             />
           ) : null}
-          <MdClose
-            onClick={() => {
-              dispatch(updateShowCourseDetail(false));
-            }}
-            className='w-fit h-6 bg-gray-800 text-white rounded p-0.5 cursor-pointer'
-          />
           <ReactTooltip
             id='new_lesson'
             place='bottom'
@@ -93,7 +84,10 @@ const CourseDetails = () => {
   const { course } = useAppSelector((state) => state.course);
   return (
     <ModalOverlay>
-      <ModalContentWrapper styles='bg-gray-200 gap-4'>
+      <ModalContentWrapper
+        bgTextStyles='bg-gray-200 gap-4'
+        modal={MODAL_TYPE.COURSE_DETAILS}
+      >
         <CourseDetailsActions />
         <div className='w-full h-fit flex flex-col gap-1 py-2'>
           <h5 className='font-bold italic'>{course?.name ?? ''}</h5>
