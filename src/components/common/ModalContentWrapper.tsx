@@ -43,7 +43,7 @@ const ModalContentWrapper = ({
     <div
       className={`relative ${widthStyles} h-fit max-h-[80vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 flex flex-col rounded-md p-6 mx-auto top-1/4 -translate-y-1/4 ${bgTextStyles}`}
     >
-      <div className='absolute right-2 top-1.5 w-fit h-fit'>
+      <div className='absolute right-1.5 top-1.5 w-fit h-fit z-10'>
         <MdClose
           className='w-fit h-6 bg-gray-800 text-white rounded p-0.5 cursor-pointer'
           onClick={handleCloseModal}

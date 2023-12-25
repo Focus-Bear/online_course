@@ -3,11 +3,7 @@ import EyeClosed from 'assets/svg/EyeClosed';
 import Pencil from 'assets/svg/Pencil';
 import Trash from 'assets/svg/Trash';
 import COLOR from 'constants/color';
-import {
-  COURSE_FIRST_LESSON_INDEX,
-  NUMBER_OF_STARS,
-  USER_TAB,
-} from 'constants/general';
+import { NUMBER_OF_STARS, USER_TAB } from 'constants/general';
 import { CourseType } from 'constants/interface';
 import moment from 'moment';
 import { MdRestore } from 'react-icons/md';
@@ -22,7 +18,6 @@ import {
 } from 'store/reducer/api';
 import { updateCourse, updateNewCourse } from 'store/reducer/course';
 import Cover from 'assets/images/bear.png';
-import { toast } from 'react-toastify';
 import { getAverageRating } from 'utils/support';
 import { useMemo } from 'react';
 
@@ -61,39 +56,37 @@ const CourseItemActions = ({ course }: CourseItemProps) => {
           >
             <Pencil />
           </button>
+          <button
+            onClick={(event) => {
+              event.stopPropagation();
+              hideCourse({
+                course_id: course.id,
+                hidden: !course.is_hidden,
+              });
+            }}
+            data-tip
+            data-for='hide'
+          >
+            {course.is_hidden ? <EyeClosed /> : <Eye />}
+          </button>
           {isAdmin ? (
-            <>
-              <button
-                onClick={(event) => {
-                  event.stopPropagation();
-                  deleteCourse({
-                    course_id: course.id,
-                    deleted: !course.deleted,
-                  });
-                }}
-                data-tip
-                data-for='delete'
-              >
-                {course.deleted ? (
-                  <MdRestore color={COLOR.BLACK} />
-                ) : (
-                  <Trash />
-                )}
-              </button>
-              <button
-                onClick={(event) => {
-                  event.stopPropagation();
-                  hideCourse({
-                    course_id: course.id,
-                    hidden: !course.is_hidden,
-                  });
-                }}
-                data-tip
-                data-for='hide'
-              >
-                {course.is_hidden ? <EyeClosed /> : <Eye />}
-              </button>
-            </>
+            <button
+              onClick={(event) => {
+                event.stopPropagation();
+                deleteCourse({
+                  course_id: course.id,
+                  deleted: !course.deleted,
+                });
+              }}
+              data-tip
+              data-for='delete'
+            >
+              {course.deleted ? (
+                <MdRestore color={COLOR.BLACK} />
+              ) : (
+                <Trash />
+              )}
+            </button>
           ) : null}
         </>
       )}
@@ -111,10 +104,13 @@ const CourseItemActions = ({ course }: CourseItemProps) => {
 };
 
 const RateCourse = ({ course }: CourseItemProps) => {
+  const { currentTab } = useAppSelector((state) => state.setting);
   const [createRating, { isLoading }] = useCreateCourseRatingMutation();
-  const didUserRateThisCourse = (course?.ratings ?? []).some(
-    (rating) => rating.user_id === course.author_id
-  );
+  const didUserRateThisCourse =
+    currentTab !== USER_TAB.ENROLLED_COURSES.tabIndex ||
+    (course?.ratings ?? []).some(
+      (rating) => rating.user_id === course.author_id
+    );
   const rate = useMemo(
     () => getAverageRating(course?.ratings ?? []),
     [course]
@@ -156,32 +152,38 @@ const EnrollmentBtn = ({ course }: CourseItemProps) => {
   const dispatch = useAppDispatch();
   const [createCourseEnrollment, { isLoading }] =
     useCreateCourseEnrollmentMutation();
-  const { currentTab } = useAppSelector((state) => state.setting);
+  const {
+    setting: { currentTab },
+    user: { details },
+  } = useAppSelector((state) => state);
+  const isCourseCompleted = course?.enrollments?.findIndex(
+    ({ user_id, course_id, finished }) =>
+      finished && course.id === course_id && user_id !== details?.id
+  );
 
   return (
     <button
-      disabled={isLoading}
+      disabled={Boolean(isCourseCompleted || isLoading)}
       onClick={(event) => {
         event.stopPropagation();
-        if (currentTab === USER_TAB.ENROLLED_COURSES.tabIndex) {
-          dispatch(
-            updateCourse({ course, showEnrolledCourseModal: true })
-          );
-        } else {
-          course.lessons?.length
-            ? createCourseEnrollment({
-                course_id: course.id,
-                lesson_id: course.lessons[COURSE_FIRST_LESSON_INDEX].id,
-              })
-            : toast.error('This course has no lessons yet');
-        }
+        currentTab === USER_TAB.ENROLLED_COURSES.tabIndex
+          ? dispatch(
+              updateCourse({ course, showEnrolledCourseModal: true })
+            )
+          : createCourseEnrollment(course.id);
       }}
-      className={`w-fit h-fit px-2 sm:px-3 py-0.5 sm:py-1 bg-blue-500 hover:bg-blue-600 text-white rounded-md text-xs sm:text-sm font-semibold absolute top-1 left-1 ${
+      className={`w-fit h-fit px-2 sm:px-3 py-0.5 sm:py-1 ${
+        isCourseCompleted
+          ? 'bg-green-500'
+          : 'bg-blue-500 hover:bg-blue-600'
+      } text-white rounded-md text-xs lg:text-sm font-semibold absolute top-1 left-1 ${
         isLoading ? 'animate-pulse' : 'animate-none'
       }`}
     >
       {isLoading
         ? '......'
+        : isCourseCompleted
+        ? 'Completed'
         : currentTab === USER_TAB.ENROLLED_COURSES.tabIndex
         ? 'View'
         : 'Enroll'}
@@ -192,7 +194,7 @@ const EnrollmentBtn = ({ course }: CourseItemProps) => {
 const CourseItem = ({ course }: CourseItemProps) => {
   const dispatch = useAppDispatch();
   const {
-    user: { details: userInfo },
+    user: { details: userInfo, isAdmin },
     setting: { currentTab },
   } = useAppSelector((state) => state);
   const shouldBeMyCoursesTab = currentTab === USER_TAB.MY_COURSES.tabIndex;
@@ -200,14 +202,14 @@ const CourseItem = ({ course }: CourseItemProps) => {
   return (
     <div
       onClick={() =>
-        shouldBeMyCoursesTab &&
+        (isAdmin || shouldBeMyCoursesTab) &&
         dispatch(updateCourse({ course, showCourseDetail: true }))
       }
       className='flex flex-col gap-1 relative cursor-pointer'
     >
       {shouldBeMyCoursesTab ? (
         <>
-          {userInfo?.id === course.author_id ? (
+          {isAdmin || userInfo?.id === course.author_id ? (
             <CourseItemActions course={course} />
           ) : (
             <div className='w-full min-h-[20px]'></div>
@@ -233,7 +235,9 @@ const CourseItem = ({ course }: CourseItemProps) => {
         </div>
       </div>
       <RateCourse course={course} />
-      {!shouldBeMyCoursesTab ? <EnrollmentBtn course={course} /> : null}
+      {!shouldBeMyCoursesTab && !isAdmin ? (
+        <EnrollmentBtn course={course} />
+      ) : null}
     </div>
   );
 };

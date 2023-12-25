@@ -35,4 +35,8 @@
   .ReactCollapse--collapse {
     transition: height 500ms;
   }
+
+  .buttonDark {
+    @apply bg-gray-600 hover:bg-gray-700 px-3 py-1 text-white text-xs sm:text-sm md:text-base rounded-md;
+  }
 }

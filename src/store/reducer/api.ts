@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import {
+  updateAdminCourses,
   updateCourseLessons,
   updateCourses,
   updateEnrolledCourses,
@@ -8,6 +9,7 @@ import {
 } from './course';
 import { API_TAG, TOKEN_NAME, USER_TAB } from 'constants/general';
 import {
+  AdminCourseMeta,
   CourseType,
   CreateCoursePayload,
   Lesson,
@@ -17,6 +19,7 @@ import Endpoint from 'constants/endpoints';
 import { updateUserDetails } from './user';
 import { toast } from 'react-toastify';
 import { updateCurrentTab } from './setting';
+import { DEFAULT_ADMIN_COURSE_META } from 'assets/data';
 
 export const API = createApi({
   reducerPath: 'api',
@@ -32,7 +35,7 @@ export const API = createApi({
   }),
   tagTypes: Object.values(API_TAG),
   endpoints: (builder) => ({
-    getUserDetails: builder.query<void, void>({
+    getUserDetails: builder.query<any, void>({
       query: () => Endpoint.USER_DETAILS,
       onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
         try {
@@ -45,13 +48,20 @@ export const API = createApi({
         }
       },
     }),
-    getAdminCourses: builder.query<CourseType[], void>({
+    getAdminCourses: builder.query<
+      { data: CourseType[]; meta: AdminCourseMeta },
+      void
+    >({
       query: () => Endpoint.GET_ADMIN_COURSES,
       providesTags: [API_TAG.ALL_COURSES],
       onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
         try {
           const { data } = await queryFulfilled;
-          dispatch(updateCourses(data ?? []));
+          dispatch(
+            updateAdminCourses(
+              data ?? { data: [], meta: DEFAULT_ADMIN_COURSE_META }
+            )
+          );
         } catch (error) {
           dispatch(
             updateError({ value: true, message: JSON.stringify(error) })
@@ -174,7 +184,6 @@ export const API = createApi({
       onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
         try {
           const { data } = await queryFulfilled;
-          console.log(data);
           dispatch(updateCourses(data ?? []));
         } catch (error) {
           dispatch(
@@ -198,10 +207,10 @@ export const API = createApi({
       },
     }),
     createCourseEnrollment: builder.mutation({
-      query: (payload: { course_id: string; lesson_id: string }) => ({
+      query: (course_id: string) => ({
         url: Endpoint.CREATE_COURSE_ENROLLMENT,
         method: 'POST',
-        body: payload,
+        body: { course_id },
       }),
       invalidatesTags: [
         API_TAG.USER_NOT_ENROLLED_COURSES,
@@ -230,6 +239,20 @@ export const API = createApi({
           toast.error('Could not your progress');
       },
     }),
+    updateCourseEnrollment: builder.mutation({
+      query: (payload: { course_id: string; finished: boolean }) => ({
+        url: Endpoint.CREATE_COURSE_ENROLLMENT,
+        method: 'PATCH',
+        body: payload,
+      }),
+      invalidatesTags: [API_TAG.USER_ENROLLED_COURSES],
+      onQueryStarted: async (_, { queryFulfilled, dispatch }) => {
+        const { meta } = await queryFulfilled;
+        meta?.response?.status === 200
+          ? toast.success('You have successfully completed the course')
+          : toast.error('Could not complete the course');
+      },
+    }),
   }),
 });
 
@@ -249,4 +272,5 @@ export const {
   useLazyGetUserEnrolledCoursesQuery,
   useCreateCourseEnrollmentMutation,
   useCreateLessonCompetedMutation,
+  useUpdateCourseEnrollmentMutation,
 } = API;

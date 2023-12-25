@@ -1,6 +1,5 @@
 import { MdLogout, MdOutlineWysiwyg } from 'react-icons/md';
 import MyCourses from 'components/common/course';
-import { updateIsNewCourseModalOpened } from 'store/reducer/user';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useAppDispatch, useAppSelector } from 'store';
 import { USER_TAB } from 'constants/general';
@@ -33,7 +32,6 @@ const UserActions = () => {
         <button
           onClick={() => {
             dispatch(updateNewCourse(DEFAULT_NEW_COURSE));
-            dispatch(updateIsNewCourseModalOpened(true));
           }}
           className='flex items-center gap-2 w-fit h-fit text-blue-900 bg-gray-100 hover:bg-gray-300 font-semibold px-4 py-1 rounded'
         >
@@ -66,7 +64,7 @@ const User = () => {
         onSelect={(tabIndex) => {
           dispatch(updateCurrentTab(tabIndex));
         }}
-        className='w-full h-full bg-gray-200/50 rounded'
+        className='w-full h-full bg-gray-500 rounded'
         selectedTabClassName='border-b-4 border-blue-500 bg-gray-100 text-black'
       >
         <TabList className='w-full h-[5%] flex gap-2 bg-gray-600 text-white rounded-t overflow-x-auto scrollbar-thin scrollbar-thumb-gray-500 shadow-md'>

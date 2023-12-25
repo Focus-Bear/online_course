@@ -7,7 +7,7 @@ const Layout = ({ children }: { readonly children: ReactNode }) => {
     (state) => state.course
   );
   return (
-    <div className='w-5/6 h-3/4 flex flex-col items-center relative'>
+    <div className='w-11/12 sm:w-5/6 h-5/6 sm:4/5 flex flex-col items-center relative'>
       {children}
       {isNewCourseModalOpened && <NewCourse />}
     </div>

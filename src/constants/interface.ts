@@ -20,6 +20,8 @@ export interface CourseType {
   updatedAt?: Date;
   lessons: Lesson[];
   ratings?: Rating[];
+  lessonCompletions?: LessonCompletion[];
+  enrollments?: Enrollment[];
 }
 
 export interface Rating {
@@ -50,6 +52,7 @@ export interface Lesson {
 }
 
 export interface CourseSliceType {
+  adminCourses: { data: CourseType[]; meta: AdminCourseMeta };
   courses: CourseType[];
   whatToLearnCourses: CourseType[];
   enrolledCourses: CourseType[];
@@ -89,7 +92,6 @@ export interface AccountType {
 
 export interface UserSliceType {
   details: any;
-  isNewCourseModalOpened: boolean;
   isAdmin: boolean;
 }
 
@@ -108,4 +110,27 @@ export interface UpdateLessonPayload {
   title: string;
   content: string;
   url: string;
+}
+
+export interface LessonCompletion {
+  id: string;
+  lesson_id: string;
+  course_id: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Enrollment {
+  user_id: string;
+  course_id: string;
+  finished: boolean;
+}
+
+export interface AdminCourseMeta {
+  page: number;
+  take: number;
+  itemCount: number;
+  pageCount: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
 }

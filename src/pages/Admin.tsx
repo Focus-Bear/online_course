@@ -1,24 +1,20 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { MdLogout, MdOutlineWysiwyg } from 'react-icons/md';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import Courses from 'components/common/course';
-import Users from 'components/admin/Users';
-import Layout from 'components/layout';
 import { useAppDispatch, useAppSelector } from 'store';
 import { updateNewCourse } from 'store/reducer/course';
 import { DEFAULT_NEW_COURSE } from 'assets/data';
 import { ADMIN_TAB } from 'constants/general';
 import Configuration from 'components/admin/Configuration';
 import { updateCurrentTab } from 'store/reducer/setting';
+import ListOfCourses from 'components/admin/ListOfCourses';
 
 const getTabContent = (tab: number) => {
   switch (tab) {
     case ADMIN_TAB.CONFIGURATION.tabIndex:
       return <Configuration />;
-    case ADMIN_TAB.USERS.tabIndex:
-      return <Users />;
     default:
-      return <Courses />;
+      return <ListOfCourses />;
   }
 };
 const AdminActions = () => {
@@ -53,8 +49,9 @@ const AdminActions = () => {
 const Admin = () => {
   const dispatch = useAppDispatch();
   const { currentTab } = useAppSelector((state) => state.setting);
+
   return (
-    <Layout>
+    <>
       <AdminActions />
       <Tabs
         selectedIndex={currentTab}
@@ -77,15 +74,15 @@ const Admin = () => {
         {Object.values(ADMIN_TAB).map(({ tabIndex }) => (
           <TabPanel
             key={tabIndex}
-            className={`w-full h-[95%] ${
+            className={`w-full h-[95%] flex flex-col justify-between items-center ${
               tabIndex !== currentTab && 'hidden'
-            }`}
+            } py-4`}
           >
             {getTabContent(tabIndex)}
           </TabPanel>
         ))}
       </Tabs>
-    </Layout>
+    </>
   );
 };
 

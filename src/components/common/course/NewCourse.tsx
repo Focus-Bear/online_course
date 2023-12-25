@@ -1,17 +1,16 @@
 import { useEffect } from 'react';
-import ReactTooltip from 'react-tooltip';
-import { MdClose, MdSave } from 'react-icons/md';
+import { MdSave } from 'react-icons/md';
 import {
   useCreateCourseMutation,
   useUpdateCourseMutation,
 } from 'store/reducer/api';
 import { useAppDispatch, useAppSelector } from 'store';
-import { updateIsNewCourseModalOpened } from 'store/reducer/user';
 import { toast } from 'react-toastify';
 import ModalOverlay from 'components/common/ModalOverlay';
 import ModalContentWrapper from 'components/common/ModalContentWrapper';
-import { updateNewCourse } from 'store/reducer/course';
+import { updateCourse, updateNewCourse } from 'store/reducer/course';
 import { MODAL_TYPE } from 'constants/general';
+import { DEFAULT_COURSE } from 'assets/data';
 
 const NewCourse = () => {
   const dispatch = useAppDispatch();
@@ -26,7 +25,7 @@ const NewCourse = () => {
     },
   ] = useCreateCourseMutation();
   const [
-    updateCourse,
+    updateExistingCourse,
     {
       isLoading: isUpdatingCourse,
       isSuccess: isSuccessUpdated,
@@ -39,7 +38,12 @@ const NewCourse = () => {
       toast.success(
         `Course ${isSuccessCreated ? 'created' : 'updated'} successfully`
       );
-      dispatch(updateIsNewCourseModalOpened(false));
+      dispatch(
+        updateCourse({
+          course: DEFAULT_COURSE,
+          isNewCourseModalOpened: false,
+        })
+      );
     }
     (isErrorCreated || isErrorUpdated) &&
       toast.error(
@@ -101,7 +105,7 @@ const NewCourse = () => {
                     name,
                     description,
                   })
-                : updateCourse({
+                : updateExistingCourse({
                     course_id: id,
                     data: { name, description },
                   });

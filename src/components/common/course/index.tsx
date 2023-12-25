@@ -12,7 +12,7 @@ import EmptyItems from '../EmptyItems';
 
 const Courses = () => {
   const {
-    course: { courses, showCourseDetail },
+    course: { courses: userCourses, showCourseDetail, adminCourses },
     user: { isAdmin },
   } = useAppSelector((state) => state);
   const [
@@ -31,6 +31,8 @@ const Courses = () => {
     isUserCoursesLoading ||
     isAdminCoursesFetching ||
     isAdminCoursesLoading;
+  const courses = isAdmin ? adminCourses.data : userCourses;
+
   useEffect(() => {
     isAdmin ? getAdminCourses() : getUserCourses();
   }, []);
@@ -38,7 +40,13 @@ const Courses = () => {
   return (
     <>
       {isFetchingOrLoading ? (
-        <Spinner />
+        <Spinner
+          styles={
+            isAdmin
+              ? 'w-8 h-8 rounded-full border-t-2 border-black animate-spin'
+              : undefined
+          }
+        />
       ) : courses.length ? (
         <CoursesContentWrapper>
           {courses.map((course) => (

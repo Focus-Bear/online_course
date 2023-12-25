@@ -2,7 +2,6 @@ export const TOKEN_NAME = 'token';
 
 export const ADMIN_TAB = {
   COURSES: { title: 'Courses', tabIndex: 0 },
-  USERS: { title: 'Users', tabIndex: 1 },
   CONFIGURATION: { title: 'Configuration', tabIndex: 2 },
 };
 
@@ -39,3 +38,4 @@ export const MODAL_TYPE = {
 
 export const COURSE_FIRST_LESSON_INDEX = 0;
 export const FIRST_LESSON_INDEX = 0;
+export const FIRST_LESSON_OFFSET = -1;

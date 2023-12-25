@@ -1,9 +1,24 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { DEFAULT_COURSE, DEFAULT_NEW_LESSON } from 'assets/data';
+import {
+  DEFAULT_ADMIN_COURSE_META,
+  DEFAULT_COURSE,
+  DEFAULT_ERROR,
+  DEFAULT_NEW_COURSE,
+  DEFAULT_NEW_LESSON,
+} from 'assets/data';
 import { COURSE_FEATURE } from 'constants/general';
-import { CourseSliceType, CourseType, Lesson } from 'constants/interface';
+import {
+  AdminCourseMeta,
+  CourseSliceType,
+  CourseType,
+  Lesson,
+} from 'constants/interface';
 
 const initialState: CourseSliceType = {
+  adminCourses: {
+    data: [],
+    meta: DEFAULT_ADMIN_COURSE_META,
+  },
   courses: [],
   whatToLearnCourses: [],
   enrolledCourses: [],
@@ -11,17 +26,9 @@ const initialState: CourseSliceType = {
   isEditingCourse: false,
   isNewCourseModalOpened: false,
   isLoading: false,
-  error: {
-    value: false,
-    message: '',
-  },
+  error: DEFAULT_ERROR,
   course: DEFAULT_COURSE,
-  newCourse: {
-    id: '',
-    name: '',
-    description: '',
-    isNew: true,
-  },
+  newCourse: DEFAULT_NEW_COURSE,
   showEnrolledCourseModal: false,
 };
 
@@ -29,6 +36,14 @@ export const courseSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
+    updateAdminCourses: (
+      state,
+      {
+        payload,
+      }: PayloadAction<{ data: CourseType[]; meta: AdminCourseMeta }>
+    ) => {
+      state.adminCourses = payload;
+    },
     updateCourses: (state, { payload }: PayloadAction<CourseType[]>) => {
       state.courses = payload;
     },
@@ -138,5 +153,6 @@ export const {
   updateNewCourse,
   updateWhatToLearnCourses,
   updateEnrolledCourses,
+  updateAdminCourses,
 } = courseSlice.actions;
 export default courseSlice.reducer;

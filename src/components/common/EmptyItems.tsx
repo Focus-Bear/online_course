@@ -6,7 +6,7 @@ const EmptyItems = ({
   message?: string;
 }) => {
   return (
-    <div className='w-full h-full text-2xl font-semibold flex items-center justify-center gap-2'>
+    <div className='w-full h-full text-2xl font-semibold flex items-center justify-center gap-2 bg-gray-100'>
       <MdHourglassEmpty />
       <p>{message}</p>
     </div>

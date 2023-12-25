@@ -23,7 +23,7 @@ const EnrolledCourses = () => {
     <>
       {isFetchingOrLoading ? (
         <Spinner />
-      ) : enrolledCourses.length ? (
+      ) : enrolledCourses?.length ? (
         <CoursesContentWrapper>
           {enrolledCourses.map((course) => (
             <CourseItem key={course.id} course={course} />

@@ -27,8 +27,8 @@ const CourseDetailsActions = () => {
   });
 
   const shouldHaveEmptyLessons =
-    courses.find(({ id }) => id === course_details.id)?.lessons?.length ===
-    0;
+    (courses.find(({ id }) => id === course_details.id)?.lessons ?? [])
+      .length === 0;
 
   return (
     <div className='absolute top-1.5 right-10 w-fit h-fit flex items-center gap-2'>
