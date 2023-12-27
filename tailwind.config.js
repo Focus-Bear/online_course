@@ -2,10 +2,12 @@
 module.exports = {
   content: ['./src/**/*.{tsx,jsx}'],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        main: "url('./assets/images/bg.svg')",
+        bear: "url('./assets/images/bear.png')",
+      },
+    },
   },
-  plugins: [
-    require('tailwind-scrollbar')({ nocompatible: true }),
-    require('@tailwindcss/line-clamp'),
-  ],
+  plugins: [require('tailwind-scrollbar')],
 };

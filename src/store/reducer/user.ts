@@ -1,11 +1,9 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import _ from 'lodash';
-import { UserSliceType } from '../../utils/types';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { UserSliceType } from 'constants/interface';
 
 const initialState: UserSliceType = {
   details: null,
-  isLoading: false,
-  isNewCourseModalOpened: false,
+  isAdmin: false,
 };
 
 export const userSlice = createSlice({
@@ -14,20 +12,12 @@ export const userSlice = createSlice({
   reducers: {
     updateUserDetails: (state, { payload }) => {
       state.details = payload;
-      state.isLoading = true;
     },
-    updateIsNewCourseModalOpened: (state, { payload }) => {
-      state.isNewCourseModalOpened = payload;
-    },
-    updateIsLoading: (state, { payload }: PayloadAction<boolean>) => {
-      state.isLoading = payload;
+    updateIsAdmin: (state, { payload }: PayloadAction<boolean>) => {
+      state.isAdmin = payload;
     },
   },
 });
 
-export const {
-  updateUserDetails,
-  updateIsNewCourseModalOpened,
-  updateIsLoading,
-} = userSlice.actions;
+export const { updateUserDetails, updateIsAdmin } = userSlice.actions;
 export default userSlice.reducer;

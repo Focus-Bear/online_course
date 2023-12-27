@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import _ from 'lodash';
-import { CourseType, ErrorSliceType } from '../../utils/types';
+import { ErrorSliceType } from 'constants/interface';
 
 const initialState: ErrorSliceType = {
   hasError: false,

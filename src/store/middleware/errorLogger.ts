@@ -1,4 +1,3 @@
-import { isRejectedWithValue } from '@reduxjs/toolkit';
 import type { MiddlewareAPI, Middleware } from '@reduxjs/toolkit';
 
 export const errorLogger: Middleware =

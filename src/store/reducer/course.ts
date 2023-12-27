@@ -1,17 +1,45 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import _ from 'lodash';
-import { CourseType, CourseSliceType } from '../../utils/types';
+import {
+  DEFAULT_ADMIN_COURSE_META,
+  DEFAULT_COURSE,
+  DEFAULT_ERROR,
+  DEFAULT_NEW_COURSE,
+  DEFAULT_NEW_LESSON,
+} from 'assets/data';
+import { COURSE_FEATURE } from 'constants/general';
+import {
+  AdminCourseMeta,
+  CourseSliceType,
+  CourseType,
+  Lesson,
+  Rating,
+} from 'constants/interface';
 
 const initialState: CourseSliceType = {
+  adminCourses: {
+    data: [],
+    meta: DEFAULT_ADMIN_COURSE_META,
+  },
   courses: [],
+  whatToLearnCourses: [],
+  enrolledCourses: [],
+  showCourseDetail: false,
   isEditingCourse: false,
   isNewCourseModalOpened: false,
   isLoading: false,
-  isCourseFetching: false,
-  isCreatingCourse: false,
-  error: {
-    value: false,
-    message: '',
+  error: DEFAULT_ERROR,
+  course: DEFAULT_COURSE,
+  newCourse: DEFAULT_NEW_COURSE,
+  showEnrolledCourseModal: false,
+  reviews: {
+    comments: [],
+    isReviewsModalOpened: false,
+    course_id: '',
+    userRating: {
+      course_id: '',
+      review: '',
+      rating: 0,
+    },
   },
 };
 
@@ -19,33 +47,40 @@ export const courseSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    saveCourse: (state, { payload }) => {
-      // state.courses = [...payload];
-      //state.isNewCourseOpened = false;
-      // state.newCourse = initNewCourse;
+    updateAdminCourses: (
+      state,
+      {
+        payload,
+      }: PayloadAction<{ data: CourseType[]; meta: AdminCourseMeta }>
+    ) => {
+      state.adminCourses.data.push(...payload.data);
+      state.adminCourses.meta = payload.meta;
     },
     updateCourses: (state, { payload }: PayloadAction<CourseType[]>) => {
-      state.courses = [...state.courses, ...payload];
-      state.isCourseFetching = false;
+      state.courses = payload;
     },
-    editCourseContent: (state, { payload }) => {
-      // state.newCourse = payload;
-      state.isEditingCourse = true;
+    updateCourse: (
+      state,
+      {
+        payload,
+      }: PayloadAction<{
+        course: CourseType;
+        showCourseDetail?: boolean;
+        showEnrolledCourseModal?: boolean;
+        isNewCourseModalOpened?: boolean;
+      }>
+    ) => {
+      state.course = payload.course;
+      state.showEnrolledCourseModal = Boolean(
+        payload.showEnrolledCourseModal
+      );
+      state.showCourseDetail = Boolean(payload.showCourseDetail);
+      state.isNewCourseModalOpened = Boolean(
+        payload.isNewCourseModalOpened
+      );
     },
     updateIsEditingCourse: (state, { payload }) => {
       state.isEditingCourse = payload;
-    },
-    updateIsCourseFetching: (
-      state,
-      { payload }: PayloadAction<boolean>
-    ) => {
-      state.isCourseFetching = payload;
-    },
-    updateIsCreatingCourse: (
-      state,
-      { payload }: PayloadAction<boolean>
-    ) => {
-      state.isCreatingCourse = payload;
     },
     updateError: (
       state,
@@ -53,28 +88,100 @@ export const courseSlice = createSlice({
     ) => {
       state.error = payload;
     },
-    localCreateCourse: (state, { payload }) => {
-      state.courses.push(payload);
+    updateNewLesson: (state) => {
+      state.course?.lessons?.push(DEFAULT_NEW_LESSON);
     },
-    localAddLesson: (state, { payload }: PayloadAction<number>) => {
-      state.courses[payload].lessons?.push({
-        title: '',
-        content: '',
-        url: '',
-      });
+    removeCourseLesson: (state, { payload }) => {
+      if (state.course) {
+        state.course.lessons = state.course?.lessons?.filter(
+          (_, index) => payload !== index
+        );
+      }
+    },
+    updateCourseLessons: (state, { payload }: PayloadAction<Lesson[]>) => {
+      state.course.lessons = payload;
+    },
+    updateCourseDetails: (
+      state,
+      {
+        payload: { position, value, course_feature },
+      }: PayloadAction<{
+        position: number;
+        value: string;
+        course_feature: string;
+      }>
+    ) => {
+      if (state.course.lessons?.length) {
+        switch (course_feature) {
+          case COURSE_FEATURE.TITLE:
+            state.course.lessons[position].title = value;
+            break;
+          case COURSE_FEATURE.CONTENT:
+            state.course.lessons[position].content = value;
+            break;
+          default:
+            state.course.lessons[position].url = value;
+        }
+      }
+    },
+    updateNewCourse: (
+      state,
+      {
+        payload,
+      }: PayloadAction<{
+        id: string;
+        name: string;
+        description: string;
+        isNew: boolean;
+      }>
+    ) => {
+      state.newCourse = payload;
+      state.isNewCourseModalOpened = true;
+    },
+    updateWhatToLearnCourses: (
+      state,
+      { payload }: PayloadAction<CourseType[]>
+    ) => {
+      state.whatToLearnCourses = payload;
+    },
+    updateEnrolledCourses: (
+      state,
+      { payload }: PayloadAction<CourseType[]>
+    ) => {
+      state.enrolledCourses = payload;
+    },
+    updateReviews: (
+      state,
+      {
+        payload: { reviews, isReviewsModalOpened, course_id, userRating },
+      }: PayloadAction<{
+        userRating?: Rating;
+        reviews?: string[];
+        isReviewsModalOpened?: boolean;
+        course_id?: string;
+      }>
+    ) => {
+      state.reviews.course_id = course_id ?? '';
+      state.reviews.comments = reviews ?? [];
+      state.reviews.isReviewsModalOpened = Boolean(isReviewsModalOpened);
+      if (userRating) state.reviews.userRating = userRating;
     },
   },
 });
 
 export const {
-  saveCourse,
-  editCourseContent,
+  updateCourse,
   updateIsEditingCourse,
   updateCourses,
-  updateIsCourseFetching,
-  updateIsCreatingCourse,
   updateError,
-  localCreateCourse,
-  localAddLesson,
+  updateNewLesson,
+  removeCourseLesson,
+  updateCourseDetails,
+  updateCourseLessons,
+  updateNewCourse,
+  updateWhatToLearnCourses,
+  updateEnrolledCourses,
+  updateAdminCourses,
+  updateReviews,
 } = courseSlice.actions;
 export default courseSlice.reducer;

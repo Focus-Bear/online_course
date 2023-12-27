@@ -1,9 +1,46 @@
+@import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+@import 'react-tabs/style/react-tabs.css';
+@import 'react-toastify/dist/ReactToastify.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import './assets/css/header.css';
-@import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-@import './assets/css/custom.css';
-@import 'react-tabs/style/react-tabs.css';
-@import 'react-toastify/dist/ReactToastify.css';
+@layer components {
+  .wrapperClassName {
+    height: calc(100vh / 2.2);
+  }
+
+  .toolbarClassName {
+    height: 25%;
+    overflow-y: auto;
+  }
+
+  .editorClassName {
+    height: 70%;
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 0 10px;
+  }
+
+  .editorEmptyClassName {
+    border-radius: 5px;
+    border: 1px solid red;
+  }
+
+  .public-DraftStyleDefault-block.public-DraftStyleDefault-ltr {
+    margin: 0;
+  }
+
+  .ReactCollapse--collapse {
+    transition: height 500ms;
+  }
+
+  .buttonDark {
+    @apply bg-gray-600 hover:bg-gray-700 px-3 py-1 text-white text-xs sm:text-sm md:text-base rounded-md;
+  }
+
+  .inputBasic {
+    @apply w-full outline-none px-2 py-1 rounded bg-white focus:bg-gray-50 text-xs md:text-sm border border-gray-300;
+  }
+}
