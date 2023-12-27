@@ -12,6 +12,7 @@ import {
   CourseSliceType,
   CourseType,
   Lesson,
+  Rating,
 } from 'constants/interface';
 
 const initialState: CourseSliceType = {
@@ -30,6 +31,16 @@ const initialState: CourseSliceType = {
   course: DEFAULT_COURSE,
   newCourse: DEFAULT_NEW_COURSE,
   showEnrolledCourseModal: false,
+  reviews: {
+    comments: [],
+    isReviewsModalOpened: false,
+    course_id: '',
+    userRating: {
+      course_id: '',
+      review: '',
+      rating: 0,
+    },
+  },
 };
 
 export const courseSlice = createSlice({
@@ -42,7 +53,8 @@ export const courseSlice = createSlice({
         payload,
       }: PayloadAction<{ data: CourseType[]; meta: AdminCourseMeta }>
     ) => {
-      state.adminCourses = payload;
+      state.adminCourses.data.push(...payload.data);
+      state.adminCourses.meta = payload.meta;
     },
     updateCourses: (state, { payload }: PayloadAction<CourseType[]>) => {
       state.courses = payload;
@@ -138,6 +150,22 @@ export const courseSlice = createSlice({
     ) => {
       state.enrolledCourses = payload;
     },
+    updateReviews: (
+      state,
+      {
+        payload: { reviews, isReviewsModalOpened, course_id, userRating },
+      }: PayloadAction<{
+        userRating?: Rating;
+        reviews?: string[];
+        isReviewsModalOpened?: boolean;
+        course_id?: string;
+      }>
+    ) => {
+      state.reviews.course_id = course_id ?? '';
+      state.reviews.comments = reviews ?? [];
+      state.reviews.isReviewsModalOpened = Boolean(isReviewsModalOpened);
+      if (userRating) state.reviews.userRating = userRating;
+    },
   },
 });
 
@@ -154,5 +182,6 @@ export const {
   updateWhatToLearnCourses,
   updateEnrolledCourses,
   updateAdminCourses,
+  updateReviews,
 } = courseSlice.actions;
 export default courseSlice.reducer;

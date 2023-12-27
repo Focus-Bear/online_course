@@ -15,10 +15,10 @@ export const API_TAG = {
   USER_DETAILS: 'user-details',
   ALL_COURSES: 'all-courses',
   ALL_LESSONS: 'all-lessons',
-  LESSON: 'lesson',
   USER_NOT_ENROLLED_COURSES: 'user-not-enrolled-courses',
   USER_COURSES: 'user-courses',
   USER_ENROLLED_COURSES: 'user-enrolled-courses',
+  COURSE_REVIEWS: 'course-reviews',
 };
 
 export const NUMBER_OF_STARS = 5;
@@ -34,8 +34,12 @@ export const MODAL_TYPE = {
   ENROLLED_COURSE: 'enrolled-course',
   NEW_COURSE: 'new-course',
   COURSE_DETAILS: 'course-details',
+  REVIEWS: 'reviews',
 };
 
 export const COURSE_FIRST_LESSON_INDEX = 0;
 export const FIRST_LESSON_INDEX = 0;
 export const FIRST_LESSON_OFFSET = -1;
+export const ITEM_NOT_FOUND = -1;
+export const COURSE_PER_PAGE = 10;
+export const DEFAULT_COURSE_PAGE = 1;

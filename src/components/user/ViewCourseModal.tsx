@@ -178,7 +178,7 @@ const Carousel = ({
               onClick={() => {
                 createLessonCompletion({
                   course_id,
-                  lesson_id: lessons[currentLesson].id,
+                  lesson_id: lessons[currentLesson].id ?? '',
                 });
               }}
               className='cursor-pointer rounded-full hover:bg-gray-300 transition-colors ease-in-out duration-200 disabled:text-gray-400 disabled:hover:bg-none'

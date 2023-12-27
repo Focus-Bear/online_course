@@ -3,7 +3,7 @@ import { MODAL_TYPE } from 'constants/general';
 import { ReactNode } from 'react';
 import { MdClose } from 'react-icons/md';
 import { useAppDispatch } from 'store';
-import { updateCourse } from 'store/reducer/course';
+import { updateCourse, updateReviews } from 'store/reducer/course';
 
 interface ModalContentWrapperProps {
   readonly children: ReactNode;
@@ -30,6 +30,9 @@ const ModalContentWrapper = ({
         break;
       case MODAL_TYPE.COURSE_DETAILS:
         closeModalAttributes = { showCourseDetail: false };
+        break;
+      case MODAL_TYPE.REVIEWS:
+        dispatch(updateReviews({ isReviewsModalOpened: false }));
         break;
       default:
         closeModalAttributes = { isNewCourseModalOpened: false };

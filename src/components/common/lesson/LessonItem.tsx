@@ -2,10 +2,10 @@ import { Dispatch, SetStateAction, useState } from 'react';
 import { Editor } from 'react-draft-wysiwyg';
 import { convertFromHTML, ContentState, EditorState } from 'draft-js';
 import { convertToHTML } from 'draft-convert';
-import { useAppDispatch, useAppSelector } from 'store';
+import { useAppDispatch } from 'store';
 import { increment, isYoutubeURL } from 'utils/support';
 import { UnmountClosed } from 'react-collapse';
-import { MdKeyboardArrowDown, MdLink, MdSave } from 'react-icons/md';
+import { MdKeyboardArrowDown, MdLink } from 'react-icons/md';
 import Trash from 'assets/svg/Trash';
 import COLOR from 'constants/color';
 import ReactTooltip from 'react-tooltip';
@@ -14,7 +14,9 @@ import {
   updateCourseDetails,
 } from 'store/reducer/course';
 import { COURSE_FEATURE, EMPTY_TEXT_EDITOR } from 'constants/general';
-import { useUpdateCourseLessonMutation } from 'store/reducer/api';
+import _ from 'lodash';
+import { Lesson } from 'constants/interface';
+import { useDeleteCourseLessonMutation } from 'store/reducer/api';
 
 const LessonItemHeader = ({
   position,
@@ -44,7 +46,15 @@ const LessonItemHeader = ({
   );
 };
 
-const LessonItem = ({ lesson, position }: any) => {
+const LessonItem = ({
+  lesson,
+  position,
+  course_id,
+}: {
+  lesson: Lesson;
+  position: number;
+  course_id: string;
+}) => {
   const dispatch = useAppDispatch();
   const [isCollapseOpened, setIsCollapsedOpen] = useState(true);
   const blocksFromHTML = convertFromHTML(lesson.content);
@@ -56,12 +66,8 @@ const LessonItem = ({ lesson, position }: any) => {
       )
     )
   );
-  const [updateLesson, { isLoading }] = useUpdateCourseLessonMutation();
-  const shouldAllowAddOrSaveLessons =
-    lesson.title && lesson.content && lesson.content !== EMPTY_TEXT_EDITOR;
-  const { course: course_details } = useAppSelector(
-    (state) => state.course
-  );
+  const [deleteCourseLesson, { isLoading: isDeleting }] =
+    useDeleteCourseLessonMutation();
 
   return (
     <div className='w-full h-fit flex flex-col pr-0.5'>
@@ -118,9 +124,7 @@ const LessonItem = ({ lesson, position }: any) => {
           <p className='min-w-max w-[22%] font-bold'>Youtube URL</p>
           <input
             className={`w-full font-medium text-sm pr-7 pl-2 py-1 rounded outline-none focus:bg-gray-50 ${
-              lesson.url === ''
-                ? ''
-                : isYoutubeURL(lesson.url)
+              lesson.url && !isYoutubeURL(lesson.url)
                 ? 'border border-red-400'
                 : ''
             }`}
@@ -139,54 +143,36 @@ const LessonItem = ({ lesson, position }: any) => {
           />
           <MdLink className='absolute w-4 h-4 top-1/2 -translate-y-1/2 right-2' />
         </div>
-        <div className='w-full flex items-center justify-end gap-2 mt-2'>
-          {isLoading ? (
-            <div className='w-5 h-5 border-t border-gray-800 animate-spin rounded-full mt-1'></div>
-          ) : (
-            <MdSave
-              data-for='update_lesson'
-              data-tip='Update Lesson'
+        {isDeleting ? (
+          <div className='w-5 h-5 border-t border-black rounded-full animate-spin self-end'></div>
+        ) : (
+          <div className='w-full flex items-center justify-end gap-2 mt-2'>
+            <button
               onClick={() => {
-                //TODO: check the BE endpoint
-                shouldAllowAddOrSaveLessons &&
-                  updateLesson({
-                    course_id: course_details.id,
-                    lesson_id: lesson.id,
-                    title: lesson.title,
-                    content: lesson.content,
-                    url: lesson.url,
-                  });
+                lesson?.id
+                  ? deleteCourseLesson({
+                      lesson_id: lesson.id,
+                      course_id,
+                      position,
+                    })
+                  : dispatch(removeCourseLesson(position));
               }}
-              className={`w-auto h-7 rounded p-0.5 cursor-pointer outline-none ${
-                shouldAllowAddOrSaveLessons
-                  ? 'text-gray-800'
-                  : 'text-gray-400'
-              } leading-3`}
-            />
-          )}
-          <button
-            onClick={() => dispatch(removeCourseLesson(position))}
-            data-tip
-            data-for='delete_lesson'
-            className='mx-2 mt-1 self-start'
-          >
-            <Trash fill={COLOR.RED} style='w-5 h-auto' />
-          </button>
-          <ReactTooltip
-            id='delete_lesson'
-            place='left'
-            type='dark'
-            effect='float'
-          >
-            Delete Lesson
-          </ReactTooltip>
-          <ReactTooltip
-            id='update_lesson'
-            place='left'
-            type='dark'
-            effect='float'
-          />
-        </div>
+              data-tip
+              data-for='delete_lesson'
+              className='mx-2 mt-1 self-start'
+            >
+              <Trash fill={COLOR.RED} style='w-5 h-auto' />
+            </button>
+            <ReactTooltip
+              id='delete_lesson'
+              place='left'
+              type='dark'
+              effect='float'
+            >
+              Delete Lesson
+            </ReactTooltip>
+          </div>
+        )}
       </UnmountClosed>
     </div>
   );

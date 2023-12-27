@@ -7,15 +7,15 @@ import ModalOverlay from 'components/common/ModalOverlay';
 import ModalContentWrapper from 'components/common/ModalContentWrapper';
 import { EMPTY_TEXT_EDITOR, MODAL_TYPE } from 'constants/general';
 import { isYoutubeURL } from 'utils/support';
-import { useCreateCourseLessonsMutation } from 'store/reducer/api';
+import { useUpsertCourseLessonsMutation } from 'store/reducer/api';
 
 const CourseDetailsActions = () => {
   const dispatch = useAppDispatch();
-  const { course: course_details, courses } = useAppSelector(
+  const { course: course_details } = useAppSelector(
     (state) => state.course
   );
   const [createOrUpdateLessons, { isLoading }] =
-    useCreateCourseLessonsMutation();
+    useUpsertCourseLessonsMutation();
   const lessons = course_details?.lessons ?? [];
   const shouldAllowAddOrSaveLessons = lessons.every((lesson) => {
     const isRequiredFieldsValid =
@@ -25,10 +25,6 @@ const CourseDetailsActions = () => {
     const isUrlValid = lesson.url ? isYoutubeURL(lesson.url) : true;
     return isRequiredFieldsValid && isUrlValid;
   });
-
-  const shouldHaveEmptyLessons =
-    (courses.find(({ id }) => id === course_details.id)?.lessons ?? [])
-      .length === 0;
 
   return (
     <div className='absolute top-1.5 right-10 w-fit h-fit flex items-center gap-2'>
@@ -46,27 +42,19 @@ const CourseDetailsActions = () => {
               shouldAllowAddOrSaveLessons ? 'bg-gray-800' : 'bg-gray-400'
             }`}
           />
-          {shouldHaveEmptyLessons ? (
-            <MdSave
-              data-for='save'
-              data-tip='Save Lesson'
-              onClick={() => {
-                shouldAllowAddOrSaveLessons &&
-                  createOrUpdateLessons({
-                    course_id: course_details.id,
-                    lessons,
-                  });
-              }}
-              className={`w-fit h-6 text-white rounded p-0.5 cursor-pointer outline-none ${
-                shouldAllowAddOrSaveLessons ? 'bg-gray-800' : 'bg-gray-400'
-              }`}
-            />
-          ) : null}
-          <ReactTooltip
-            id='new_lesson'
-            place='bottom'
-            type='dark'
-            effect='float'
+          <MdSave
+            data-for='save'
+            data-tip='Save'
+            onClick={() => {
+              shouldAllowAddOrSaveLessons &&
+                createOrUpdateLessons({
+                  course_id: course_details.id,
+                  lessons,
+                });
+            }}
+            className={`w-fit h-6 text-white rounded p-0.5 cursor-pointer outline-none ${
+              shouldAllowAddOrSaveLessons ? 'bg-gray-800' : 'bg-gray-400'
+            }`}
           />
           <ReactTooltip
             id='save'

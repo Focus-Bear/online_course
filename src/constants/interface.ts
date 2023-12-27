@@ -1,3 +1,5 @@
+import { COURSE_ORDER } from './enum';
+
 export interface createCourse {
   name: string;
   description: string;
@@ -25,14 +27,13 @@ export interface CourseType {
 }
 
 export interface Rating {
-  id: string;
-  user_id: string;
+  id?: string;
+  user_id?: string;
   course_id: string;
-  lesson_id: string;
   rating: number;
   review: string;
-  created_at: Date;
-  updated_at: Date;
+  created_at?: Date;
+  updated_at?: Date;
 }
 
 interface UserDetails {
@@ -45,7 +46,7 @@ interface UserDetails {
 }
 
 export interface Lesson {
-  id: string;
+  id?: string;
   title: string;
   content: string;
   url: string;
@@ -72,6 +73,12 @@ export interface CourseSliceType {
     isNew: boolean;
   };
   showEnrolledCourseModal: boolean;
+  reviews: {
+    comments: string[];
+    isReviewsModalOpened: boolean;
+    course_id: string;
+    userRating: Rating;
+  };
 }
 
 export interface ErrorSliceType {
@@ -97,6 +104,7 @@ export interface UserSliceType {
 
 export interface SettingSliceType {
   currentTab: number;
+  currentPage: number;
 }
 
 export interface IconProps {
@@ -104,12 +112,9 @@ export interface IconProps {
   fill?: string;
 }
 
-export interface UpdateLessonPayload {
+export interface UpsertLessonsPayload {
   course_id: string;
-  lesson_id: string;
-  title: string;
-  content: string;
-  url: string;
+  lessons: Lesson[];
 }
 
 export interface LessonCompletion {
@@ -133,4 +138,17 @@ export interface AdminCourseMeta {
   pageCount: number;
   hasPreviousPage: boolean;
   hasNextPage: boolean;
+}
+
+export interface GetAdminCoursesPayload {
+  page: number;
+  order?: COURSE_ORDER;
+  take?: number;
+}
+
+export interface AddCourseReviewPayload {
+  id?: string;
+  rating: number;
+  course_id: string;
+  review: string;
 }

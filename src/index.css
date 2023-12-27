@@ -39,4 +39,8 @@
   .buttonDark {
     @apply bg-gray-600 hover:bg-gray-700 px-3 py-1 text-white text-xs sm:text-sm md:text-base rounded-md;
   }
+
+  .inputBasic {
+    @apply w-full outline-none px-2 py-1 rounded bg-white focus:bg-gray-50 text-xs md:text-sm border border-gray-300;
+  }
 }

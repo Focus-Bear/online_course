@@ -9,11 +9,14 @@ import CourseDetails from 'components/common/course/CourseDetails';
 import CourseItem from 'components/common/course/CourseItem';
 import CoursesContentWrapper from '../CoursesContentWrapper';
 import EmptyItems from '../EmptyItems';
+import { decrement } from 'utils/support';
+import { DEFAULT_COURSE_PAGE } from 'constants/general';
 
 const Courses = () => {
   const {
     course: { courses: userCourses, showCourseDetail, adminCourses },
     user: { isAdmin },
+    setting: { currentPage },
   } = useAppSelector((state) => state);
   const [
     getAdminCourses,
@@ -31,10 +34,18 @@ const Courses = () => {
     isUserCoursesLoading ||
     isAdminCoursesFetching ||
     isAdminCoursesLoading;
-  const courses = isAdmin ? adminCourses.data : userCourses;
+  const { take } = adminCourses.meta;
+  const courses = isAdmin
+    ? adminCourses.data.slice(
+        decrement(currentPage) * take,
+        decrement(currentPage * take)
+      )
+    : userCourses;
 
   useEffect(() => {
-    isAdmin ? getAdminCourses() : getUserCourses();
+    isAdmin
+      ? getAdminCourses({ page: DEFAULT_COURSE_PAGE })
+      : getUserCourses();
   }, []);
 
   return (

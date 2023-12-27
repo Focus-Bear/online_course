@@ -6,7 +6,7 @@ import COLOR from 'constants/color';
 import { NUMBER_OF_STARS, USER_TAB } from 'constants/general';
 import { CourseType } from 'constants/interface';
 import moment from 'moment';
-import { MdRestore } from 'react-icons/md';
+import { MdComment, MdRestore } from 'react-icons/md';
 import StarsRating from 'react-star-ratings';
 import ReactTooltip from 'react-tooltip';
 import { useAppDispatch, useAppSelector } from 'store';
@@ -16,9 +16,13 @@ import {
   useDeleteCourseMutation,
   useHideCourseMutation,
 } from 'store/reducer/api';
-import { updateCourse, updateNewCourse } from 'store/reducer/course';
+import {
+  updateCourse,
+  updateNewCourse,
+  updateReviews,
+} from 'store/reducer/course';
 import Cover from 'assets/images/bear.png';
-import { getAverageRating } from 'utils/support';
+import { getRatingDetails } from 'utils/support';
 import { useMemo } from 'react';
 
 interface CourseItemProps {
@@ -104,46 +108,73 @@ const CourseItemActions = ({ course }: CourseItemProps) => {
 };
 
 const RateCourse = ({ course }: CourseItemProps) => {
+  const dispatch = useAppDispatch();
   const { currentTab } = useAppSelector((state) => state.setting);
   const [createRating, { isLoading }] = useCreateCourseRatingMutation();
-  const didUserRateThisCourse =
-    currentTab !== USER_TAB.ENROLLED_COURSES.tabIndex ||
-    (course?.ratings ?? []).some(
-      (rating) => rating.user_id === course.author_id
-    );
-  const rate = useMemo(
-    () => getAverageRating(course?.ratings ?? []),
+  const userReview = (course?.ratings ?? []).find(
+    (rating) => rating.user_id === course.author_id
+  );
+  const didUserRateThisCourse = Boolean(
+    currentTab !== USER_TAB.ENROLLED_COURSES.tabIndex || userReview
+  );
+
+  const { averageRatings, reviews } = useMemo(
+    () => getRatingDetails(course?.ratings ?? []),
     [course]
   );
 
-  return (
-    <div className='flex self-end'>
-      {isLoading ? (
-        <div className='w-4 h-4 border-t border-gray-800 animate-spin rounded-full '></div>
-      ) : (
-        <button
-          disabled={didUserRateThisCourse}
-          onClick={(event) => {
-            event.stopPropagation();
+  return isLoading ? (
+    <div className='w-4 h-4 border-t border-gray-800 animate-spin rounded-full'></div>
+  ) : (
+    <div className='w-fit h-fit flex items-end gap-2 self-end'>
+      <button
+        disabled={didUserRateThisCourse}
+        onClick={(event) => {
+          event.stopPropagation();
+        }}
+        className='flex items-end gap-2'
+      >
+        <StarsRating
+          rating={averageRatings}
+          starRatedColor={COLOR.ORANGE}
+          numberOfStars={NUMBER_OF_STARS}
+          starDimension='18px'
+          starSpacing='2px'
+          changeRating={(rating) => {
+            !didUserRateThisCourse &&
+              createRating(
+                userReview
+                  ? { ...userReview, rating }
+                  : { course_id: course.id, rating, review: '' }
+              );
           }}
-          className='flex items-end gap-2'
-        >
-          <StarsRating
-            rating={rate}
-            starRatedColor={COLOR.ORANGE}
-            numberOfStars={NUMBER_OF_STARS}
-            starDimension='18px'
-            starSpacing='2px'
-            changeRating={(rating) => {
-              !didUserRateThisCourse &&
-                createRating({ course_id: course.id, rating });
-            }}
-          />
-          <p className='text-xs sm:text-sm font-semibold'>{`${rate}/(${
-            course.ratings?.length ?? 0
-          })`}</p>
-        </button>
-      )}
+        />
+        <p className='text-xs sm:text-sm font-semibold'>{`${averageRatings}/(${
+          course.ratings?.length ?? 0
+        })`}</p>
+      </button>
+      <button
+        onClick={(event) => {
+          event.stopPropagation();
+          dispatch(
+            updateReviews({
+              userRating: userReview,
+              reviews,
+              isReviewsModalOpened: true,
+              course_id: course.id,
+            })
+          );
+        }}
+        className='w-fit h-fit hover:bg-gray-800 hover:text-white rounded px-1 duration-300 ease-in-out flex items-end gap-0.5'
+      >
+        <MdComment />
+        <span className='text-sm font-semibold'>
+          {new Intl.NumberFormat('en', {
+            notation: 'compact',
+            maximumSignificantDigits: 3,
+          }).format(reviews.filter((review) => Boolean(review)).length)}
+        </span>
+      </button>
     </div>
   );
 };
@@ -201,10 +232,10 @@ const CourseItem = ({ course }: CourseItemProps) => {
 
   return (
     <div
-      onClick={() =>
+      onClick={() => {
         (isAdmin || shouldBeMyCoursesTab) &&
-        dispatch(updateCourse({ course, showCourseDetail: true }))
-      }
+          dispatch(updateCourse({ course, showCourseDetail: true }));
+      }}
       className='flex flex-col gap-1 relative cursor-pointer'
     >
       {shouldBeMyCoursesTab ? (
