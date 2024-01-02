@@ -5,6 +5,11 @@ import { SettingSliceType } from 'constants/interface';
 const initialState: SettingSliceType = {
   currentTab: USER_TAB.WHAT_TO_LEARN_NEXT.tabIndex,
   currentPage: DEFAULT_COURSE_PAGE,
+  confirmModal: {
+    isOpen: false,
+    content: '',
+    onConfirm: undefined,
+  },
 };
 
 export const setting = createSlice({
@@ -17,8 +22,12 @@ export const setting = createSlice({
     updateCurrentPage: (state, { payload }: PayloadAction<number>) => {
       state.currentPage = payload;
     },
+    updateConfirmModal: (state, { payload }) => {
+      state.confirmModal = payload;
+    },
   },
 });
 
-export const { updateCurrentTab, updateCurrentPage } = setting.actions;
+export const { updateCurrentTab, updateCurrentPage, updateConfirmModal } =
+  setting.actions;
 export default setting.reducer;

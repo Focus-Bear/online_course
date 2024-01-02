@@ -6,7 +6,7 @@ import {
   DEFAULT_NEW_COURSE,
   DEFAULT_NEW_LESSON,
 } from 'assets/data';
-import { COURSE_FEATURE } from 'constants/general';
+import { COURSE_FEATURE, ITEM_NOT_FOUND } from 'constants/general';
 import {
   AdminCourseMeta,
   CourseSliceType,
@@ -32,7 +32,7 @@ const initialState: CourseSliceType = {
   newCourse: DEFAULT_NEW_COURSE,
   showEnrolledCourseModal: false,
   reviews: {
-    comments: [],
+    ratings: [],
     isReviewsModalOpened: false,
     course_id: '',
     userRating: {
@@ -53,7 +53,18 @@ export const courseSlice = createSlice({
         payload,
       }: PayloadAction<{ data: CourseType[]; meta: AdminCourseMeta }>
     ) => {
-      state.adminCourses.data.push(...payload.data);
+      if (state.adminCourses.data.length) {
+        payload.data.forEach((course) => {
+          const courseIndex = state.adminCourses.data.findIndex(
+            (adminCourse) => adminCourse.id === course.id
+          );
+          courseIndex === ITEM_NOT_FOUND
+            ? state.adminCourses.data.push(course)
+            : (state.adminCourses.data[courseIndex] = course);
+        });
+      } else {
+        state.adminCourses.data.push(...payload.data);
+      }
       state.adminCourses.meta = payload.meta;
     },
     updateCourses: (state, { payload }: PayloadAction<CourseType[]>) => {
@@ -153,16 +164,16 @@ export const courseSlice = createSlice({
     updateReviews: (
       state,
       {
-        payload: { reviews, isReviewsModalOpened, course_id, userRating },
+        payload: { ratings, isReviewsModalOpened, course_id, userRating },
       }: PayloadAction<{
         userRating?: Rating;
-        reviews?: string[];
+        ratings?: Rating[];
         isReviewsModalOpened?: boolean;
         course_id?: string;
       }>
     ) => {
       state.reviews.course_id = course_id ?? '';
-      state.reviews.comments = reviews ?? [];
+      state.reviews.ratings = ratings ?? [];
       state.reviews.isReviewsModalOpened = Boolean(isReviewsModalOpened);
       if (userRating) state.reviews.userRating = userRating;
     },

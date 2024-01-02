@@ -51,13 +51,7 @@ const Courses = () => {
   return (
     <>
       {isFetchingOrLoading ? (
-        <Spinner
-          styles={
-            isAdmin
-              ? 'w-8 h-8 rounded-full border-t-2 border-black animate-spin'
-              : undefined
-          }
-        />
+        <Spinner />
       ) : courses.length ? (
         <CoursesContentWrapper>
           {courses.map((course) => (

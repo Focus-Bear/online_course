@@ -43,7 +43,6 @@ function Navigation() {
       window.localStorage.setItem(TOKEN_NAME, token);
       auth0User?.[TOKEN_ROLES_KEY].includes(USER_ROLES.ADMIN) &&
         dispatch(updateIsAdmin(true));
-
       navigate(ROUTES.HOME);
     } else {
       navigate(ROUTES.LOGIN);

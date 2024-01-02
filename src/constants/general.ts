@@ -35,6 +35,7 @@ export const MODAL_TYPE = {
   NEW_COURSE: 'new-course',
   COURSE_DETAILS: 'course-details',
   REVIEWS: 'reviews',
+  CONFIRM: 'confirm',
 };
 
 export const COURSE_FIRST_LESSON_INDEX = 0;

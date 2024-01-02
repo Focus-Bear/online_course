@@ -31,3 +31,9 @@ export const DEFAULT_ERROR = {
   value: false,
   message: '',
 };
+
+export const DEFAULT_CONFIRM_MODAL = {
+  isOpen: false,
+  content: '',
+  onConfirm: undefined,
+};

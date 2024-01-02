@@ -1,9 +1,10 @@
-import { DEFAULT_COURSE } from 'assets/data';
+import { DEFAULT_CONFIRM_MODAL, DEFAULT_COURSE } from 'assets/data';
 import { MODAL_TYPE } from 'constants/general';
 import { ReactNode } from 'react';
 import { MdClose } from 'react-icons/md';
 import { useAppDispatch } from 'store';
 import { updateCourse, updateReviews } from 'store/reducer/course';
+import { updateConfirmModal } from 'store/reducer/setting';
 
 interface ModalContentWrapperProps {
   readonly children: ReactNode;
@@ -34,6 +35,9 @@ const ModalContentWrapper = ({
       case MODAL_TYPE.REVIEWS:
         dispatch(updateReviews({ isReviewsModalOpened: false }));
         break;
+      case MODAL_TYPE.CONFIRM:
+        dispatch(updateConfirmModal(DEFAULT_CONFIRM_MODAL));
+        break;
       default:
         closeModalAttributes = { isNewCourseModalOpened: false };
     }
@@ -48,12 +52,12 @@ const ModalContentWrapper = ({
     >
       <div className='absolute right-1.5 top-1.5 w-fit h-fit z-10'>
         <MdClose
-          className='w-fit h-6 bg-gray-800 text-white rounded p-0.5 cursor-pointer'
+          className='w-fit h-5 md:h-6 bg-gray-800 text-white rounded p-0.5 cursor-pointer'
           onClick={handleCloseModal}
         />
       </div>
       {title ? (
-        <div className='w-fit h-fit text-base italic font-bold leading-4'>
+        <div className='w-fit max-w-[80%] h-fit italic font-bold leading-4 truncate relative -top-3 text-base md:text-lg'>
           {title}
         </div>
       ) : null}

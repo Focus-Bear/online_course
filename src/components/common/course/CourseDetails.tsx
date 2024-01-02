@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from 'store';
 import ReactTooltip from 'react-tooltip';
 import { MdLibraryAdd, MdSave } from 'react-icons/md';
-import Lesson from '../lesson';
+import Lessons from '../lessons';
 import { updateNewLesson } from 'store/reducer/course';
 import ModalOverlay from 'components/common/ModalOverlay';
 import ModalContentWrapper from 'components/common/ModalContentWrapper';
@@ -83,7 +83,7 @@ const CourseDetails = () => {
             {course?.description ?? ''}
           </p>
         </div>
-        <Lesson />
+        <Lessons />
       </ModalContentWrapper>
     </ModalOverlay>
   );

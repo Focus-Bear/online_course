@@ -4,7 +4,7 @@ import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import { ROUTES, TOKEN_ROLES_KEY } from 'constants/routes';
 import { useLazyGetUserDetailsQuery } from 'store/reducer/api';
 import OverlaySpinner from 'components/common/OverlaySpinner';
-import Layout from 'components/layout';
+import Layout from 'components/Layout';
 import { useAppDispatch } from 'store';
 import { updateIsAdmin } from 'store/reducer/user';
 import { USER_ROLES } from 'constants/enum';
@@ -30,10 +30,9 @@ const ProtectedRoute = () => {
         navigate(ROUTES.DASHBOARD);
       }
       setIsCheckingPreConditions(false);
-    } else {
       getUserDetails();
     }
-  }, [isFetchingOrLoading]);
+  }, []);
 
   return user ? (
     <Layout>
@@ -42,7 +41,10 @@ const ProtectedRoute = () => {
         <OverlaySpinner title='Fetching user data...' />
       )}
       {window.location.pathname === ROUTES.HOME && (
-        <button className='buttonDark px-6 py-2 rounded-lg lg:text-2xl absolute top-1/2 left-1/2 flex items-center justify-center gap-1'>
+        <button
+          onClick={() => window.location.reload()}
+          className='buttonDark px-6 py-2 rounded-lg lg:text-2xl absolute top-1/2 left-1/2 flex items-center justify-center gap-1'
+        >
           Refresh
           <MdRefresh />
         </button>

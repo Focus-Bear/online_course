@@ -162,7 +162,7 @@ export const API = createApi({
         method: 'POST',
         body: payload,
       }),
-      invalidatesTags: [API_TAG.USER_ENROLLED_COURSES],
+      invalidatesTags: [API_TAG.COURSE_REVIEWS],
       onQueryStarted: async (_, { queryFulfilled }) => {
         const { meta } = await queryFulfilled;
         meta?.response?.status === 201
@@ -287,35 +287,21 @@ export const API = createApi({
     getCourseReviews: builder.query<Rating[], string>({
       query: (course_id: string) => Endpoint.GET_COURSE_RATINGS(course_id),
       providesTags: [API_TAG.COURSE_REVIEWS],
-      onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
+      onQueryStarted: async (course_id, { dispatch, queryFulfilled }) => {
         try {
           const { data } = await queryFulfilled;
-          const reviews = (data ?? [])
-            .filter((rating) => Boolean(rating.review))
-            .map((rating) => rating.review);
-          dispatch(updateReviews({ reviews, isReviewsModalOpened: true }));
+          dispatch(
+            updateReviews({
+              ratings: data ?? [],
+              isReviewsModalOpened: true,
+              course_id,
+            })
+          );
         } catch (error) {
           dispatch(
             updateError({ value: true, message: JSON.stringify(error) })
           );
         }
-      },
-    }),
-    addCourseReview: builder.mutation({
-      query: (payload: AddCourseReviewPayload) => ({
-        url: Endpoint.CREATE_COURSE_RATING,
-        method: 'POST',
-        body: payload,
-      }),
-      invalidatesTags: [
-        API_TAG.COURSE_REVIEWS,
-        API_TAG.USER_ENROLLED_COURSES,
-      ],
-      onQueryStarted: async (_, { queryFulfilled }) => {
-        const { meta } = await queryFulfilled;
-        meta?.response?.status === 201
-          ? toast.success('Thank you for your feedback.')
-          : toast.error('Could not process feedback');
       },
     }),
   }),
@@ -339,5 +325,4 @@ export const {
   useUpdateCourseEnrollmentMutation,
   useDeleteCourseLessonMutation,
   useLazyGetCourseReviewsQuery,
-  useAddCourseReviewMutation,
 } = API;

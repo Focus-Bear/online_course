@@ -8,16 +8,16 @@
 
 @layer components {
   .wrapperClassName {
-    height: calc(100vh / 2.2);
+    height: calc(25vh);
   }
 
   .toolbarClassName {
-    height: 25%;
+    height: 30%;
     overflow-y: auto;
   }
 
   .editorClassName {
-    height: 70%;
+    height: 65%;
     background-color: #fff;
     border-radius: 5px;
     padding: 0 10px;

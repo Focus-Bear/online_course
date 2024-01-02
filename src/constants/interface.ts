@@ -74,7 +74,7 @@ export interface CourseSliceType {
   };
   showEnrolledCourseModal: boolean;
   reviews: {
-    comments: string[];
+    ratings: Rating[];
     isReviewsModalOpened: boolean;
     course_id: string;
     userRating: Rating;
@@ -105,6 +105,11 @@ export interface UserSliceType {
 export interface SettingSliceType {
   currentTab: number;
   currentPage: number;
+  confirmModal: {
+    isOpen: boolean;
+    content: string;
+    onConfirm?: () => void;
+  };
 }
 
 export interface IconProps {
