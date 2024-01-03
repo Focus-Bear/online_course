@@ -3,7 +3,11 @@ import EyeClosed from 'assets/svg/EyeClosed';
 import Pencil from 'assets/svg/Pencil';
 import Trash from 'assets/svg/Trash';
 import COLOR from 'constants/color';
-import { NUMBER_OF_STARS, USER_TAB } from 'constants/general';
+import {
+  ITEM_NOT_FOUND,
+  NUMBER_OF_STARS,
+  USER_TAB,
+} from 'constants/general';
 import { CourseType } from 'constants/interface';
 import moment from 'moment';
 import { MdComment, MdRestore } from 'react-icons/md';
@@ -23,6 +27,7 @@ import {
 import Cover from 'assets/images/bear.png';
 import { getRatingDetails } from 'utils/support';
 import { useMemo } from 'react';
+import { toast } from 'react-toastify';
 
 interface CourseItemProps {
   course: CourseType;
@@ -40,7 +45,7 @@ const RateCourse = ({ course }: CourseItemProps) => {
   );
 
   return (
-    <div className='w-fit h-fit flex items-end gap-2 self-end'>
+    <div className='w-fit h-fit flex items-end gap-2 self-end -mt-1'>
       <div className='flex items-end gap-2 cursor-default'>
         <StarsRating
           rating={averageRatings}
@@ -87,25 +92,35 @@ const EnrollmentBtn = ({ course }: CourseItemProps) => {
     setting: { currentTab },
     user: { details },
   } = useAppSelector((state) => state);
-  const isCourseCompleted = course?.enrollments?.findIndex(
-    ({ user_id, course_id, finished }) =>
-      finished && course.id === course_id && user_id !== details?.id
-  );
+  const isCourseCompleted =
+    course?.enrollments?.findIndex(
+      ({ user_id, course_id, finished }) =>
+        finished && course.id === course_id && user_id === details?.id
+    ) !== ITEM_NOT_FOUND;
 
-  return isCourseCompleted ? (
+  return isCourseCompleted &&
+    currentTab === USER_TAB.ENROLLED_COURSES.tabIndex ? (
     <p className='absolute top-1 left-1 bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-md cursor-default select-none'>
       Completed
     </p>
   ) : (
     <button
-      disabled={Boolean(isCourseCompleted || isLoading)}
+      disabled={Boolean(
+        (isCourseCompleted &&
+          currentTab === USER_TAB.ENROLLED_COURSES.tabIndex) ||
+          isLoading
+      )}
       onClick={(event) => {
         event.stopPropagation();
-        currentTab === USER_TAB.ENROLLED_COURSES.tabIndex
-          ? dispatch(
-              updateCourse({ course, showEnrolledCourseModal: true })
-            )
-          : createCourseEnrollment(course.id);
+        if (currentTab === USER_TAB.ENROLLED_COURSES.tabIndex) {
+          course.lessons?.length
+            ? dispatch(
+                updateCourse({ course, showEnrolledCourseModal: true })
+              )
+            : toast.info('This course has no lessons yet!');
+        } else {
+          createCourseEnrollment(course.id);
+        }
       }}
       className={`w-fit h-fit px-2 py-0.5 absolute top-1 left-1 bg-blue-500 hover:bg-blue-600  text-white rounded text-xs font-semibold ${
         isLoading ? 'animate-pulse' : 'animate-none'

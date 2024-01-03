@@ -6,7 +6,7 @@ import {
   MODAL_TYPE,
 } from 'constants/general';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import parser from 'html-react-parser';
 import ReactPlayer from 'react-player/lazy';
 import { OnProgressProps } from 'react-player/base';
@@ -19,30 +19,32 @@ import {
   useUpdateCourseEnrollmentMutation,
 } from 'store/reducer/api';
 import Cover from 'assets/images/bear.png';
-import { DEFAULT_COURSE } from 'assets/data';
+import { DEFAULT_COURSE, DEFAULT_VIDEO_DURATION } from 'assets/data';
 import { updateCourse } from 'store/reducer/course';
+
+interface CarouselProps {
+  lessons: Lesson[];
+  course_id: string;
+}
+
+interface CourseLessonProps {
+  lesson: Lesson;
+  currentLesson: number;
+}
+
+interface FinishCourseItemProps {
+  handleCourseCompletion: () => void;
+}
 
 const FinishCourseItem = ({
   handleCourseCompletion,
-}: {
-  handleCourseCompletion: () => void;
-}) => {
-  const dispatch = useAppDispatch();
-  useEffect(() => {
-    handleCourseCompletion();
-  }, []);
-
+}: FinishCourseItemProps) => {
   return (
     <div className='min-w-full w-full h-[70vh] sm:h-[50vh] flex flex-col gap-3 items-center justify-center font-semibold'>
       <p className='text-xl'>You've completed the course</p>
       <button
         onClick={() => {
-          dispatch(
-            updateCourse({
-              course: DEFAULT_COURSE,
-              showEnrolledCourseModal: false,
-            })
-          );
+          handleCourseCompletion();
         }}
         className='w-fit h-fit px-2 py-1 bg-gray-600 hover:bg-gray-700 text-sm text-white rounded-md'
       >
@@ -52,37 +54,45 @@ const FinishCourseItem = ({
   );
 };
 
-const ViewCourseItem = ({ lesson }: { lesson: Lesson }) => {
-  const [duration, setDuration] = useState({ current: 0, total: 0 });
+const CourseLesson = ({ lesson, currentLesson }: CourseLessonProps) => {
+  const videoPlayer = useRef<ReactPlayer>(null);
+  const [duration, setDuration] = useState(DEFAULT_VIDEO_DURATION);
+
+  useEffect(() => {
+    videoPlayer.current?.seekTo(0);
+  }, [currentLesson]);
 
   return (
     <>
       {lesson?.url ? (
-        <ReactPlayer
-          style={{
-            borderTopLeftRadius: '8px',
-            borderBottomLeftRadius: '8px',
-          }}
-          width='50%'
-          height='100%'
-          url={lesson.url}
-          config={{
-            youtube: {
-              playerVars: { showinfo: 0 },
-            },
-          }}
-          onProgress={(e: OnProgressProps) => {
-            let current = { ...duration };
-            current.current = e.playedSeconds;
-            setDuration(current);
-          }}
-          onDuration={(d: number) => {
-            setDuration({ current: 0, total: d });
-          }}
-          onEnded={() => {
-            //  currentStep !== totalSteps && nextStep();
-          }}
-        />
+        <div className='w-full sm:w-1/2 flex flex-col'>
+          <ReactPlayer
+            ref={videoPlayer}
+            style={{
+              borderTopLeftRadius: '8px',
+              borderBottomLeftRadius: '8px',
+            }}
+            width='100%'
+            height='100%'
+            url={lesson.url}
+            config={{
+              youtube: {
+                playerVars: { showinfo: 0 },
+              },
+            }}
+            onProgress={({ playedSeconds }: OnProgressProps) => {
+              setDuration((prev) => ({ ...prev, playedSeconds }));
+            }}
+            onDuration={(totalSeconds: number) => {
+              setDuration({ playedSeconds: 0, totalSeconds });
+            }}
+          />
+          <progress
+            className='w-full h-2 bg-green-500'
+            value={duration.playedSeconds}
+            max={duration.totalSeconds}
+          ></progress>
+        </div>
       ) : (
         <img
           src={Cover}
@@ -101,42 +111,70 @@ const ViewCourseItem = ({ lesson }: { lesson: Lesson }) => {
   );
 };
 
-const Carousel = ({
-  lessons,
-  course_id,
-}: {
-  lessons: Lesson[];
-  course_id: string;
-}) => {
+const Carousel = ({ lessons, course_id }: CarouselProps) => {
+  const dispatch = useAppDispatch();
   const { course: enrolledCourse } = useAppSelector(
     (state) => state.course
   );
-  const [currentLesson, setCurrentLesson] = useState(
-    increment(
-      enrolledCourse?.lessonCompletions?.length
-        ? lessons?.findIndex((lesson) =>
-            enrolledCourse?.lessonCompletions?.every(
-              (completion) => completion.lesson_id !== lesson.id
-            )
-          )
-        : FIRST_LESSON_OFFSET
-    )
-  );
-  const [isLastLesson, setIsLastLesson] = useState(false);
+  const [lessonInfo, setLessonInfo] = useState({
+    currentLesson: FIRST_LESSON_INDEX,
+    lastCompletedLesson: FIRST_LESSON_INDEX,
+    isLastLesson: false,
+  });
   const [
     createLessonCompletion,
     { isLoading: isCompletingLesson, isSuccess },
   ] = useCreateLessonCompetedMutation();
-  const [updateCourseCompletion, { isLoading: isCompletingCourse }] =
-    useUpdateCourseEnrollmentMutation();
+  const [
+    updateCourseCompletion,
+    {
+      isLoading: isCompletingCourse,
+      isSuccess: isCourseCompletedSuccessfully,
+    },
+  ] = useUpdateCourseEnrollmentMutation();
 
   useEffect(() => {
-    console.log(currentLesson === lessons.length);
-    setIsLastLesson(currentLesson === lessons.length);
-  }, [currentLesson]);
+    isCourseCompletedSuccessfully &&
+      dispatch(
+        updateCourse({
+          course: DEFAULT_COURSE,
+          showEnrolledCourseModal: false,
+        })
+      );
+  }, [isCourseCompletedSuccessfully]);
 
   useEffect(() => {
-    isSuccess && setCurrentLesson((prev) => increment(prev));
+    setLessonInfo((prev) => ({
+      ...prev,
+      isLastLesson: lessonInfo.currentLesson === lessons.length,
+    }));
+  }, [lessonInfo.currentLesson]);
+
+  useEffect(() => {
+    const lessonIndex = enrolledCourse?.lessonCompletions?.length
+      ? lessons?.findIndex((lesson) =>
+          enrolledCourse?.lessonCompletions?.every(
+            (completion) => completion.lesson_id !== lesson.id
+          )
+        )
+      : FIRST_LESSON_OFFSET;
+    setLessonInfo((prev) => ({
+      ...prev,
+      currentLesson: lessonIndex,
+      lastCompletedLesson: lessonIndex,
+    }));
+  }, []);
+
+  useEffect(() => {
+    isSuccess &&
+      setLessonInfo((prev) => {
+        const lessonIndex = increment(prev.currentLesson);
+        return {
+          ...prev,
+          currentLesson: lessonIndex,
+          lastCompletedLesson: lessonIndex,
+        };
+      });
   }, [isSuccess]);
 
   const handleCourseCompletion = useCallback(() => {
@@ -148,7 +186,7 @@ const Carousel = ({
 
   return (
     <div className='w-full flex overflow-hidden relative rounded-md'>
-      {isLastLesson ? (
+      {lessonInfo.isLastLesson ? (
         <FinishCourseItem
           handleCourseCompletion={handleCourseCompletion}
         />
@@ -158,33 +196,52 @@ const Carousel = ({
             <div
               key={lesson.id}
               style={{
-                transform: `translateX(-${currentLesson * 100}%)`,
+                transform: `translateX(-${
+                  lessonInfo.currentLesson * 100
+                }%)`,
               }}
               className='min-w-full w-full h-[70vh] sm:h-[50vh] flex flex-col sm:flex-row bg-gray-100 rounded-r-lg transition ease-out duration-300'
             >
-              <ViewCourseItem lesson={lesson} />
+              <CourseLesson
+                lesson={lesson}
+                currentLesson={lessonInfo.currentLesson}
+              />
             </div>
           ))}
-          <div className='flex items-center gap-2 absolute bottom-2 right-1 text-4xl'>
+          <div className='flex items-center gap-2 absolute bottom-0 right-3 text-4xl'>
             <button
-              disabled={currentLesson === FIRST_LESSON_INDEX}
-              onClick={() => setCurrentLesson((prev) => decrement(prev))}
+              disabled={lessonInfo.currentLesson === FIRST_LESSON_INDEX}
+              onClick={() =>
+                setLessonInfo((prev) => ({
+                  ...prev,
+                  currentLesson: decrement(prev.currentLesson),
+                }))
+              }
               className='cursor-pointer rounded-full hover:bg-gray-300 transition-colors ease-in-out duration-200 disabled:text-gray-400 disabled:hover:bg-none'
             >
               <MdArrowLeft />
             </button>
             <button
-              disabled={isLastLesson}
+              disabled={lessonInfo.isLastLesson}
               onClick={() => {
-                createLessonCompletion({
-                  course_id,
-                  lesson_id: lessons[currentLesson].id ?? '',
-                });
+                lessonInfo.currentLesson >= lessonInfo.lastCompletedLesson
+                  ? createLessonCompletion({
+                      course_id,
+                      lesson_id:
+                        lessons[lessonInfo.currentLesson].id ?? '',
+                    })
+                  : setLessonInfo((prev) => ({
+                      ...prev,
+                      currentLesson: increment(prev.currentLesson),
+                    }));
               }}
               className='cursor-pointer rounded-full hover:bg-gray-300 transition-colors ease-in-out duration-200 disabled:text-gray-400 disabled:hover:bg-none'
             >
               <MdArrowRight />
             </button>
+            <p className='text-xs md:text-base font-semibold text-gray-500'>{`${increment(
+              lessonInfo.currentLesson
+            )} / ${lessons.length}`}</p>
           </div>
         </>
       )}

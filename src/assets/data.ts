@@ -37,3 +37,8 @@ export const DEFAULT_CONFIRM_MODAL = {
   content: '',
   onConfirm: undefined,
 };
+
+export const DEFAULT_VIDEO_DURATION = {
+  playedSeconds: 0,
+  totalSeconds: 0,
+};

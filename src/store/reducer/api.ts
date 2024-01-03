@@ -162,7 +162,10 @@ export const API = createApi({
         method: 'POST',
         body: payload,
       }),
-      invalidatesTags: [API_TAG.COURSE_REVIEWS],
+      invalidatesTags: [
+        API_TAG.COURSE_REVIEWS,
+        API_TAG.USER_ENROLLED_COURSES,
+      ],
       onQueryStarted: async (_, { queryFulfilled }) => {
         const { meta } = await queryFulfilled;
         meta?.response?.status === 201

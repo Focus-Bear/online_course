@@ -13,7 +13,10 @@ const ConfirmModal = () => {
 
   return (
     <ModalOverlay>
-      <ModalContentWrapper modal={MODAL_TYPE.CONFIRM}>
+      <ModalContentWrapper
+        modal={MODAL_TYPE.CONFIRM}
+        widthStyles='w-[95%] xs:w-4/5 sm:w-3/5 md:w-2/5'
+      >
         <div className='w-full min-h-[15vh] h-fit flex flex-col items-center justify-around gap-2'>
           <p className='text-sm sm:text-base md:text-lg font-semibold text-center'>
             {content}

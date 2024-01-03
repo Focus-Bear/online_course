@@ -127,16 +127,18 @@ const CourseReviewsModalBody = () => {
               className='flex flex-col px-2.5 py-2 bg-gray-100 rounded-md shadow font-medium text-xs sm:text-sm tracking-wide relative'
             >
               <p>{rating.review}</p>
-              <StarsRating
-                rating={rating.rating}
-                starRatedColor={COLOR.ORANGE}
-                numberOfStars={NUMBER_OF_STARS}
-                starDimension='14px'
-                starSpacing='1px'
-              />
-              <span className='absolute -bottom-5 right-1 text-xs text-gray-700'>
-                {moment(rating.created_at).fromNow()}
-              </span>
+              <div className='flex justify-between items-end'>
+                <StarsRating
+                  rating={rating.rating}
+                  starRatedColor={COLOR.ORANGE}
+                  numberOfStars={NUMBER_OF_STARS}
+                  starDimension='14px'
+                  starSpacing='1px'
+                />
+                <p className='text-xs text-gray-700'>
+                  {moment(rating.created_at).fromNow()}
+                </p>
+              </div>
             </div>
           ))
         ) : (

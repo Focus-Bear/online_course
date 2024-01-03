@@ -7,7 +7,7 @@ import { useAppSelector } from 'store';
 import { useLazyGetUserNotEnrolledCoursesQuery } from 'store/reducer/api';
 
 const WhatToLearnNextCourses = () => {
-  const [getUserNotEnrolledCourses, { data, isFetching, isLoading }] =
+  const [getUserNotEnrolledCourses, { isFetching, isLoading }] =
     useLazyGetUserNotEnrolledCoursesQuery();
   const isFetchingOrLoading = isFetching || isLoading;
   const { whatToLearnCourses } = useAppSelector((state) => state.course);
