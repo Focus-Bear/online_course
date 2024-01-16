@@ -4,7 +4,7 @@ import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import { ROUTES, TOKEN_ROLES_KEY } from 'constants/routes';
 import { useLazyGetUserDetailsQuery } from 'store/reducer/api';
 import OverlaySpinner from 'components/common/OverlaySpinner';
-import Layout from 'components/Layout';
+import Layout from 'components/layout';
 import { useAppDispatch } from 'store';
 import { updateIsAdmin } from 'store/reducer/user';
 import { USER_ROLES } from 'constants/enum';

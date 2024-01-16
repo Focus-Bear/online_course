@@ -14,15 +14,20 @@ import StarsRating from 'react-star-ratings';
 import COLOR from 'constants/color';
 import moment from 'moment';
 import { updateConfirmModal } from 'store/reducer/setting';
+import { DEFAULT_REVIEW } from 'assets/data';
 
 const ReviewInput = () => {
   const dispatch = useAppDispatch();
-  const [review, setReview] = useState({ rating: 0, comment: '' });
+  const [review, setReview] = useState(DEFAULT_REVIEW);
   const {
     reviews: { course_id },
   } = useAppSelector((state) => state.course);
-  const [createReview, { isLoading: isSaving }] =
+  const [createReview, { isLoading: isSaving, isSuccess }] =
     useCreateCourseRatingMutation();
+
+  useEffect(() => {
+    isSuccess && setReview(DEFAULT_REVIEW);
+  }, [isSuccess]);
 
   const handleCreateReview = () => {
     dispatch(

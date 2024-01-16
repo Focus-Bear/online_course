@@ -2,8 +2,8 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { useAppDispatch, useAppSelector } from 'store';
 import { ADMIN_TAB } from 'constants/general';
 import { updateCurrentTab } from 'store/reducer/setting';
-import ListOfCourses from 'components/Admin/ListOfCourses';
-import Configuration from 'components/Admin/Configuration';
+import ListOfCourses from 'components/admin/ListOfCourses';
+import Configuration from 'components/admin/Configuration';
 
 const getTabContent = (tab: number) => {
   switch (tab) {

@@ -42,3 +42,5 @@ export const DEFAULT_VIDEO_DURATION = {
   playedSeconds: 0,
   totalSeconds: 0,
 };
+
+export const DEFAULT_REVIEW = { rating: 0, comment: '' };
