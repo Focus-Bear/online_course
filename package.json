@@ -1,6 +1,7 @@
 {
   "name": "online_course",
   "version": "0.1.0",
+  "homepage": "https://focus-bear.github.io/online_course",
   "private": true,
   "dependencies": {
     "-": "^0.0.1",
