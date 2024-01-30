@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/online_course/static/css/main.b186c7a7.css",
-    "main.js": "/online_course/static/js/main.213eca55.js",
+    "main.js": "/online_course/static/js/main.da5b12c7.js",
     "reactPlayerYouTube.js": "/online_course/static/js/reactPlayerYouTube.9c5e5804.chunk.js",
     "reactPlayerSoundCloud.js": "/online_course/static/js/reactPlayerSoundCloud.7cf280c2.chunk.js",
     "reactPlayerVimeo.js": "/online_course/static/js/reactPlayerVimeo.c786f912.chunk.js",
@@ -19,7 +19,7 @@
     "static/media/bear.png": "/online_course/static/media/bear.1fc4f99ee19d85542874.png",
     "index.html": "/online_course/index.html",
     "main.b186c7a7.css.map": "/online_course/static/css/main.b186c7a7.css.map",
-    "main.213eca55.js.map": "/online_course/static/js/main.213eca55.js.map",
+    "main.da5b12c7.js.map": "/online_course/static/js/main.da5b12c7.js.map",
     "reactPlayerYouTube.9c5e5804.chunk.js.map": "/online_course/static/js/reactPlayerYouTube.9c5e5804.chunk.js.map",
     "reactPlayerSoundCloud.7cf280c2.chunk.js.map": "/online_course/static/js/reactPlayerSoundCloud.7cf280c2.chunk.js.map",
     "reactPlayerVimeo.c786f912.chunk.js.map": "/online_course/static/js/reactPlayerVimeo.c786f912.chunk.js.map",
@@ -36,6 +36,6 @@
   },
   "entrypoints": [
     "static/css/main.b186c7a7.css",
-    "static/js/main.213eca55.js"
+    "static/js/main.da5b12c7.js"
   ]
 }
