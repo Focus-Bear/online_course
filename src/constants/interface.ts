@@ -1,4 +1,4 @@
-import { COURSE_ORDER } from './enum';
+import { COURSE_ORDER, LessonCompletionStatus } from './enum';
 
 export interface createCourse {
   name: string;
@@ -128,6 +128,7 @@ export interface LessonCompletion {
   course_id: string;
   created_at: string;
   updated_at: string;
+  status: LessonCompletionStatus;
 }
 
 export interface Enrollment {

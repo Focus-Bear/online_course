@@ -21,7 +21,6 @@ const Login = () => {
         />
         <Learn />
       </div>
-
       <button
         onClick={() => {
           setIsButtonClicked(true);
@@ -32,7 +31,7 @@ const Login = () => {
           isButtonClicked
             ? 'bg-gray-100 border-4 border-gray-200 text-gray-300 cursor-default'
             : 'text-orange-400 bg-orange-100 hover:bg-orange-400 hover:text-white login-button shadow-md'
-        } my-10 sm:my-20`}
+        } my-8 2xl:my-14`}
       >
         LOG IN
       </button>

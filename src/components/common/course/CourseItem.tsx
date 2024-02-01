@@ -28,6 +28,7 @@ import Cover from 'assets/images/bear.png';
 import { getRatingDetails } from 'utils/support';
 import { useMemo } from 'react';
 import { toast } from 'react-toastify';
+import { LessonCompletionStatus } from 'constants/enum';
 
 interface CourseItemProps {
   course: CourseType;
@@ -92,16 +93,23 @@ const EnrollmentBtn = ({ course }: CourseItemProps) => {
     setting: { currentTab },
     user: { details },
   } = useAppSelector((state) => state);
+
   const isCourseCompleted =
     course?.enrollments?.findIndex(
       ({ user_id, course_id, finished }) =>
         finished && course.id === course_id && user_id === details?.id
     ) !== ITEM_NOT_FOUND;
+  const isSelfTaught = course.lessonCompletions?.some(
+    (lessonCompletion) =>
+      lessonCompletion.course_id === course.id &&
+      lessonCompletion.status ===
+        (LessonCompletionStatus.SELF_TAUGHT as string)
+  );
 
   return isCourseCompleted &&
     currentTab === USER_TAB.ENROLLED_COURSES.tabIndex ? (
     <p className='absolute top-1 left-1 bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-md cursor-default select-none'>
-      Completed
+      {isSelfTaught ? 'Self Taught' : 'Completed'}
     </p>
   ) : (
     <button
