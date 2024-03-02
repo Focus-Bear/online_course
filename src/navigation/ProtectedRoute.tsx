@@ -44,7 +44,7 @@ const ProtectedRoute = () => {
       {window.location.pathname === ROUTES.HOME && (
         <button
           onClick={() => window.location.reload()}
-          className='buttonDark px-6 py-2 rounded-base lg:text-lg absolute top-1/2 left-1/2 flex items-center justify-center gap-1'
+          className='buttonDark px-6 py-2 rounded-base lg:text-lg absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center gap-1'
         >
           {t('refresh')}
           <MdRefresh />

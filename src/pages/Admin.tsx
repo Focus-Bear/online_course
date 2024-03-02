@@ -5,6 +5,7 @@ import { updateCurrentTab } from 'store/reducer/setting';
 import ListOfCourses from 'components/admin/ListOfCourses';
 import Configuration from 'components/admin/Configuration';
 import { useMemo } from 'react';
+import { t } from 'i18next';
 
 const getTabContent = (tab: number) => {
   switch (tab) {
@@ -38,7 +39,7 @@ const Admin = () => {
               key={title}
               className='min-w-max w-fit h-full font-bold text-sm px-5 tracking-wide cursor-pointer outline-none flex items-center justify-center'
             >
-              {title}
+              {t(title)}
             </Tab>
           ))}
         </TabList>
