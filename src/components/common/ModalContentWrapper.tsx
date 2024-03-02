@@ -1,4 +1,4 @@
-import { DEFAULT_CONFIRM_MODAL, DEFAULT_COURSE } from 'assets/data';
+import { DEFAULT_CONFIRM_MODAL, DEFAULT_COURSE } from 'assets/default';
 import { MODAL_TYPE } from 'constants/general';
 import { ReactNode } from 'react';
 import { MdClose } from 'react-icons/md';
@@ -42,13 +42,13 @@ const ModalContentWrapper = ({
         closeModalAttributes = { isNewCourseModalOpened: false };
     }
     dispatch(
-      updateCourse({ course: DEFAULT_COURSE, ...closeModalAttributes })
+      updateCourse({ course: DEFAULT_COURSE, ...closeModalAttributes }),
     );
   };
 
   return (
     <div
-      className={`relative ${widthStyles} h-fit max-h-[80vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 flex flex-col rounded-md p-6 mx-auto top-1/4 -translate-y-1/4 ${bgTextStyles}`}
+      className={`relative ${widthStyles} h-fit max-h-[80vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 flex flex-col gap-3 rounded-md p-6 mx-auto top-1/4 -translate-y-1/4 ${bgTextStyles}`}
     >
       <div className='absolute right-1.5 top-1.5 w-fit h-fit z-10'>
         <MdClose
@@ -57,9 +57,9 @@ const ModalContentWrapper = ({
         />
       </div>
       {title ? (
-        <div className='w-fit max-w-[80%] h-fit italic font-bold leading-4 truncate relative -top-3 text-base md:text-lg'>
+        <p className='w-fit max-w-[80%] h-fit italic font-bold truncate text-base md:text-lg leading-6'>
           {title}
-        </div>
+        </p>
       ) : null}
       {children}
     </div>

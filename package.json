@@ -16,12 +16,14 @@
     "@types/react-dom": "^18.0.6",
     "draft-convert": "^2.1.13",
     "html-react-parser": "^3.0.4",
+    "i18next": "^23.10.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-collapse": "^5.1.1",
     "react-dom": "^18.2.0",
     "react-draft-wysiwyg": "^1.15.0",
+    "react-i18next": "^14.0.5",
     "react-icons": "^4.6.0",
     "react-paginate": "^8.2.0",
     "react-player": "^2.11.0",
@@ -75,6 +77,8 @@
     "gh-pages": "^6.1.1",
     "postcss": "^8.4.32",
     "postcss-import": "^15.0.0",
+    "prettier": "^3.2.5",
+    "prettier-plugin-tailwindcss": "^0.5.11",
     "tailwindcss": "^3.3.7"
   }
 }

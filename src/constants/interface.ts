@@ -1,4 +1,9 @@
-import { COURSE_ORDER, LessonCompletionStatus } from './enum';
+import {
+  COURSE_ORDER,
+  Language,
+  LessonCompletionStatus,
+  UserTypes,
+} from './enum';
 
 export interface createCourse {
   name: string;
@@ -98,7 +103,7 @@ export interface AccountType {
 }
 
 export interface UserSliceType {
-  details: any;
+  details: UserInfo | null;
   isAdmin: boolean;
 }
 
@@ -110,6 +115,7 @@ export interface SettingSliceType {
     content: string;
     onConfirm?: () => void;
   };
+  currentLanguage: Language;
 }
 
 export interface IconProps {
@@ -157,4 +163,13 @@ export interface AddCourseReviewPayload {
   rating: number;
   course_id: string;
   review: string;
+}
+
+export interface UserInfo {
+  id: string;
+  stripe_customer_id?: string;
+  profitwell_id?: string;
+  profitwell_registration_date?: string;
+  auth0_id?: string;
+  user_type?: UserTypes;
 }

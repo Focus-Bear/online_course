@@ -19,8 +19,9 @@ import {
   useUpdateCourseEnrollmentMutation,
 } from 'store/reducer/api';
 import Cover from 'assets/images/bear.png';
-import { DEFAULT_COURSE, DEFAULT_VIDEO_DURATION } from 'assets/data';
+import { DEFAULT_COURSE, DEFAULT_VIDEO_DURATION } from 'assets/default';
 import { updateCourse } from 'store/reducer/course';
+import { t } from 'i18next';
 
 interface CarouselProps {
   lessons: Lesson[];
@@ -41,14 +42,14 @@ const FinishCourseItem = ({
 }: FinishCourseItemProps) => {
   return (
     <div className='min-w-full w-full h-[70vh] sm:h-[50vh] flex flex-col gap-3 items-center justify-center font-semibold'>
-      <p className='text-xl'>You've completed the course</p>
+      <p className='text-xl'>{t('course.youve_completed_the_course')}</p>
       <button
         onClick={() => {
           handleCourseCompletion();
         }}
         className='w-fit h-fit px-2 py-1 bg-gray-600 hover:bg-gray-700 text-sm text-white rounded-md'
       >
-        Back To Enrolled Courses
+        {t('course.back_to_enrolled_courses')}
       </button>
     </div>
   );
@@ -114,7 +115,7 @@ const CourseLesson = ({ lesson, currentLesson }: CourseLessonProps) => {
 const Carousel = ({ lessons, course_id }: CarouselProps) => {
   const dispatch = useAppDispatch();
   const { course: enrolledCourse } = useAppSelector(
-    (state) => state.course
+    (state) => state.course,
   );
   const [lessonInfo, setLessonInfo] = useState({
     currentLesson: FIRST_LESSON_INDEX,
@@ -139,7 +140,7 @@ const Carousel = ({ lessons, course_id }: CarouselProps) => {
         updateCourse({
           course: DEFAULT_COURSE,
           showEnrolledCourseModal: false,
-        })
+        }),
       );
   }, [isCourseCompletedSuccessfully]);
 
@@ -154,8 +155,8 @@ const Carousel = ({ lessons, course_id }: CarouselProps) => {
     const lessonIndex = enrolledCourse?.lessonCompletions?.length
       ? lessons?.findIndex((lesson) =>
           enrolledCourse?.lessonCompletions?.every(
-            (completion) => completion.lesson_id !== lesson.id
-          )
+            (completion) => completion.lesson_id !== lesson.id,
+          ),
         )
       : FIRST_LESSON_OFFSET;
     setLessonInfo((prev) => ({
@@ -240,7 +241,7 @@ const Carousel = ({ lessons, course_id }: CarouselProps) => {
               <MdArrowRight />
             </button>
             <p className='text-xs md:text-base font-semibold text-gray-500'>{`${increment(
-              lessonInfo.currentLesson
+              lessonInfo.currentLesson,
             )} / ${lessons.length}`}</p>
           </div>
         </>
@@ -256,7 +257,7 @@ const Carousel = ({ lessons, course_id }: CarouselProps) => {
 
 const ViewCourseModal = () => {
   const { course: enrolledCourse } = useAppSelector(
-    (state) => state.course
+    (state) => state.course,
   );
   return (
     <ModalOverlay>

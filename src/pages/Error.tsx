@@ -1,6 +1,7 @@
 import { updateError } from 'store/reducer/error';
 import { useAppDispatch } from 'store';
 import { useAuth0 } from '@auth0/auth0-react';
+import { t } from 'i18next';
 
 const ErrorPage = () => {
   const dispatch = useAppDispatch();
@@ -9,7 +10,9 @@ const ErrorPage = () => {
   return (
     <div className='w-screen h-screen flex items-center justify-center'>
       <div className='w-fit h-fit flex flex-col gap-4 items-center justify-center bg-gray-200 rounded-lg p-4'>
-        <div className='text-2xl font-bold'>ERROR</div>
+        <div className='text-xl font-bold'>
+          {t('error.oops_something_went_wrong')}
+        </div>
         <button
           onClick={() => {
             dispatch(updateError({ value: false, message: '' }));
@@ -19,7 +22,7 @@ const ErrorPage = () => {
           }}
           className='buttonDark'
         >
-          BACK TO HOME
+          {t('back_to_home')}
         </button>
       </div>
     </div>

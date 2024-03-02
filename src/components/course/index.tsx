@@ -4,11 +4,11 @@ import {
   useLazyGetAdminCoursesQuery,
   useLazyGetUserCoursesQuery,
 } from 'store/reducer/api';
-import Spinner from '../../Spinner';
-import CourseDetails from 'components/common/course/CourseDetails';
-import CourseItem from 'components/common/course/CourseItem';
-import CoursesContentWrapper from '../CoursesContentWrapper';
-import EmptyItems from '../EmptyItems';
+import Spinner from '../common/Spinner';
+import CourseDetails from 'components/course/CourseDetails';
+import CourseItem from 'components/course/CourseItem';
+import CoursesContentWrapper from '../common/CoursesContentWrapper';
+import EmptyItems from '../common/EmptyItems';
 import { decrement } from 'utils/support';
 import { DEFAULT_COURSE_PAGE } from 'constants/general';
 
@@ -38,7 +38,7 @@ const Courses = () => {
   const courses = isAdmin
     ? adminCourses.data.slice(
         decrement(currentPage) * take,
-        decrement(currentPage * take)
+        decrement(currentPage * take),
       )
     : userCourses;
 

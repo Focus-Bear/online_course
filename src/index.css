@@ -1,6 +1,7 @@
 @import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 @import 'react-tabs/style/react-tabs.css';
 @import 'react-toastify/dist/ReactToastify.css';
+@import 'assets/css/input-switch.css';
 
 @tailwind base;
 @tailwind components;
@@ -41,6 +42,6 @@
   }
 
   .inputBasic {
-    @apply w-full outline-none px-2 py-1 rounded bg-white focus:bg-gray-50 text-xs md:text-sm border border-gray-300;
+    @apply w-full outline-none p-2 rounded bg-white focus:bg-gray-50 text-xs md:text-sm border border-gray-300 font-semibold tracking-wide;
   }
 }

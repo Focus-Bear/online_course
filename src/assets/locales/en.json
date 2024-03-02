@@ -1,0 +1,69 @@
+{
+  "translation": {
+    "course": {
+      "new_course": "New Course",
+      "create_course": "Create course",
+      "update_course": "Update course",
+      "title": "Title",
+      "description": "Description",
+      "the_course_has_no_lessons_yet": "The course has no lessons yet!",
+      "back_to_enrolled_courses": "Back To Enrolled Courses",
+      "youve_completed_the_course": "You've completed the course",
+      "we_could_not_find_any_courses. thanks for you patient": "We could not find any courses. thanks for you patient"
+    },
+    "lesson": {
+      "new_lesson": "New Lesson",
+      "no_lesson_found": "No lesson found, please add one.",
+      "youtube_url": "Youtube URL",
+      "lesson_title": "Lesson {{position}}",
+      "youve_not_enrolled_in_any_course_yet": "You've not enrolled in any course yet."
+    },
+    "error": {
+      "oops_something_went_wrong": "Oops, something went wrong",
+      "couldnt_able_to_create_course": "Couldn't able to create course.",
+      "couldnt_able_to_update_course": "Couldn't able to update course."
+    },
+    "success": {
+      "course_created_successfully": "Course created successfully",
+      "course_updated_successfully": "Course updated successfully"
+    },
+    "review": {
+      "reviews": "Reviews",
+      "leave_review": "Leave review...",
+      "no_reviews_found": "No reviews found.",
+      "please_rate_the_course_first": "Please rate the course first.",
+      "you_cant_undo_the_review": "Are you sure, You cannot undo the review?"
+    },
+    "tabs": {
+      "what_to_learn_next": "What To Learn Next",
+      "enrolled_courses": "Enrolled Courses",
+      "my_courses": "My Courses",
+      "courses": "Courses",
+      "configuration": "Configuration"
+    },
+    "loading": "Loading",
+    "log_out": "Log out",
+    "log_in": "Log in",
+    "save": "Save",
+    "update": "Update",
+    "updating": "Updating",
+    "previous": "Previous",
+    "next": "Next",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "hidden": "Hidden",
+    "show": "Show",
+    "restore": "Restore",
+    "delete": "Delete",
+    "self_taught": "Self taught",
+    "completed": "Completed",
+    "continue": "Continue",
+    "view": "View",
+    "enroll": "Enroll",
+    "back_to_home": "Back to home",
+    "not_found": "404",
+    "fetching_user_data": "Fetching user data..",
+    "refresh": "Refresh"
+  }
+}

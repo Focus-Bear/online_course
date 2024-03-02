@@ -13,10 +13,15 @@ import {
   removeCourseLesson,
   updateCourseDetails,
 } from 'store/reducer/course';
-import { COURSE_FEATURE, EMPTY_TEXT_EDITOR } from 'constants/general';
+import {
+  COURSE_FEATURE,
+  EMPTY_TEXT_EDITOR,
+  TEXT_EDITOR,
+} from 'constants/general';
 import _ from 'lodash';
 import { Lesson } from 'constants/interface';
 import { useDeleteCourseLessonMutation } from 'store/reducer/api';
+import { t } from 'i18next';
 
 const LessonItemHeader = ({
   position,
@@ -35,7 +40,7 @@ const LessonItemHeader = ({
         }}
         className='w-full h-fit font-semibold tracking-wider cursor-pointer rounded px-2 py-1 bg-gray-600 hover:bg-gray-700 text-white text-sm sm:text-base relative'
       >
-        {`Lesson ${increment(position)}`}
+        {t('lesson.lesson_title', { position: increment(position) })}
         <MdKeyboardArrowDown
           className={`absolute top-1/2 -translate-y-1/2 right-2 w-6 h-auto ${
             isCollapseOpened ? 'rotate-180' : 'rotate-0'
@@ -62,9 +67,9 @@ const LessonItem = ({
     EditorState.createWithContent(
       ContentState.createFromBlockArray(
         blocksFromHTML.contentBlocks,
-        blocksFromHTML.entityMap
-      )
-    )
+        blocksFromHTML.entityMap,
+      ),
+    ),
   );
   const [deleteCourseLesson, { isLoading: isDeleting }] =
     useDeleteCourseLessonMutation();
@@ -92,12 +97,13 @@ const LessonItem = ({
                   position,
                   value,
                   course_feature: COURSE_FEATURE.TITLE,
-                })
+                }),
               )
             }
           />
         </div>
         <Editor
+          toolbar={TEXT_EDITOR.TOOLBAR}
           editorState={editorState}
           toolbarClassName='toolbarClassName'
           wrapperClassName='wrapperClassName'
@@ -114,19 +120,21 @@ const LessonItem = ({
                     position,
                     value: content,
                     course_feature: COURSE_FEATURE.CONTENT,
-                  })
+                  }),
                 );
               return state;
             });
           }}
         />
         <div className='w-full flex gap-2 items-center justify-between relative'>
-          <p className='min-w-max w-[22%] font-bold'>Youtube URL</p>
+          <p className='min-w-max w-[22%] font-bold'>
+            {t('lesson.youtube_url')}
+          </p>
           <input
             className={`w-full font-medium text-sm pr-7 pl-2 py-1 rounded outline-none focus:bg-gray-50 ${
-              lesson.url && !isYoutubeURL(lesson.url)
-                ? 'border border-red-400'
-                : ''
+              lesson.url &&
+              !isYoutubeURL(lesson.url) &&
+              'border border-red-400'
             }`}
             value={lesson.url}
             onChange={({
@@ -137,7 +145,7 @@ const LessonItem = ({
                   position,
                   value,
                   course_feature: COURSE_FEATURE.URL,
-                })
+                }),
               );
             }}
           />
@@ -169,7 +177,7 @@ const LessonItem = ({
               type='dark'
               effect='float'
             >
-              Delete Lesson
+              {t('delete')}
             </ReactTooltip>
           </div>
         )}

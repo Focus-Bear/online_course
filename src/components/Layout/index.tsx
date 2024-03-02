@@ -1,6 +1,6 @@
 import ConfirmModal from 'components/common/ConfirmModal';
-import CourseReviewsModal from 'components/common/course/CourseReviewsModal';
-import NewCourse from 'components/common/course/NewCourse';
+import CourseReviewsModal from 'components/course/CourseReviewsModal';
+import NewCourse from 'components/course/NewCourse';
 import Navbar from 'components/common/Navbar';
 import { ReactNode } from 'react';
 import { useAppSelector } from 'store';

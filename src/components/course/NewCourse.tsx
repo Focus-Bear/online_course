@@ -10,7 +10,8 @@ import ModalOverlay from 'components/common/ModalOverlay';
 import ModalContentWrapper from 'components/common/ModalContentWrapper';
 import { updateCourse, updateNewCourse } from 'store/reducer/course';
 import { MODAL_TYPE } from 'constants/general';
-import { DEFAULT_COURSE } from 'assets/data';
+import { DEFAULT_COURSE } from 'assets/default';
+import { t } from 'i18next';
 
 const NewCourse = () => {
   const dispatch = useAppDispatch();
@@ -36,20 +37,22 @@ const NewCourse = () => {
   useEffect(() => {
     if (isSuccessCreated || isSuccessUpdated) {
       toast.success(
-        `Course ${isSuccessCreated ? 'created' : 'updated'} successfully`
+        isSuccessCreated
+          ? t('success.course_created_successfully')
+          : t('success.course_updated_successfully'),
       );
       dispatch(
         updateCourse({
           course: DEFAULT_COURSE,
           isNewCourseModalOpened: false,
-        })
+        }),
       );
     }
     (isErrorCreated || isErrorUpdated) &&
       toast.error(
-        `Error, unable to ${
-          isErrorCreated ? 'create' : 'update'
-        } the course.`
+        isErrorCreated
+          ? t('error.couldnt_able_to_create_course')
+          : t('error.couldnt_able_to_update_course'),
       );
   }, [isSuccessCreated, isErrorCreated, isSuccessUpdated, isErrorUpdated]);
 
@@ -60,15 +63,17 @@ const NewCourse = () => {
     <ModalOverlay>
       <ModalContentWrapper
         modal={MODAL_TYPE.NEW_COURSE}
-        title={isNew ? 'Create New Course' : 'Update Course'}
+        title={
+          isNew ? t('course.create_course') : t('course.update_course')
+        }
       >
         <div className='w-full flex flex-col items-center gap-4'>
           <div className='w-full flex flex-col gap-0.5'>
-            <div className='text-xs font-bold'>Name</div>
+            <div className='text-sm font-bold'>{t('course.title')}</div>
             <input
               disabled={isCreatingCourseOrIsUpdatingCourse}
               className={`w-full outline-none text-sm bg-gray-100 focus:bg-gray-50 rounded px-2 py-1 text-gray-700 ${
-                !name ? 'border border-red-400' : ''
+                !name && 'border border-red-400'
               }`}
               type='text'
               value={name}
@@ -80,7 +85,9 @@ const NewCourse = () => {
             />
           </div>
           <div className='w-full flex flex-col gap-0.5'>
-            <div className='text-xs font-bold'>Description</div>
+            <div className='text-sm font-bold'>
+              {t('course.description')}
+            </div>
             <textarea
               disabled={isCreatingCourseOrIsUpdatingCourse}
               rows={6}
@@ -92,7 +99,7 @@ const NewCourse = () => {
                 target: { value },
               }: React.ChangeEvent<HTMLTextAreaElement>) =>
                 dispatch(
-                  updateNewCourse({ ...newCourse, description: value })
+                  updateNewCourse({ ...newCourse, description: value }),
                 )
               }
             ></textarea>
@@ -116,7 +123,7 @@ const NewCourse = () => {
               <span className='w-4 h-4 rounded-full border-white border-t animate-spin'></span>
             ) : (
               <>
-                {isNew ? 'Save' : 'Update'}
+                {isNew ? t('save') : t('update')}
                 <MdSave className='text-base' />
               </>
             )}

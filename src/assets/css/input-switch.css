@@ -1,0 +1,32 @@
+.inputSwitch {
+  position: relative;
+  height: clamp(20px, 30vw, 32px);
+  width: clamp(45px, 30vw, 60px);
+  background-color: rgb(253, 186, 116);
+  border-radius: 5rem;
+  box-shadow: 0 0 1px #0000001e;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.inputSwitch:after {
+  position: absolute;
+  content: attr(data-text);
+  top: 50%;
+  left: 30%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background-color: rgb(47, 47, 68);
+  transition: left 0.2s;
+  width: clamp(21px, 30vw, 26px);
+  height: clamp(19px, 30vw, 24px);
+  font-size: x-small;
+  color: white;
+  text-align: center;
+  line-height: 1.45rem;
+  font-weight: bold;
+}
+
+.inputSwitch:checked::after {
+  left: 70%;
+}

@@ -4,6 +4,7 @@ import { ADMIN_TAB } from 'constants/general';
 import { updateCurrentTab } from 'store/reducer/setting';
 import ListOfCourses from 'components/admin/ListOfCourses';
 import Configuration from 'components/admin/Configuration';
+import { useMemo } from 'react';
 
 const getTabContent = (tab: number) => {
   switch (tab) {
@@ -16,7 +17,10 @@ const getTabContent = (tab: number) => {
 
 const Admin = () => {
   const dispatch = useAppDispatch();
-  const { currentTab } = useAppSelector((state) => state.setting);
+  const { currentTab, currentLanguage } = useAppSelector(
+    (state) => state.setting,
+  );
+  const tabs = useMemo(() => Object.values(ADMIN_TAB), [currentLanguage]);
 
   return (
     <>
@@ -29,7 +33,7 @@ const Admin = () => {
         selectedTabClassName='border-b-4 border-blue-500 bg-gray-100 text-black'
       >
         <TabList className='w-full h-[5%] flex gap-2 bg-gray-600 text-white rounded-t overflow-x-auto scrollbar-thin scrollbar-thumb-gray-500 shadow-md'>
-          {Object.values(ADMIN_TAB).map(({ title }) => (
+          {tabs.map(({ title }) => (
             <Tab
               key={title}
               className='min-w-max w-fit h-full font-bold text-sm px-5 tracking-wide cursor-pointer outline-none flex items-center justify-center'
@@ -38,7 +42,7 @@ const Admin = () => {
             </Tab>
           ))}
         </TabList>
-        {Object.values(ADMIN_TAB).map(({ tabIndex }) => (
+        {tabs.map(({ tabIndex }) => (
           <TabPanel
             key={tabIndex}
             className={`w-full h-[95%] flex flex-col justify-between items-center ${

@@ -1,12 +1,13 @@
-import { useState } from 'react';
+import { useRef } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import Learn from 'assets/svg/Learn';
 import bear from 'assets/images/bear.png';
 import logo from 'assets/images/logo.png';
+import { t } from 'i18next';
 
 const Login = () => {
   const { loginWithRedirect } = useAuth0();
-  const [isButtonClicked, setIsButtonClicked] = useState(false);
+  const loginBtn = useRef<HTMLButtonElement>(null);
 
   return (
     <div className='w-full h-full flex flex-col items-center justify-center'>
@@ -22,18 +23,14 @@ const Login = () => {
         <Learn />
       </div>
       <button
+        ref={loginBtn}
         onClick={() => {
-          setIsButtonClicked(true);
+          loginBtn.current!.disabled = true;
           loginWithRedirect();
         }}
-        disabled={isButtonClicked}
-        className={`px-8 py-2 rounded-md font-semibold text-lg sm:text-xl ${
-          isButtonClicked
-            ? 'bg-gray-100 border-4 border-gray-200 text-gray-300 cursor-default'
-            : 'text-orange-400 bg-orange-100 hover:bg-orange-400 hover:text-white login-button shadow-md'
-        } my-8 2xl:my-14`}
+        className={`px-10 py-2 rounded-lg font-semibold text-base sm:text-lg text-orange-400 bg-orange-100 hover:bg-orange-400 hover:text-white shadow-md border-2 disabled:bg-gray-100 disabled:border-gray-200 disabled:text-gray-300 disabled:cursor-default my-8 2xl:my-14 uppercase`}
       >
-        LOG IN
+        {t('log_in')}
       </button>
     </div>
   );

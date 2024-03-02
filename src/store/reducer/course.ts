@@ -5,7 +5,7 @@ import {
   DEFAULT_ERROR,
   DEFAULT_NEW_COURSE,
   DEFAULT_NEW_LESSON,
-} from 'assets/data';
+} from 'assets/default';
 import { COURSE_FEATURE, ITEM_NOT_FOUND } from 'constants/general';
 import {
   AdminCourseMeta,

@@ -5,6 +5,7 @@ import Trash from 'assets/svg/Trash';
 import COLOR from 'constants/color';
 import {
   ITEM_NOT_FOUND,
+  NUMBER_OF_EMPTY_ITEMS,
   NUMBER_OF_STARS,
   USER_TAB,
 } from 'constants/general';
@@ -25,10 +26,11 @@ import {
   updateReviews,
 } from 'store/reducer/course';
 import Cover from 'assets/images/bear.png';
-import { getRatingDetails } from 'utils/support';
+import { getCourseInfo, getRatingDetails } from 'utils/support';
 import { useMemo } from 'react';
 import { toast } from 'react-toastify';
 import { LessonCompletionStatus } from 'constants/enum';
+import { t } from 'i18next';
 
 interface CourseItemProps {
   course: CourseType;
@@ -37,17 +39,17 @@ interface CourseItemProps {
 const RateCourse = ({ course }: CourseItemProps) => {
   const dispatch = useAppDispatch();
   const userReview = (course?.ratings ?? []).find(
-    (rating) => rating.user_id === course.author_id
+    (rating) => rating.user_id === course.author_id,
   );
 
   const { averageRatings, reviews } = useMemo(
     () => getRatingDetails(course?.ratings ?? []),
-    [course]
+    [course],
   );
 
   return (
-    <div className='w-fit h-fit flex items-end gap-2 self-end -mt-1'>
-      <div className='flex items-end gap-2 cursor-default'>
+    <div className='w-fit h-fit flex items-end gap-2 self-end '>
+      <div className='flex items-center gap-2 cursor-default'>
         <StarsRating
           rating={averageRatings}
           starRatedColor={COLOR.ORANGE}
@@ -55,8 +57,8 @@ const RateCourse = ({ course }: CourseItemProps) => {
           starDimension='18px'
           starSpacing='2px'
         />
-        <p className='text-xs sm:text-sm font-semibold'>{`${averageRatings}/(${
-          course.ratings?.length ?? 0
+        <p className='text-xs sm:text-sm font-semibold relative top-0.5'>{`${averageRatings}/(${
+          course.ratings?.length ?? NUMBER_OF_EMPTY_ITEMS
         })`}</p>
       </div>
       <button
@@ -68,7 +70,7 @@ const RateCourse = ({ course }: CourseItemProps) => {
               ratings: course.ratings ?? [],
               isReviewsModalOpened: true,
               course_id: course.id,
-            })
+            }),
           );
         }}
         className='w-fit h-fit hover:bg-gray-800 hover:text-white rounded px-1 duration-300 ease-in-out flex items-end gap-0.5'
@@ -94,51 +96,43 @@ const EnrollmentBtn = ({ course }: CourseItemProps) => {
     user: { details },
   } = useAppSelector((state) => state);
 
-  const isCourseCompleted =
-    course?.enrollments?.findIndex(
-      ({ user_id, course_id, finished }) =>
-        finished && course.id === course_id && user_id === details?.id
-    ) !== ITEM_NOT_FOUND;
-  const isSelfTaught = course.lessonCompletions?.some(
-    (lessonCompletion) =>
-      lessonCompletion.course_id === course.id &&
-      lessonCompletion.status ===
-        (LessonCompletionStatus.SELF_TAUGHT as string)
-  );
+  const { isCourseCompleted, isCourseInProgress, isSelfTaught } =
+    getCourseInfo(course, details);
+  const enrollCourseLabel = isCourseInProgress ? t('continue') : t('view');
 
   return isCourseCompleted &&
     currentTab === USER_TAB.ENROLLED_COURSES.tabIndex ? (
     <p className='absolute top-1 left-1 bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-md cursor-default select-none'>
-      {isSelfTaught ? 'Self Taught' : 'Completed'}
+      {isSelfTaught ? t('self_taught') : t('completed')}
     </p>
   ) : (
     <button
       disabled={Boolean(
         (isCourseCompleted &&
           currentTab === USER_TAB.ENROLLED_COURSES.tabIndex) ||
-          isLoading
+          isLoading,
       )}
       onClick={(event) => {
         event.stopPropagation();
         if (currentTab === USER_TAB.ENROLLED_COURSES.tabIndex) {
           course.lessons?.length
             ? dispatch(
-                updateCourse({ course, showEnrolledCourseModal: true })
+                updateCourse({ course, showEnrolledCourseModal: true }),
               )
-            : toast.info('This course has no lessons yet!');
+            : toast.info(t('course.the_course_has_no_lessons_yet'));
         } else {
           createCourseEnrollment(course.id);
         }
       }}
-      className={`w-fit h-fit px-2 py-0.5 absolute top-1 left-1 bg-blue-500 hover:bg-blue-600  text-white rounded text-xs font-semibold ${
+      className={`w-fit h-fit px-2 py-0.5 absolute top-1 left-1 ${isCourseInProgress ? 'bg-gray-500 hover:bg-gray-600' : 'bg-blue-500 hover:bg-blue-600'}  text-white rounded text-xs font-semibold ${
         isLoading ? 'animate-pulse' : 'animate-none'
       } shadow-md uppercase`}
     >
       {isLoading
         ? '......'
         : currentTab === USER_TAB.ENROLLED_COURSES.tabIndex
-        ? 'View'
-        : 'Enroll'}
+          ? enrollCourseLabel
+          : t('enroll')}
     </button>
   );
 };
@@ -166,11 +160,11 @@ const CourseItemActions = ({ course }: CourseItemProps) => {
                   name: course.name,
                   description: course.description,
                   isNew: false,
-                })
+                }),
               );
             }}
             data-for='edit'
-            data-tip='Edit'
+            data-tip={t('edit')}
           >
             <Pencil />
           </button>
@@ -211,16 +205,16 @@ const CourseItemActions = ({ course }: CourseItemProps) => {
         </>
       )}
       <ReactTooltip id='edit' place='left' type='dark' effect='float'>
-        Edit
+        {t('edit')}
       </ReactTooltip>
       <ReactTooltip id='delete' place='top' type='dark' effect='float'>
-        {course.deleted ? 'Restore' : 'Delete'}
+        {course.deleted ? t('restore') : t('delete')}
       </ReactTooltip>
       <ReactTooltip id='hide' place='right' type='dark' effect='float'>
-        Hidden
+        {t('hidden')}
       </ReactTooltip>
       <ReactTooltip id='show' place='right' type='dark' effect='float'>
-        Show
+        {t('show')}
       </ReactTooltip>
     </div>
   );
@@ -240,14 +234,14 @@ const CourseItemDetails = ({ course }: CourseItemProps) => {
         alt='Focus Bear'
         className='w-full sm:w-[35%] h-32 sm:max-h-full bg-orange-200 rounded-l-md object-contain p-4'
       />
-      <div className='w-full sm:w-[65%] h-full bg-gray-100 flex flex-col justify-between text-sm font-semibold gap-1 p-2 rounded-r-md'>
-        <div className='w-full text-blue-900 text-base font-bold truncate select-none'>
+      <div className='w-full sm:w-[65%] h-full bg-gray-100 flex flex-col text-sm font-semibold gap-1 p-2 rounded-r-md'>
+        <h6 className='w-full h-fit text-blue-900 text-base font-bold select-none leading-5 pb-1 line-clamp-2'>
           {course.name}
-        </div>
-        <div className='line-clamp-3 leading-4 text-xs text-justify select-none'>
+        </h6>
+        <p className='line-clamp-2 leading-4 text-xs text-justify select-none'>
           {course.description}
-        </div>
-        <p className='w-fit text-blue-600 text-xs self-end'>
+        </p>
+        <p className='w-fit text-blue-600 text-xs mt-auto ml-auto'>
           {moment(course.createdAt).fromNow()}
         </p>
       </div>

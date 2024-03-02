@@ -8,11 +8,12 @@ import ModalContentWrapper from 'components/common/ModalContentWrapper';
 import { EMPTY_TEXT_EDITOR, MODAL_TYPE } from 'constants/general';
 import { isYoutubeURL } from 'utils/support';
 import { useUpsertCourseLessonsMutation } from 'store/reducer/api';
+import { t } from 'i18next';
 
 const CourseDetailsActions = () => {
   const dispatch = useAppDispatch();
   const { course: course_details } = useAppSelector(
-    (state) => state.course
+    (state) => state.course,
   );
   const [createOrUpdateLessons, { isLoading }] =
     useUpsertCourseLessonsMutation();
@@ -34,7 +35,7 @@ const CourseDetailsActions = () => {
         <>
           <MdLibraryAdd
             data-for='new_lesson'
-            data-tip='New Lesson'
+            data-tip={t('lesson.new_lesson')}
             onClick={() => {
               shouldAllowAddOrSaveLessons && dispatch(updateNewLesson());
             }}
@@ -44,7 +45,7 @@ const CourseDetailsActions = () => {
           />
           <MdSave
             data-for='save'
-            data-tip='Save'
+            data-tip={t('save')}
             onClick={() => {
               shouldAllowAddOrSaveLessons &&
                 createOrUpdateLessons({

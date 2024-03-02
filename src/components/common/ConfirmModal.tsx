@@ -3,7 +3,8 @@ import ModalContentWrapper from './ModalContentWrapper';
 import { MODAL_TYPE } from 'constants/general';
 import { useAppDispatch, useAppSelector } from 'store';
 import { updateConfirmModal } from 'store/reducer/setting';
-import { DEFAULT_CONFIRM_MODAL } from 'assets/data';
+import { DEFAULT_CONFIRM_MODAL } from 'assets/default';
+import { t } from 'i18next';
 
 const ConfirmModal = () => {
   const dispatch = useAppDispatch();
@@ -28,14 +29,14 @@ const ConfirmModal = () => {
               }
               className='w-fit h-fit px-2 sm:px-3 md:x-4 py-1 sm:py-1.5 md:y-2 bg-gray-600 text-white rounded-md font-semibold text-sm md:text-base'
             >
-              Cancel
+              {t('cancel')}
             </button>
             {onConfirm ? (
               <button
                 onClick={() => onConfirm?.()}
                 className='w-fit h-fit px-2 sm:px-3 md:x-4 py-1 sm:py-1.5 md:y-2 bg-green-600 text-white rounded-md font-semibold text-sm md:text-base'
               >
-                Confirm
+                {t('confirm')}
               </button>
             ) : null}
           </div>
