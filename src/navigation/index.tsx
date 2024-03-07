@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { useAuth0 } from '@auth0/auth0-react';
-import Loading from 'components/Loading';
+import Loading from 'components/common/Loading';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'store';
 import { TOKEN_NAME } from 'constants/general';

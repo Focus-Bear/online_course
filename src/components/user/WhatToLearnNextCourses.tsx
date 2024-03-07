@@ -1,7 +1,8 @@
-import Spinner from 'components/Spinner';
+import Spinner from 'components/common/Spinner';
 import CoursesContentWrapper from 'components/common/CoursesContentWrapper';
 import EmptyItems from 'components/common/EmptyItems';
-import CourseItem from 'components/common/course/CourseItem';
+import CourseItem from 'components/course/CourseItem';
+import { t } from 'i18next';
 import { useEffect } from 'react';
 import { useAppSelector } from 'store';
 import { useLazyGetUserNotEnrolledCoursesQuery } from 'store/reducer/api';
@@ -25,7 +26,7 @@ const WhatToLearnNextCourses = () => {
       ))}
     </CoursesContentWrapper>
   ) : (
-    <EmptyItems message='We could not find any courses. thanks for you patient' />
+    <EmptyItems message={t('course.we_could_not_find_any_courses')} />
   );
 };
 

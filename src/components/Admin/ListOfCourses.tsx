@@ -1,6 +1,7 @@
 import OverlaySpinner from 'components/common/OverlaySpinner';
-import Courses from 'components/common/course';
+import Courses from 'components/course';
 import { COURSE_PER_PAGE, DEFAULT_COURSE_PAGE } from 'constants/general';
+import { t } from 'i18next';
 import ReactPaginate from 'react-paginate';
 import { useAppDispatch, useAppSelector } from 'store';
 import { useLazyGetAdminCoursesQuery } from 'store/reducer/api';
@@ -40,14 +41,14 @@ const ListOfCourses = () => {
       {data?.length ? (
         <ReactPaginate
           breakLabel='...'
-          nextLabel='next >'
+          nextLabel={`${t('next')} >`}
           onPageChange={handlePageClick}
           pageRangeDisplayed={COURSE_PER_PAGE}
           pageCount={pageCount}
-          previousLabel='< previous'
+          previousLabel={`< ${t('previous')}`}
           renderOnZeroPageCount={null}
           breakClassName={'page-item'}
-          containerClassName={'flex items-center gap-2'}
+          containerClassName={'flex items-center gap-2 my-2'}
           pageClassName={'bg-blue-200 px-2 rounded'}
           nextLinkClassName={`${
             hasNextPage

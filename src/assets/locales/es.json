@@ -1,0 +1,67 @@
+{
+  "translation": {
+    "course": {
+      "new_course": "NEEDSTRANSLATION New Course",
+      "create_course": "NEEDSTRANSLATION Create course",
+      "update_course": "NEEDSTRANSLATION Update course",
+      "title": "NEEDSTRANSLATION Title",
+      "description": "NEEDSTRANSLATION Description",
+      "the_course_has_no_lessons_yet": "NEEDSTRANSLATION The course has no lessons yet!",
+      "back_to_enrolled_courses": "NEEDSTRANSLATION Back To Enrolled Courses",
+      "youve_completed_the_course": "NEEDSTRANSLATION You've completed the course",
+      "we_could_not_find_any_courses. thanks for you patient": "NEEDSTRANSLATION We could not find any courses. thanks for you patient"
+    },
+    "lesson": {
+      "new_lesson": "NEEDSTRANSLATION New Lesson",
+      "no_lesson_found": "NEEDSTRANSLATION No lesson found, please add one.",
+      "youtube_url": "NEEDSTRANSLATION Youtube URL",
+      "lesson_title": "NEEDSTRANSLATION Lesson {{position}}",
+      "youve_not_enrolled_in_any_course_yet": "NEEDSTRANSLATION You've not enrolled in any course yet."
+    },
+    "error": {
+      "oops_something_went_wrong": "NEEDSTRANSLATION Oops, something went wrong",
+      "couldnt_able_to_create_course": "NEEDSTRANSLATION Couldn't able to create course.",
+      "couldnt_able_to_update_course": "NEEDSTRANSLATION Couldn't able to update course."
+    },
+    "success": {
+      "course_created_successfully": "NEEDSTRANSLATION Course created successfully",
+      "course_updated_successfully": "NEEDSTRANSLATION Course updated successfully"
+    },
+    "review": {
+      "reviews": "NEEDSTRANSLATION Reviews",
+      "leave_review": "NEEDSTRANSLATION Leave review...",
+      "no_reviews_found": "NEEDSTRANSLATION No reviews found.",
+      "please_rate_the_course_first": "NEEDSTRANSLATION Please rate the course first.",
+      "you_cant_undo_the_review": "NEEDSTRANSLATION Are you sure, You cannot undo the review?"
+    },
+    "tabs": {
+      "what_to_learn_next": "NEEDSTRANSLATION What To Learn Next",
+      "enrolled_courses": "NEEDSTRANSLATION Enrolled Courses",
+      "my_courses": "NEEDSTRANSLATION My Courses"
+    },
+    "loading": "NEEDSTRANSLATION Loading",
+    "log_out": "NEEDSTRANSLATION Log out",
+    "log_in": "NEEDSTRANSLATION Log in",
+    "save": "NEEDSTRANSLATION Save",
+    "update": "NEEDSTRANSLATION Update",
+    "updating": "NEEDSTRANSLATION Updating",
+    "previous": "NEEDSTRANSLATION Previous",
+    "next": "NEEDSTRANSLATION Next",
+    "confirm": "NEEDSTRANSLATION Confirm",
+    "cancel": "NEEDSTRANSLATION Cancel",
+    "edit": "NEEDSTRANSLATION Edit",
+    "hidden": "NEEDSTRANSLATION Hidden",
+    "show": "NEEDSTRANSLATION Show",
+    "restore": "NEEDSTRANSLATION Restore",
+    "delete": "NEEDSTRANSLATION Delete",
+    "self_taught": "NEEDSTRANSLATION Self taught",
+    "completed": "NEEDSTRANSLATION Completed",
+    "continue": "NEEDSTRANSLATION Continue",
+    "view": "NEEDSTRANSLATION View",
+    "enroll": "NEEDSTRANSLATION Enroll",
+    "back_to_home": "NEEDSTRANSLATION Back to home",
+    "not_found": "NEEDSTRANSLATION 404",
+    "fetching_user_data": "NEEDSTRANSLATION Fetching user data..",
+    "refresh": "NEEDSTRANSLATION Refresh"
+  }
+}

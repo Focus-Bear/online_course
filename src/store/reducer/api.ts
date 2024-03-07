@@ -28,7 +28,7 @@ import Endpoint from 'constants/endpoints';
 import { updateUserDetails } from './user';
 import { toast } from 'react-toastify';
 import { updateCurrentTab } from './setting';
-import { DEFAULT_ADMIN_COURSE_META } from 'assets/data';
+import { DEFAULT_ADMIN_COURSE_META } from 'assets/default';
 import { COURSE_ORDER } from 'constants/enum';
 
 export const API = createApi({

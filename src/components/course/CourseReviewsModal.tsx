@@ -1,20 +1,21 @@
 import { useEffect, useMemo, useState } from 'react';
-import ModalOverlay from '../ModalOverlay';
-import ModalContentWrapper from '../ModalContentWrapper';
+import ModalOverlay from '../common/ModalOverlay';
+import ModalContentWrapper from '../common/ModalContentWrapper';
 import { MODAL_TYPE, NUMBER_OF_STARS, USER_TAB } from 'constants/general';
 import { MdSend } from 'react-icons/md';
 import { useAppDispatch, useAppSelector } from 'store';
-import EmptyItems from '../EmptyItems';
+import EmptyItems from '../common/EmptyItems';
 import {
   useCreateCourseRatingMutation,
   useLazyGetCourseReviewsQuery,
 } from 'store/reducer/api';
-import Spinner from 'components/Spinner';
+import Spinner from 'components/common/Spinner';
 import StarsRating from 'react-star-ratings';
 import COLOR from 'constants/color';
 import moment from 'moment';
 import { updateConfirmModal } from 'store/reducer/setting';
-import { DEFAULT_REVIEW } from 'assets/data';
+import { DEFAULT_REVIEW } from 'assets/default';
+import { t } from 'i18next';
 
 const ReviewInput = () => {
   const dispatch = useAppDispatch();
@@ -33,7 +34,7 @@ const ReviewInput = () => {
     dispatch(
       updateConfirmModal({
         isOpen: false,
-      })
+      }),
     );
     createReview({
       course_id,
@@ -50,25 +51,25 @@ const ReviewInput = () => {
           onChange={({ target: { value } }) =>
             setReview((prev) => ({ ...prev, comment: value }))
           }
-          className='inputBasic font-semibold tracking-wide py-1'
-          placeholder='Leave review...'
+          className='inputBasic'
+          placeholder={t('review.leave_review')}
         />
         <button
           onClick={() => {
             if (!review.rating) {
               dispatch(
                 updateConfirmModal({
-                  content: 'Please rate the course first.',
+                  content: t('review.please_rate_the_course_first'),
                   isOpen: true,
-                })
+                }),
               );
             } else {
               dispatch(
                 updateConfirmModal({
-                  content: 'Are you sure, You cannot undo the review?',
+                  content: t('review.you_cant_undo_the_review'),
                   isOpen: true,
                   onConfirm: handleCreateReview,
-                })
+                }),
               );
             }
           }}
@@ -112,7 +113,7 @@ const CourseReviewsModalBody = () => {
     () =>
       currentTab === USER_TAB.ENROLLED_COURSES.tabIndex &&
       !(ratings ?? []).find((rating) => rating.user_id === details?.id),
-    [currentTab]
+    [currentTab],
   );
 
   useEffect(() => {
@@ -147,7 +148,7 @@ const CourseReviewsModalBody = () => {
             </div>
           ))
         ) : (
-          <EmptyItems message='No reviews found.' />
+          <EmptyItems message={t('review.no_reviews_found')} />
         )}
       </div>
     </div>
@@ -156,7 +157,10 @@ const CourseReviewsModalBody = () => {
 
 const CourseReviewsModal = () => (
   <ModalOverlay>
-    <ModalContentWrapper title='Reviews' modal={MODAL_TYPE.REVIEWS}>
+    <ModalContentWrapper
+      title={t('review.reviews')}
+      modal={MODAL_TYPE.REVIEWS}
+    >
       <CourseReviewsModalBody />
     </ModalContentWrapper>
   </ModalOverlay>

@@ -44,3 +44,9 @@ export const DEFAULT_VIDEO_DURATION = {
 };
 
 export const DEFAULT_REVIEW = { rating: 0, comment: '' };
+
+export const DEFAULT_CONFIRM_MODEL = {
+  isOpen: false,
+  content: '',
+  onConfirm: undefined,
+};

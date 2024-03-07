@@ -8,8 +8,9 @@ import Layout from 'components/layout';
 import { useAppDispatch } from 'store';
 import { updateIsAdmin } from 'store/reducer/user';
 import { USER_ROLES } from 'constants/enum';
-import Spinner from 'components/Spinner';
+import Spinner from 'components/common/Spinner';
 import { MdRefresh } from 'react-icons/md';
+import { t } from 'i18next';
 
 const ProtectedRoute = () => {
   const dispatch = useAppDispatch();
@@ -38,14 +39,14 @@ const ProtectedRoute = () => {
     <Layout>
       {isCheckingPreConditions ? <Spinner /> : <Outlet />}
       {isFetchingOrLoading && (
-        <OverlaySpinner title='Fetching user data...' />
+        <OverlaySpinner title={t('fetching_user_data')} />
       )}
       {window.location.pathname === ROUTES.HOME && (
         <button
           onClick={() => window.location.reload()}
-          className='buttonDark px-6 py-2 rounded-lg lg:text-2xl absolute top-1/2 left-1/2 flex items-center justify-center gap-1'
+          className='buttonDark px-6 py-2 rounded-base lg:text-lg absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center gap-1'
         >
-          Refresh
+          {t('refresh')}
           <MdRefresh />
         </button>
       )}

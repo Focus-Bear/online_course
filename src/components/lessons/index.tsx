@@ -2,12 +2,14 @@ import { useEffect } from 'react';
 import { useAppSelector } from 'store';
 import LessonItem from './LessonItem';
 import { useLazyGetAllCourseLessonsQuery } from 'store/reducer/api';
-import Spinner from 'components/Spinner';
-import EmptyItems from '../EmptyItems';
+import Spinner from 'components/common/Spinner';
+import EmptyItems from '../common/EmptyItems';
+import { useTranslation } from 'react-i18next';
 
 const Lessons = () => {
+  const { t } = useTranslation();
   const { course: course_detail } = useAppSelector(
-    (state) => state.course
+    (state) => state.course,
   );
   const lessons = course_detail?.lessons ?? [];
   const [getLessons, { isLoading, isFetching }] =
@@ -31,7 +33,7 @@ const Lessons = () => {
           />
         ))
       ) : (
-        <EmptyItems message='No lesson found, please add one.' />
+        <EmptyItems message={t('lesson.no_lesson_found')} />
       )}
     </div>
   );
