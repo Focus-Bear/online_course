@@ -16,7 +16,7 @@ const Lessons = () => {
     useLazyGetAllCourseLessonsQuery();
 
   useEffect(() => {
-    getLessons(course_detail.id);
+    getLessons({ course_id: course_detail.id });
   }, []);
 
   return (
@@ -33,7 +33,7 @@ const Lessons = () => {
           />
         ))
       ) : (
-        <EmptyItems message={t('lesson.no_lesson_found')} />
+        <EmptyItems message={t('lesson.no_lesson_found_add_one')} />
       )}
     </div>
   );

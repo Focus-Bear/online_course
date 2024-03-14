@@ -9,11 +9,13 @@
       "the_course_has_no_lessons_yet": "NEEDSTRANSLATION The course has no lessons yet!",
       "back_to_enrolled_courses": "NEEDSTRANSLATION Back To Enrolled Courses",
       "youve_completed_the_course": "NEEDSTRANSLATION You've completed the course",
-      "we_could_not_find_any_courses. thanks for you patient": "NEEDSTRANSLATION We could not find any courses. thanks for you patient"
+      "we_could_not_find_any_courses. thanks for you patient": "NEEDSTRANSLATION We could not find any courses. thanks for you patient",
+      "platform": "NEEDSTRANSLATION Platform"
     },
     "lesson": {
       "new_lesson": "NEEDSTRANSLATION New Lesson",
-      "no_lesson_found": "NEEDSTRANSLATION No lesson found, please add one.",
+      "no_lesson_found_add_one": "NEEDSTRANSLATION No lesson found, please add one.",
+      "no_lesson_found": "NEEDSTRANSLATION No lesson found.",
       "youtube_url": "NEEDSTRANSLATION Youtube URL",
       "lesson_title": "NEEDSTRANSLATION Lesson {{position}}",
       "youve_not_enrolled_in_any_course_yet": "NEEDSTRANSLATION You've not enrolled in any course yet."
@@ -21,11 +23,20 @@
     "error": {
       "oops_something_went_wrong": "NEEDSTRANSLATION Oops, something went wrong",
       "couldnt_able_to_create_course": "NEEDSTRANSLATION Couldn't able to create course.",
-      "couldnt_able_to_update_course": "NEEDSTRANSLATION Couldn't able to update course."
+      "couldnt_able_to_update_course": "NEEDSTRANSLATION Couldn't able to update course.",
+      "couldnt_process_the_feedback": "NEEDSTRANSLATION Could not process the feedback",
+      "couldnt_process_your_progress": "NEEDSTRANSLATION Could not process your progress",
+      "couldnt_process_course_completion": "NEEDSTRANSLATION Could not process course completion",
+      "couldnt_process_the_request": "NEEDSTRANSLATION Could not process the request, try again"
     },
     "success": {
       "course_created_successfully": "NEEDSTRANSLATION Course created successfully",
-      "course_updated_successfully": "NEEDSTRANSLATION Course updated successfully"
+      "course_updated_successfully": "NEEDSTRANSLATION Course updated successfully",
+      "lesson_successfully_updated": "NEEDSTRANSLATION Lessons updated successfully!",
+      "thank_you_for_your_feedback": "NEEDSTRANSLATION Thank you for your feedback.",
+      "you_have_successfully_enrolled_in_the_course": "NEEDSTRANSLATION You have successfully enrolled in the course",
+      "you_have_successfully_completed_the_course": "NEEDSTRANSLATION You have successfully completed the course",
+      "lesson_deleted_successfully": "NEEDSTRANSLATION Lesson deleted successfully"
     },
     "review": {
       "reviews": "NEEDSTRANSLATION Reviews",

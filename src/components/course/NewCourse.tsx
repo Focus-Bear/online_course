@@ -12,11 +12,14 @@ import { updateCourse, updateNewCourse } from 'store/reducer/course';
 import { MODAL_TYPE } from 'constants/general';
 import { DEFAULT_COURSE } from 'assets/default';
 import { t } from 'i18next';
+import { CoursePlatform, USER_ROLES } from 'constants/enum';
+import { useAuth0 } from '@auth0/auth0-react';
+import { TOKEN_ROLES_KEY } from 'constants/routes';
 
 const NewCourse = () => {
   const dispatch = useAppDispatch();
   const { newCourse } = useAppSelector((state) => state.course);
-  const { id, name, description, isNew } = newCourse;
+  const { id, name, description, isNew, platform } = newCourse;
   const [
     createCourse,
     {
@@ -58,6 +61,8 @@ const NewCourse = () => {
 
   const isCreatingCourseOrIsUpdatingCourse =
     isCreatingCourse || isUpdatingCourse;
+
+  const { user: auth0User } = useAuth0();
 
   return (
     <ModalOverlay>
@@ -104,6 +109,32 @@ const NewCourse = () => {
               }
             ></textarea>
           </div>
+          {auth0User?.[TOKEN_ROLES_KEY].includes(USER_ROLES.ADMIN) && (
+            <div className='w-full flex flex-col gap-0.5'>
+              <div className='text-sm font-bold'>
+                {t('course.platform')}
+              </div>
+              <select
+                value={platform}
+                className='w-full bg-gray-200 p-1 rounded font-medium text-xs sm:text-sm cursor-pointer outline-none'
+                onChange={({ target: { value } }) =>
+                  dispatch(
+                    updateNewCourse({
+                      ...newCourse,
+                      platform: value as CoursePlatform,
+                    }),
+                  )
+                }
+              >
+                {Object.values(CoursePlatform).map((platform) => (
+                  <option key={platform} value={platform}>
+                    {platform}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
           <button
             disabled={isCreatingCourseOrIsUpdatingCourse}
             onClick={() => {
