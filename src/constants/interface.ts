@@ -98,6 +98,7 @@ export interface ErrorSliceType {
 export interface CreateCoursePayload {
   name: string;
   description: string;
+  platform?: string;
 }
 
 export interface AccountType {

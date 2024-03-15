@@ -127,7 +127,11 @@ const NewCourse = () => {
                 }
               >
                 {Object.values(CoursePlatform).map((platform) => (
-                  <option key={platform} value={platform}>
+                  <option
+                    key={platform}
+                    value={platform}
+                    className='capitalize p-1'
+                  >
                     {platform}
                   </option>
                 ))}
@@ -142,6 +146,7 @@ const NewCourse = () => {
                 ? createCourse({
                     name,
                     description,
+                    platform,
                   })
                 : updateExistingCourse({
                     course_id: id,
