@@ -9,10 +9,10 @@ const ErrorPage = () => {
 
   return (
     <div className='w-screen h-screen flex items-center justify-center'>
-      <div className='w-fit h-fit flex flex-col gap-4 items-center justify-center bg-gray-200 rounded-lg p-4'>
-        <div className='text-xl font-bold'>
+      <div className='w-fit h-fit flex flex-col gap-4 items-center justify-center bg-gray-200 rounded-lg px-16 py-10'>
+        <p className='text-xl font-bold'>
           {t('error.oops_something_went_wrong')}
-        </div>
+        </p>
         <button
           onClick={() => {
             dispatch(updateError({ value: false, message: '' }));
@@ -20,7 +20,7 @@ const ErrorPage = () => {
               returnTo: process.env.REACT_APP_AUTH0_LOGOUT_REDIRECT_URI!,
             });
           }}
-          className='buttonDark'
+          className='buttonDark capitalize py-2 font-semibold'
         >
           {t('back_to_home')}
         </button>

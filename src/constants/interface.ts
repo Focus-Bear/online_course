@@ -1,5 +1,6 @@
 import {
   COURSE_ORDER,
+  CoursePlatform,
   Language,
   LessonCompletionStatus,
   UserTypes,
@@ -76,6 +77,7 @@ export interface CourseSliceType {
     name: string;
     description: string;
     isNew: boolean;
+    platform?: CoursePlatform;
   };
   showEnrolledCourseModal: boolean;
   reviews: {
@@ -84,6 +86,8 @@ export interface CourseSliceType {
     course_id: string;
     userRating: Rating;
   };
+  showCourseHighlights: boolean;
+  courseHighlights: CourseType | null;
 }
 
 export interface ErrorSliceType {
@@ -94,6 +98,7 @@ export interface ErrorSliceType {
 export interface CreateCoursePayload {
   name: string;
   description: string;
+  platform?: string;
 }
 
 export interface AccountType {

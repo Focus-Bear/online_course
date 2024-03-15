@@ -6,6 +6,7 @@ import {
   DEFAULT_NEW_COURSE,
   DEFAULT_NEW_LESSON,
 } from 'assets/default';
+import { CoursePlatform } from 'constants/enum';
 import { COURSE_FEATURE, ITEM_NOT_FOUND } from 'constants/general';
 import {
   AdminCourseMeta,
@@ -41,6 +42,8 @@ const initialState: CourseSliceType = {
       rating: 0,
     },
   },
+  showCourseHighlights: false,
+  courseHighlights: null,
 };
 
 export const courseSlice = createSlice({
@@ -51,12 +54,12 @@ export const courseSlice = createSlice({
       state,
       {
         payload,
-      }: PayloadAction<{ data: CourseType[]; meta: AdminCourseMeta }>
+      }: PayloadAction<{ data: CourseType[]; meta: AdminCourseMeta }>,
     ) => {
       if (state.adminCourses.data.length) {
         payload.data.forEach((course) => {
           const courseIndex = state.adminCourses.data.findIndex(
-            (adminCourse) => adminCourse.id === course.id
+            (adminCourse) => adminCourse.id === course.id,
           );
           courseIndex === ITEM_NOT_FOUND
             ? state.adminCourses.data.push(course)
@@ -79,15 +82,15 @@ export const courseSlice = createSlice({
         showCourseDetail?: boolean;
         showEnrolledCourseModal?: boolean;
         isNewCourseModalOpened?: boolean;
-      }>
+      }>,
     ) => {
       state.course = payload.course;
       state.showEnrolledCourseModal = Boolean(
-        payload.showEnrolledCourseModal
+        payload.showEnrolledCourseModal,
       );
       state.showCourseDetail = Boolean(payload.showCourseDetail);
       state.isNewCourseModalOpened = Boolean(
-        payload.isNewCourseModalOpened
+        payload.isNewCourseModalOpened,
       );
     },
     updateIsEditingCourse: (state, { payload }) => {
@@ -95,7 +98,7 @@ export const courseSlice = createSlice({
     },
     updateError: (
       state,
-      { payload }: PayloadAction<{ value: boolean; message: string }>
+      { payload }: PayloadAction<{ value: boolean; message: string }>,
     ) => {
       state.error = payload;
     },
@@ -105,7 +108,7 @@ export const courseSlice = createSlice({
     removeCourseLesson: (state, { payload }) => {
       if (state.course) {
         state.course.lessons = state.course?.lessons?.filter(
-          (_, index) => payload !== index
+          (_, index) => payload !== index,
         );
       }
     },
@@ -120,7 +123,7 @@ export const courseSlice = createSlice({
         position: number;
         value: string;
         course_feature: string;
-      }>
+      }>,
     ) => {
       if (state.course.lessons?.length) {
         switch (course_feature) {
@@ -144,20 +147,21 @@ export const courseSlice = createSlice({
         name: string;
         description: string;
         isNew: boolean;
-      }>
+        platform?: CoursePlatform;
+      }>,
     ) => {
       state.newCourse = payload;
       state.isNewCourseModalOpened = true;
     },
     updateWhatToLearnCourses: (
       state,
-      { payload }: PayloadAction<CourseType[]>
+      { payload }: PayloadAction<CourseType[]>,
     ) => {
       state.whatToLearnCourses = payload;
     },
     updateEnrolledCourses: (
       state,
-      { payload }: PayloadAction<CourseType[]>
+      { payload }: PayloadAction<CourseType[]>,
     ) => {
       state.enrolledCourses = payload;
     },
@@ -170,12 +174,32 @@ export const courseSlice = createSlice({
         ratings?: Rating[];
         isReviewsModalOpened?: boolean;
         course_id?: string;
-      }>
+      }>,
     ) => {
       state.reviews.course_id = course_id ?? '';
       state.reviews.ratings = ratings ?? [];
       state.reviews.isReviewsModalOpened = Boolean(isReviewsModalOpened);
       if (userRating) state.reviews.userRating = userRating;
+    },
+    updateShowCourseHighlights: (
+      state,
+      { payload }: PayloadAction<boolean>,
+    ) => {
+      state.showCourseHighlights = payload;
+    },
+    updateCourseHighlights: (
+      state,
+      { payload }: PayloadAction<CourseType | null>,
+    ) => {
+      state.courseHighlights = payload;
+    },
+    updateCourseHighlightsLessons: (
+      state,
+      { payload }: PayloadAction<Lesson[]>,
+    ) => {
+      if (state.courseHighlights) {
+        state.courseHighlights['lessons'] = payload;
+      }
     },
   },
 });
@@ -194,5 +218,8 @@ export const {
   updateEnrolledCourses,
   updateAdminCourses,
   updateReviews,
+  updateShowCourseHighlights,
+  updateCourseHighlights,
+  updateCourseHighlightsLessons,
 } = courseSlice.actions;
 export default courseSlice.reducer;
