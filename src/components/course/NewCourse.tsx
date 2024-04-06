@@ -52,11 +52,7 @@ const NewCourse = () => {
       );
     }
     (isErrorCreated || isErrorUpdated) &&
-      toast.error(
-        isErrorCreated
-          ? t('error.couldnt_able_to_create_course')
-          : t('error.couldnt_able_to_update_course'),
-      );
+      toast.error(t('error.couldnt_process_the_request'));
   }, [isSuccessCreated, isErrorCreated, isSuccessUpdated, isErrorUpdated]);
 
   const isCreatingCourseOrIsUpdatingCourse =

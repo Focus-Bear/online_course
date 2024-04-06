@@ -181,7 +181,7 @@ export const API = createApi({
         const { meta } = await queryFulfilled;
         meta?.response?.status === 201
           ? toast.success(t('success.thank_you_for_your_feedback'))
-          : toast.error('error.couldnt_process_the_feedback');
+          : toast.error('error.couldnt_process_the_request');
       },
     }),
     getUserNotEnrolledCourses: builder.query<[], void>({
@@ -258,7 +258,7 @@ export const API = createApi({
       onQueryStarted: async (_, { queryFulfilled }) => {
         const { meta } = await queryFulfilled;
         meta?.response?.status !== 201 &&
-          toast.error(t('error.couldnt_process_your_progress'));
+          toast.error(t('error.couldnt_process_the_request'));
       },
     }),
     updateCourseEnrollment: builder.mutation({
@@ -274,7 +274,7 @@ export const API = createApi({
           ? toast.success(
               t('success.you_have_successfully_completed_the_course'),
             )
-          : toast.error(t('error.couldnt_process_course_completion'));
+          : toast.error(t('error.couldnt_process_the_request'));
       },
     }),
     deleteCourseLesson: builder.mutation({

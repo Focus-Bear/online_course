@@ -11,7 +11,7 @@ const ErrorPage = () => {
     <div className='w-screen h-screen flex items-center justify-center'>
       <div className='w-fit h-fit flex flex-col gap-4 items-center justify-center bg-gray-200 rounded-lg px-16 py-10'>
         <p className='text-xl font-bold'>
-          {t('error.oops_something_went_wrong')}
+          {t('error.couldnt_process_the_request')}
         </p>
         <button
           onClick={() => {
