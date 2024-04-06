@@ -1,67 +1,67 @@
 {
   "translation": {
     "course": {
-      "new_course": "NEEDSTRANSLATION New Course",
-      "create_course": "NEEDSTRANSLATION Create course",
-      "update_course": "NEEDSTRANSLATION Update course",
-      "title": "NEEDSTRANSLATION Title",
-      "description": "NEEDSTRANSLATION Description",
-      "the_course_has_no_lessons_yet": "NEEDSTRANSLATION The course has no lessons yet!",
-      "back_to_enrolled_courses": "NEEDSTRANSLATION Back To Enrolled Courses",
-      "youve_completed_the_course": "NEEDSTRANSLATION You've completed the course",
-      "we_could_not_find_any_courses. thanks for you patient": "NEEDSTRANSLATION We could not find any courses. thanks for you patient"
+      "new_course": "Nuevo Curso",
+      "create_course": "Crear curso",
+      "update_course": "Actualizar curso",
+      "title": "Título",
+      "description": "Descripción",
+      "the_course_has_no_lessons_yet": "¡El curso no tiene lecciones aún!",
+      "back_to_enrolled_courses": "Volver a los cursos inscritos",
+      "youve_completed_the_course": "Has completado el curso",
+      "we_could_not_find_any_courses. thanks for you patient": "No pudimos encontrar ningún curso. Gracias por tu paciencia."
     },
     "lesson": {
-      "new_lesson": "NEEDSTRANSLATION New Lesson",
-      "no_lesson_found": "NEEDSTRANSLATION No lesson found, please add one.",
-      "youtube_url": "NEEDSTRANSLATION Youtube URL",
-      "lesson_title": "NEEDSTRANSLATION Lesson {{position}}",
-      "youve_not_enrolled_in_any_course_yet": "NEEDSTRANSLATION You've not enrolled in any course yet."
+      "new_lesson": "Nueva Lección",
+      "no_lesson_found": "Ninguna lección encontrada, por favor añade una.",
+      "youtube_url": "URL de Youtube",
+      "lesson_title": "Lección {{position}}",
+      "youve_not_enrolled_in_any_course_yet": "Aún no te has inscrito en ningún curso."
     },
     "error": {
-      "oops_something_went_wrong": "NEEDSTRANSLATION Oops, something went wrong",
-      "couldnt_able_to_create_course": "NEEDSTRANSLATION Couldn't able to create course.",
-      "couldnt_able_to_update_course": "NEEDSTRANSLATION Couldn't able to update course."
+      "oops_something_went_wrong": "Ups, algo salió mal",
+      "couldnt_able_to_create_course": "No se pudo crear el curso.",
+      "couldnt_able_to_update_course": "No se pudo actualizar el curso."
     },
     "success": {
-      "course_created_successfully": "NEEDSTRANSLATION Course created successfully",
-      "course_updated_successfully": "NEEDSTRANSLATION Course updated successfully"
+      "course_created_successfully": "Curso creado con éxito",
+      "course_updated_successfully": "Curso actualizado con éxito"
     },
     "review": {
-      "reviews": "NEEDSTRANSLATION Reviews",
-      "leave_review": "NEEDSTRANSLATION Leave review...",
-      "no_reviews_found": "NEEDSTRANSLATION No reviews found.",
-      "please_rate_the_course_first": "NEEDSTRANSLATION Please rate the course first.",
-      "you_cant_undo_the_review": "NEEDSTRANSLATION Are you sure, You cannot undo the review?"
+      "reviews": "Reseñas",
+      "leave_review": "Dejar reseña...",
+      "no_reviews_found": "No se encontraron reseñas.",
+      "please_rate_the_course_first": "Por favor, califica el curso primero.",
+      "you_cant_undo_the_review": "¿Estás seguro? No puedes deshacer la reseña."
     },
     "tabs": {
-      "what_to_learn_next": "NEEDSTRANSLATION What To Learn Next",
-      "enrolled_courses": "NEEDSTRANSLATION Enrolled Courses",
-      "my_courses": "NEEDSTRANSLATION My Courses"
+      "what_to_learn_next": "Aprender más",
+      "enrolled_courses": "Cursos Inscritos",
+      "my_courses": "Mis Cursos"
     },
-    "loading": "NEEDSTRANSLATION Loading",
-    "log_out": "NEEDSTRANSLATION Log out",
-    "log_in": "NEEDSTRANSLATION Log in",
-    "save": "NEEDSTRANSLATION Save",
-    "update": "NEEDSTRANSLATION Update",
-    "updating": "NEEDSTRANSLATION Updating",
-    "previous": "NEEDSTRANSLATION Previous",
-    "next": "NEEDSTRANSLATION Next",
-    "confirm": "NEEDSTRANSLATION Confirm",
-    "cancel": "NEEDSTRANSLATION Cancel",
-    "edit": "NEEDSTRANSLATION Edit",
-    "hidden": "NEEDSTRANSLATION Hidden",
-    "show": "NEEDSTRANSLATION Show",
-    "restore": "NEEDSTRANSLATION Restore",
-    "delete": "NEEDSTRANSLATION Delete",
-    "self_taught": "NEEDSTRANSLATION Self taught",
-    "completed": "NEEDSTRANSLATION Completed",
-    "continue": "NEEDSTRANSLATION Continue",
-    "view": "NEEDSTRANSLATION View",
-    "enroll": "NEEDSTRANSLATION Enroll",
-    "back_to_home": "NEEDSTRANSLATION Back to home",
-    "not_found": "NEEDSTRANSLATION 404",
-    "fetching_user_data": "NEEDSTRANSLATION Fetching user data..",
-    "refresh": "NEEDSTRANSLATION Refresh"
+    "loading": "Cargando",
+    "log_out": "Cerrar sesión",
+    "log_in": "Iniciar sesión",
+    "save": "Guardar",
+    "update": "Actualizar",
+    "updating": "Actualizando",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "confirm": "Confirmar",
+    "cancel": "Cancelar",
+    "edit": "Editar",
+    "hidden": "Oculto",
+    "show": "Mostrar",
+    "restore": "Restablecer",
+    "delete": "Borrar",
+    "self_taught": "Autodidacta",
+    "completed": "Completado",
+    "continue": "Continuar",
+    "view": "Ver",
+    "enroll": "Inscribirse",
+    "back_to_home": "Volver al Inicio",
+    "not_found": "404",
+    "fetching_user_data": "Obteniendo datos del usuario...",
+    "refresh": "Refrescar"
   }
 }
