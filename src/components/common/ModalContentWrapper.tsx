@@ -3,7 +3,12 @@ import { MODAL_TYPE } from 'constants/general';
 import { ReactNode } from 'react';
 import { MdClose } from 'react-icons/md';
 import { useAppDispatch } from 'store';
-import { updateCourse, updateReviews } from 'store/reducer/course';
+import {
+  updateCourse,
+  updateCourseHighlights,
+  updateReviews,
+  updateShowCourseHighlights,
+} from 'store/reducer/course';
 import { updateConfirmModal } from 'store/reducer/setting';
 
 interface ModalContentWrapperProps {
@@ -37,6 +42,10 @@ const ModalContentWrapper = ({
         break;
       case MODAL_TYPE.CONFIRM:
         dispatch(updateConfirmModal(DEFAULT_CONFIRM_MODAL));
+        break;
+      case MODAL_TYPE.COURSE_HIGHLIGHT:
+        dispatch(updateShowCourseHighlights(false));
+        dispatch(updateCourseHighlights(null));
         break;
       default:
         closeModalAttributes = { isNewCourseModalOpened: false };

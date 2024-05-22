@@ -9,23 +9,28 @@
       "the_course_has_no_lessons_yet": "¡El curso no tiene lecciones aún!",
       "back_to_enrolled_courses": "Volver a los cursos inscritos",
       "youve_completed_the_course": "Has completado el curso",
-      "we_could_not_find_any_courses. thanks for you patient": "No pudimos encontrar ningún curso. Gracias por tu paciencia."
+      "we_could_not_find_any_courses. thanks for you patient": "No pudimos encontrar ningún curso. Gracias por tu paciencia.",
+      "platform": "NEEDSTRANSLATION Platform"
     },
     "lesson": {
       "new_lesson": "Nueva Lección",
       "no_lesson_found": "Ninguna lección encontrada, por favor añade una.",
+      "no_lesson_found_add_one": "NEEDSTRANSLATION Time to add the first lesson",
       "youtube_url": "URL de Youtube",
       "lesson_title": "Lección {{position}}",
       "youve_not_enrolled_in_any_course_yet": "Aún no te has inscrito en ningún curso."
     },
     "error": {
-      "oops_something_went_wrong": "Ups, algo salió mal",
-      "couldnt_able_to_create_course": "No se pudo crear el curso.",
-      "couldnt_able_to_update_course": "No se pudo actualizar el curso."
+      "couldnt_process_the_request": "NEEDSTRANSLATION Something went wrong while creating the course. Very sorry. Please email support@focusbear.io and tell us what led to this error"
     },
     "success": {
       "course_created_successfully": "Curso creado con éxito",
-      "course_updated_successfully": "Curso actualizado con éxito"
+      "course_updated_successfully": "Curso actualizado con éxito",
+      "lesson_successfully_updated": "NEEDSTRANSLATION Lessons updated successfully!",
+      "thank_you_for_your_feedback": "NEEDSTRANSLATION Thank you for your feedback.",
+      "you_have_successfully_enrolled_in_the_course": "NEEDSTRANSLATION You have successfully enrolled in the course",
+      "you_have_successfully_completed_the_course": "NEEDSTRANSLATION You have successfully completed the course",
+      "lesson_deleted_successfully": "NEEDSTRANSLATION Lesson deleted successfully"
     },
     "review": {
       "reviews": "Reseñas",

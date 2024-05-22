@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import {
   removeCourseLesson,
   updateAdminCourses,
+  updateCourseHighlightsLessons,
   updateCourseLessons,
   updateCourses,
   updateEnrolledCourses,
@@ -29,7 +30,8 @@ import { updateUserDetails } from './user';
 import { toast } from 'react-toastify';
 import { updateCurrentTab } from './setting';
 import { DEFAULT_ADMIN_COURSE_META } from 'assets/default';
-import { COURSE_ORDER } from 'constants/enum';
+import { COURSE_LESSONS_OPTION, COURSE_ORDER } from 'constants/enum';
+import { t } from 'i18next';
 
 export const API = createApi({
   reducerPath: 'api',
@@ -53,7 +55,7 @@ export const API = createApi({
           dispatch(updateUserDetails(data));
         } catch (error) {
           dispatch(
-            updateError({ value: true, message: JSON.stringify(error) })
+            updateError({ value: true, message: JSON.stringify(error) }),
           );
         }
       },
@@ -80,12 +82,12 @@ export const API = createApi({
           const { data } = await queryFulfilled;
           dispatch(
             updateAdminCourses(
-              data ?? { data: [], meta: DEFAULT_ADMIN_COURSE_META }
-            )
+              data ?? { data: [], meta: DEFAULT_ADMIN_COURSE_META },
+            ),
           );
         } catch (error) {
           dispatch(
-            updateError({ value: true, message: JSON.stringify(error) })
+            updateError({ value: true, message: JSON.stringify(error) }),
           );
         }
       },
@@ -129,16 +131,25 @@ export const API = createApi({
       invalidatesTags: [API_TAG.ALL_COURSES],
     }),
     getAllCourseLessons: builder.query({
-      query: (course_id: string) =>
-        Endpoint.GET_ALL_COURSE_LESSONS(course_id),
+      query: ({
+        course_id,
+      }: {
+        course_id: string;
+        where?: COURSE_LESSONS_OPTION;
+      }) => Endpoint.GET_ALL_COURSE_LESSONS(course_id),
       providesTags: [API_TAG.ALL_LESSONS],
-      onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
+      onQueryStarted: async (
+        { where = COURSE_LESSONS_OPTION.COURSE_DETAILS },
+        { dispatch, queryFulfilled },
+      ) => {
         try {
           const { data } = await queryFulfilled;
-          dispatch(updateCourseLessons(data ?? []));
+          where === COURSE_LESSONS_OPTION.COURSE_DETAILS
+            ? dispatch(updateCourseLessons(data ?? []))
+            : dispatch(updateCourseHighlightsLessons(data ?? []));
         } catch (error) {
           dispatch(
-            updateError({ value: true, message: JSON.stringify(error) })
+            updateError({ value: true, message: JSON.stringify(error) }),
           );
         }
       },
@@ -152,8 +163,8 @@ export const API = createApi({
       onQueryStarted: async (_, { queryFulfilled }) => {
         const { meta } = await queryFulfilled;
         meta?.response?.status === 200
-          ? toast.success('Lessons updated successfully!')
-          : toast.error('Could not update lesson');
+          ? toast.success(t('success.lesson_deleted_successfully'))
+          : toast.error(t('error.couldnt_process_the_request'));
       },
     }),
     createCourseRating: builder.mutation({
@@ -169,8 +180,8 @@ export const API = createApi({
       onQueryStarted: async (_, { queryFulfilled }) => {
         const { meta } = await queryFulfilled;
         meta?.response?.status === 201
-          ? toast.success('Thank you for your feedback.')
-          : toast.error('Could not process feedback');
+          ? toast.success(t('success.thank_you_for_your_feedback'))
+          : toast.error('error.couldnt_process_the_request');
       },
     }),
     getUserNotEnrolledCourses: builder.query<[], void>({
@@ -182,7 +193,7 @@ export const API = createApi({
           dispatch(updateWhatToLearnCourses(data ?? []));
         } catch (error) {
           dispatch(
-            updateError({ value: true, message: JSON.stringify(error) })
+            updateError({ value: true, message: JSON.stringify(error) }),
           );
         }
       },
@@ -196,7 +207,7 @@ export const API = createApi({
           dispatch(updateCourses(data ?? []));
         } catch (error) {
           dispatch(
-            updateError({ value: true, message: JSON.stringify(error) })
+            updateError({ value: true, message: JSON.stringify(error) }),
           );
         }
       },
@@ -210,7 +221,7 @@ export const API = createApi({
           dispatch(updateEnrolledCourses(data));
         } catch (error) {
           dispatch(
-            updateError({ value: true, message: JSON.stringify(error) })
+            updateError({ value: true, message: JSON.stringify(error) }),
           );
         }
       },
@@ -228,10 +239,12 @@ export const API = createApi({
       onQueryStarted: async (_, { queryFulfilled, dispatch }) => {
         const { meta } = await queryFulfilled;
         if (meta?.response?.status === 201) {
-          toast.success('You have successfully enrolled in this course');
+          toast.success(
+            t('success.you_have_successfully_enrolled_in_the_course'),
+          );
           dispatch(updateCurrentTab(USER_TAB.ENROLLED_COURSES.tabIndex));
         } else {
-          toast.error('Could not enroll in this course');
+          toast.error(t('error.couldnt_process_the_request'));
         }
       },
     }),
@@ -245,7 +258,7 @@ export const API = createApi({
       onQueryStarted: async (_, { queryFulfilled }) => {
         const { meta } = await queryFulfilled;
         meta?.response?.status !== 201 &&
-          toast.error('Could not your progress');
+          toast.error(t('error.couldnt_process_the_request'));
       },
     }),
     updateCourseEnrollment: builder.mutation({
@@ -258,8 +271,10 @@ export const API = createApi({
       onQueryStarted: async (_, { queryFulfilled, dispatch }) => {
         const { meta } = await queryFulfilled;
         meta?.response?.status === 200
-          ? toast.success('You have successfully completed the course')
-          : toast.error('Could not complete the course');
+          ? toast.success(
+              t('success.you_have_successfully_completed_the_course'),
+            )
+          : toast.error(t('error.couldnt_process_the_request'));
       },
     }),
     deleteCourseLesson: builder.mutation({
@@ -278,13 +293,13 @@ export const API = createApi({
       invalidatesTags: [API_TAG.ALL_LESSONS],
       onQueryStarted: async (
         { position },
-        { queryFulfilled, dispatch }
+        { queryFulfilled, dispatch },
       ) => {
         const { meta } = await queryFulfilled;
         if (meta?.response?.status === 200) {
           dispatch(removeCourseLesson(position));
-          toast.success('Lesson deleted successfully');
-        } else toast.error('Could not process the request, try again');
+          toast.success(t('success.lesson_deleted_successfully'));
+        } else toast.error(t('error.couldnt_process_the_request'));
       },
     }),
     getCourseReviews: builder.query<Rating[], string>({
@@ -298,11 +313,11 @@ export const API = createApi({
               ratings: data ?? [],
               isReviewsModalOpened: true,
               course_id,
-            })
+            }),
           );
         } catch (error) {
           dispatch(
-            updateError({ value: true, message: JSON.stringify(error) })
+            updateError({ value: true, message: JSON.stringify(error) }),
           );
         }
       },

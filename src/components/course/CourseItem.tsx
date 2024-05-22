@@ -4,7 +4,6 @@ import Pencil from 'assets/svg/Pencil';
 import Trash from 'assets/svg/Trash';
 import COLOR from 'constants/color';
 import {
-  ITEM_NOT_FOUND,
   NUMBER_OF_EMPTY_ITEMS,
   NUMBER_OF_STARS,
   USER_TAB,
@@ -22,14 +21,15 @@ import {
 } from 'store/reducer/api';
 import {
   updateCourse,
+  updateCourseHighlights,
   updateNewCourse,
   updateReviews,
+  updateShowCourseHighlights,
 } from 'store/reducer/course';
 import Cover from 'assets/images/bear.png';
 import { getCourseInfo, getRatingDetails } from 'utils/support';
 import { useMemo } from 'react';
 import { toast } from 'react-toastify';
-import { LessonCompletionStatus } from 'constants/enum';
 import { t } from 'i18next';
 
 interface CourseItemProps {
@@ -222,7 +222,10 @@ const CourseItemActions = ({ course }: CourseItemProps) => {
 
 const CourseItemDetails = ({ course }: CourseItemProps) => {
   const { currentTab } = useAppSelector((state) => state.setting);
-  const shouldBeMyCoursesTab = currentTab === USER_TAB.MY_COURSES.tabIndex;
+  const shouldBeMyCoursesTab = [
+    USER_TAB.MY_COURSES.tabIndex,
+    USER_TAB.WHAT_TO_LEARN_NEXT.tabIndex,
+  ].includes(currentTab);
   return (
     <div
       className={`w-full h-fit flex flex-col sm:flex-row shadow-md ${
@@ -256,17 +259,24 @@ const CourseItem = ({ course }: CourseItemProps) => {
     setting: { currentTab },
   } = useAppSelector((state) => state);
   const shouldBeMyCoursesTab = currentTab === USER_TAB.MY_COURSES.tabIndex;
+  const shouldBeWhatToLearnNextTab =
+    currentTab === USER_TAB.WHAT_TO_LEARN_NEXT.tabIndex;
   const shouldAllowCourseItemActions =
     isAdmin || (shouldBeMyCoursesTab && userInfo?.id === course.author_id);
   const shouldShowCourseDetails = isAdmin || shouldBeMyCoursesTab;
 
   return (
     <div
+      role='button'
       onClick={() => {
         shouldShowCourseDetails &&
           dispatch(updateCourse({ course, showCourseDetail: true }));
+        if (shouldBeWhatToLearnNextTab) {
+          dispatch(updateCourseHighlights(course));
+          dispatch(updateShowCourseHighlights(true));
+        }
       }}
-      className='flex flex-col gap-1 relative cursor-pointer'
+      className='flex flex-col gap-1 relative'
     >
       {shouldAllowCourseItemActions ? (
         <CourseItemActions course={course} />
