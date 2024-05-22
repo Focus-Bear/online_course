@@ -26,10 +26,11 @@ const Lessons = () => {
       ) : lessons.length ? (
         lessons.map((lesson, idx) => (
           <LessonItem
-            key={idx}
+            key={lesson.id}
             lesson={lesson}
             position={idx}
             course_id={course_detail.id}
+            title={lesson.title}
           />
         ))
       ) : (

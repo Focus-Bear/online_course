@@ -23,15 +23,26 @@ import { Lesson } from 'constants/interface';
 import { useDeleteCourseLessonMutation } from 'store/reducer/api';
 import { t } from 'i18next';
 
+interface LessonItemHeaderProps {
+  readonly position: number;
+  isCollapseOpened: boolean;
+  setIsCollapsedOpen: Dispatch<SetStateAction<boolean>>;
+  title?: string;
+}
+
+interface LessonItemProps {
+  lesson: Lesson;
+  position: number;
+  course_id: string;
+  title?: string;
+}
+
 const LessonItemHeader = ({
   position,
   isCollapseOpened,
   setIsCollapsedOpen,
-}: {
-  readonly position: number;
-  isCollapseOpened: boolean;
-  setIsCollapsedOpen: Dispatch<SetStateAction<boolean>>;
-}) => {
+  title,
+}: LessonItemHeaderProps) => {
   return (
     <>
       <div
@@ -41,6 +52,7 @@ const LessonItemHeader = ({
         className='w-full h-fit font-semibold tracking-wider cursor-pointer rounded px-2 py-1 bg-gray-600 hover:bg-gray-700 text-white text-sm sm:text-base relative'
       >
         {t('lesson.lesson_title', { position: increment(position) })}
+        {title ? <span className='italic'>{`- ${title}`}</span> : null}
         <MdKeyboardArrowDown
           className={`absolute top-1/2 -translate-y-1/2 right-2 w-6 h-auto ${
             isCollapseOpened ? 'rotate-180' : 'rotate-0'
@@ -55,11 +67,8 @@ const LessonItem = ({
   lesson,
   position,
   course_id,
-}: {
-  lesson: Lesson;
-  position: number;
-  course_id: string;
-}) => {
+  title,
+}: LessonItemProps) => {
   const dispatch = useAppDispatch();
   const [isCollapseOpened, setIsCollapsedOpen] = useState(true);
   const blocksFromHTML = convertFromHTML(lesson.content);
@@ -80,10 +89,11 @@ const LessonItem = ({
         position={position}
         isCollapseOpened={isCollapseOpened}
         setIsCollapsedOpen={setIsCollapsedOpen}
+        title={title}
       />
       <UnmountClosed isOpened={isCollapseOpened}>
         <div className='w-full flex items-center py-4'>
-          <p className='w-[10%] font-bold'>Title</p>
+          <p className='w-[10%] font-bold'>{t('course.title')}</p>
           <input
             className={`w-full outline-none rounded px-2 py-1 text-sm font-medium tracking-wide focus:bg-gray-50 ${
               !lesson.title && 'border border-red-400'

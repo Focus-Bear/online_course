@@ -241,7 +241,7 @@ const CourseItemDetails = ({ course }: CourseItemProps) => {
         <h6 className='w-full h-fit text-blue-900 text-base font-bold select-none leading-5 pb-1 line-clamp-2'>
           {course.name}
         </h6>
-        <p className='line-clamp-2 leading-4 text-xs text-justify select-none'>
+        <p className='line-clamp-2 leading-4 text-xs text-ellipsis select-none'>
           {course.description}
         </p>
         <p className='w-fit text-blue-600 text-xs mt-auto ml-auto'>

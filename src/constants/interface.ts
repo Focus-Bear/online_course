@@ -30,6 +30,9 @@ export interface CourseType {
   ratings?: Rating[];
   lessonCompletions?: LessonCompletion[];
   enrollments?: Enrollment[];
+  author?: {
+    username?: string;
+  };
 }
 
 export interface Rating {
