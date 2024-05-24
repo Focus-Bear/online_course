@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import { ROUTES, TOKEN_ROLES_KEY } from 'constants/routes';
@@ -8,7 +8,6 @@ import Layout from 'components/layout';
 import { useAppDispatch } from 'store';
 import { updateIsAdmin } from 'store/reducer/user';
 import { USER_ROLES } from 'constants/enum';
-import Spinner from 'components/common/Spinner';
 import { t } from 'i18next';
 
 const ProtectedRoute = () => {

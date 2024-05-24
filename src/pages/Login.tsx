@@ -15,6 +15,7 @@ const Login = () => {
         <img
           src={bear}
           className='w-[3.5vw] h-auto absolute bottom-[22%] left-[15.5%] skew-x-12 skew-y-6'
+          alt='focusBear logo'
         />
         <Logo styles='w-[10vw] h-auto absolute top-1/2 right-[26%] sm:right-[23%] skew-x-3' />
         <Learn />

@@ -114,7 +114,7 @@ const CourseLesson = ({ lesson, currentLesson }: CourseLessonProps) => {
 
 const Carousel = ({ lessons, course_id }: CarouselProps) => {
   const dispatch = useAppDispatch();
-  const { course: enrolledCourse } = useAppSelector(
+  const { courseDetail: enrolledCourse } = useAppSelector(
     (state) => state.course,
   );
   const [lessonInfo, setLessonInfo] = useState({
@@ -256,7 +256,7 @@ const Carousel = ({ lessons, course_id }: CarouselProps) => {
 };
 
 const ViewCourseModal = () => {
-  const { course: enrolledCourse } = useAppSelector(
+  const { courseDetail: enrolledCourse } = useAppSelector(
     (state) => state.course,
   );
   return (

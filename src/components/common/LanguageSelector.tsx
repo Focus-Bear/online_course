@@ -8,7 +8,7 @@ const LanguageSelector = () => {
   const dispatch = useAppDispatch();
   const { currentLanguage } = useAppSelector((state) => state.setting);
   const isSpanishSelected = useMemo(
-    () => currentLanguage == Language.ES,
+    () => currentLanguage === Language.ES,
     [currentLanguage],
   );
 

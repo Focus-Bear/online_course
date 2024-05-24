@@ -12,12 +12,10 @@ import { t } from 'i18next';
 
 const CourseDetailsActions = () => {
   const dispatch = useAppDispatch();
-  const { course: course_details } = useAppSelector(
-    (state) => state.course,
-  );
+  const { courseDetail } = useAppSelector((state) => state.course);
   const [createOrUpdateLessons, { isLoading }] =
     useUpsertCourseLessonsMutation();
-  const lessons = course_details?.lessons ?? [];
+  const lessons = courseDetail?.lessons ?? [];
   const shouldAllowAddOrSaveLessons = lessons.every((lesson) => {
     const isRequiredFieldsValid =
       lesson.title &&
@@ -49,7 +47,7 @@ const CourseDetailsActions = () => {
             onClick={() => {
               shouldAllowAddOrSaveLessons &&
                 createOrUpdateLessons({
-                  course_id: course_details.id,
+                  course_id: courseDetail.id,
                   lessons,
                 });
             }}
@@ -71,7 +69,7 @@ const CourseDetailsActions = () => {
 
 const CourseDetails = () => {
   const {
-    course: { course: selectedCourse },
+    course: { courseDetail: selectedCourse },
     user: { isAdmin },
   } = useAppSelector((state) => state);
   return (

@@ -74,7 +74,7 @@ export interface CourseSliceType {
     value: boolean;
     message: string;
   };
-  course: CourseType;
+  courseDetail: CourseType;
   newCourse: {
     id: string;
     name: string;
