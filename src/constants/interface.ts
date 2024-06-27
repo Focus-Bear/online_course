@@ -30,6 +30,9 @@ export interface CourseType {
   ratings?: Rating[];
   lessonCompletions?: LessonCompletion[];
   enrollments?: Enrollment[];
+  author?: {
+    username?: string;
+  };
 }
 
 export interface Rating {
@@ -71,7 +74,7 @@ export interface CourseSliceType {
     value: boolean;
     message: string;
   };
-  course: CourseType;
+  courseDetail: CourseType;
   newCourse: {
     id: string;
     name: string;

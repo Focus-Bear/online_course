@@ -29,7 +29,7 @@ const initialState: CourseSliceType = {
   isNewCourseModalOpened: false,
   isLoading: false,
   error: DEFAULT_ERROR,
-  course: DEFAULT_COURSE,
+  courseDetail: DEFAULT_COURSE,
   newCourse: DEFAULT_NEW_COURSE,
   showEnrolledCourseModal: false,
   reviews: {
@@ -84,7 +84,7 @@ export const courseSlice = createSlice({
         isNewCourseModalOpened?: boolean;
       }>,
     ) => {
-      state.course = payload.course;
+      state.courseDetail = payload.course;
       state.showEnrolledCourseModal = Boolean(
         payload.showEnrolledCourseModal,
       );
@@ -103,17 +103,17 @@ export const courseSlice = createSlice({
       state.error = payload;
     },
     updateNewLesson: (state) => {
-      state.course?.lessons?.push(DEFAULT_NEW_LESSON);
+      state.courseDetail?.lessons?.push(DEFAULT_NEW_LESSON);
     },
     removeCourseLesson: (state, { payload }) => {
-      if (state.course) {
-        state.course.lessons = state.course?.lessons?.filter(
+      if (state.courseDetail) {
+        state.courseDetail.lessons = state.courseDetail?.lessons?.filter(
           (_, index) => payload !== index,
         );
       }
     },
     updateCourseLessons: (state, { payload }: PayloadAction<Lesson[]>) => {
-      state.course.lessons = payload;
+      state.courseDetail.lessons = payload;
     },
     updateCourseDetails: (
       state,
@@ -125,16 +125,16 @@ export const courseSlice = createSlice({
         course_feature: string;
       }>,
     ) => {
-      if (state.course.lessons?.length) {
+      if (state.courseDetail.lessons?.length) {
         switch (course_feature) {
           case COURSE_FEATURE.TITLE:
-            state.course.lessons[position].title = value;
+            state.courseDetail.lessons[position].title = value;
             break;
           case COURSE_FEATURE.CONTENT:
-            state.course.lessons[position].content = value;
+            state.courseDetail.lessons[position].content = value;
             break;
           default:
-            state.course.lessons[position].url = value;
+            state.courseDetail.lessons[position].url = value;
         }
       }
     },
@@ -201,6 +201,12 @@ export const courseSlice = createSlice({
         state.courseHighlights['lessons'] = payload;
       }
     },
+    updateCourseDetailLessons: (
+      state,
+      { payload }: PayloadAction<Lesson[]>,
+    ) => {
+      state.courseDetail.lessons = payload;
+    },
   },
 });
 
@@ -221,5 +227,6 @@ export const {
   updateShowCourseHighlights,
   updateCourseHighlights,
   updateCourseHighlightsLessons,
+  updateCourseDetailLessons,
 } = courseSlice.actions;
 export default courseSlice.reducer;

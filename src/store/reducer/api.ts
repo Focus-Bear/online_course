@@ -163,7 +163,7 @@ export const API = createApi({
       onQueryStarted: async (_, { queryFulfilled }) => {
         const { meta } = await queryFulfilled;
         meta?.response?.status === 200
-          ? toast.success(t('success.lesson_deleted_successfully'))
+          ? toast.success(t('success.lesson_successfully_updated'))
           : toast.error(t('error.couldnt_process_the_request'));
       },
     }),

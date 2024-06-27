@@ -3,6 +3,7 @@ import ModalOverlay from 'components/common/ModalOverlay';
 import {
   FIRST_LESSON_INDEX,
   FIRST_LESSON_OFFSET,
+  ITEM_NOT_FOUND,
   MODAL_TYPE,
 } from 'constants/general';
 
@@ -114,7 +115,7 @@ const CourseLesson = ({ lesson, currentLesson }: CourseLessonProps) => {
 
 const Carousel = ({ lessons, course_id }: CarouselProps) => {
   const dispatch = useAppDispatch();
-  const { course: enrolledCourse } = useAppSelector(
+  const { courseDetail: enrolledCourse } = useAppSelector(
     (state) => state.course,
   );
   const [lessonInfo, setLessonInfo] = useState({
@@ -152,13 +153,17 @@ const Carousel = ({ lessons, course_id }: CarouselProps) => {
   }, [lessonInfo.currentLesson]);
 
   useEffect(() => {
-    const lessonIndex = enrolledCourse?.lessonCompletions?.length
-      ? lessons?.findIndex((lesson) =>
-          enrolledCourse?.lessonCompletions?.every(
-            (completion) => completion.lesson_id !== lesson.id,
-          ),
-        )
-      : FIRST_LESSON_OFFSET;
+    const currentLessonIndex = lessons?.findIndex((lesson) =>
+      enrolledCourse?.lessonCompletions?.every(
+        (completion) => completion.lesson_id !== lesson.id,
+      ),
+    );
+    const lessonIndex =
+      enrolledCourse?.lessonCompletions?.length &&
+      currentLessonIndex !== ITEM_NOT_FOUND
+        ? currentLessonIndex
+        : FIRST_LESSON_INDEX;
+
     setLessonInfo((prev) => ({
       ...prev,
       currentLesson: lessonIndex,
@@ -240,9 +245,7 @@ const Carousel = ({ lessons, course_id }: CarouselProps) => {
             >
               <MdArrowRight />
             </button>
-            <p className='text-xs md:text-base font-semibold text-gray-500'>{`${increment(
-              lessonInfo.currentLesson,
-            )} / ${lessons.length}`}</p>
+            <p className='text-xs md:text-base font-semibold text-gray-500'>{`${increment(lessonInfo.currentLesson)} / ${lessons.length}`}</p>
           </div>
         </>
       )}
@@ -256,7 +259,7 @@ const Carousel = ({ lessons, course_id }: CarouselProps) => {
 };
 
 const ViewCourseModal = () => {
-  const { course: enrolledCourse } = useAppSelector(
+  const { courseDetail: enrolledCourse } = useAppSelector(
     (state) => state.course,
   );
   return (

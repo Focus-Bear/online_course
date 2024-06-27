@@ -1,7 +1,7 @@
 {
   "name": "online_course",
   "version": "0.1.0",
-  "homepage": "https://focus-bear.github.io/online_course",
+  "homepage": "https://focus-bear.github.io/courses",
   "private": true,
   "dependencies": {
     "-": "^0.0.1",
@@ -21,6 +21,8 @@
     "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-collapse": "^5.1.1",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.2.0",
     "react-draft-wysiwyg": "^1.15.0",
     "react-i18next": "^14.0.5",

@@ -8,13 +8,13 @@ const LanguageSelector = () => {
   const dispatch = useAppDispatch();
   const { currentLanguage } = useAppSelector((state) => state.setting);
   const isSpanishSelected = useMemo(
-    () => currentLanguage == Language.ES,
+    () => currentLanguage === Language.ES,
     [currentLanguage],
   );
 
   return (
     <label
-      onClick={() => {
+      onChange={() => {
         const langCode = isSpanishSelected ? Language.EN : Language.ES;
         dispatch(updateCurrentLanguage(langCode));
         i18n.changeLanguage(langCode);
@@ -22,10 +22,9 @@ const LanguageSelector = () => {
       className='cursor-pointer'
     >
       <input
-        defaultChecked={isSpanishSelected}
         type='checkbox'
         className='appearance-none inputSwitch'
-        checked={isSpanishSelected}
+        defaultChecked={isSpanishSelected}
         data-text={isSpanishSelected ? Language.ES : Language.EN}
       />
     </label>

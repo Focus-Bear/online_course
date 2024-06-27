@@ -12,12 +12,10 @@ import { t } from 'i18next';
 
 const CourseDetailsActions = () => {
   const dispatch = useAppDispatch();
-  const { course: course_details } = useAppSelector(
-    (state) => state.course,
-  );
+  const { courseDetail } = useAppSelector((state) => state.course);
   const [createOrUpdateLessons, { isLoading }] =
     useUpsertCourseLessonsMutation();
-  const lessons = course_details?.lessons ?? [];
+  const lessons = courseDetail?.lessons ?? [];
   const shouldAllowAddOrSaveLessons = lessons.every((lesson) => {
     const isRequiredFieldsValid =
       lesson.title &&
@@ -49,7 +47,7 @@ const CourseDetailsActions = () => {
             onClick={() => {
               shouldAllowAddOrSaveLessons &&
                 createOrUpdateLessons({
-                  course_id: course_details.id,
+                  course_id: courseDetail.id,
                   lessons,
                 });
             }}
@@ -70,7 +68,10 @@ const CourseDetailsActions = () => {
 };
 
 const CourseDetails = () => {
-  const { course } = useAppSelector((state) => state.course);
+  const {
+    course: { courseDetail: selectedCourse },
+    user: { isAdmin },
+  } = useAppSelector((state) => state);
   return (
     <ModalOverlay>
       <ModalContentWrapper
@@ -79,10 +80,17 @@ const CourseDetails = () => {
       >
         <CourseDetailsActions />
         <div className='w-full h-fit flex flex-col gap-1 py-2'>
-          <h5 className='font-bold italic'>{course?.name ?? ''}</h5>
+          <h5 className='font-bold italic'>
+            {selectedCourse?.name ?? ''}
+          </h5>
           <p className='font-medium text-sm leading-4 tracking-wide text-justify line-clamp-3'>
-            {course?.description ?? ''}
+            {selectedCourse?.description ?? ''}
           </p>
+          {isAdmin ? (
+            <span className='text-xs text-blue-600 font-medium'>
+              {selectedCourse.author?.username}
+            </span>
+          ) : null}
         </div>
         <Lessons />
       </ModalContentWrapper>

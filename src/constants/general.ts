@@ -179,3 +179,7 @@ export const TEXT_EDITOR = {
     },
   },
 };
+
+export const DragTypes = {
+  LESSON: 'lesson',
+};
